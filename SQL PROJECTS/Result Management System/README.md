@@ -38,6 +38,16 @@ A structured SQL-based system for managing student records, profiles, courses, a
 
 ---
 
+📥 CSV Resources
+Please download the following CSV files to populate your tables:
+- 📊 [[student.csv]( https://docs.google.com/spreadsheets/d/1QzwxrQu6m58f6XMGY92s66ey38Dz29lnfM3TkAVAi-w/edit?usp=sharing)](#)
+
+
+student profile csv
+
+course csv
+
+results for different courses csv
 ## 🔍 Sample Queries
 
 ```sql
