@@ -47,7 +47,6 @@ Please download the following CSV files to populate your tables:
 
 - 📊 [[result for different.csv](https://drive.google.com/drive/folders/1ryD-i9azSTIomBhkJF9JULIsoasdSBnT?usp=sharing)](#)
 
-results for different courses csv
 ## 🔍 Sample Queries
 
 ```sql
