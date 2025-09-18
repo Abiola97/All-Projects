@@ -41,11 +41,11 @@ A structured SQL-based system for managing student records, profiles, courses, a
 📥 CSV Resources
 Please download the following CSV files to populate your tables:
 - 📊 [[student.csv]( https://docs.google.com/spreadsheets/d/1QzwxrQu6m58f6XMGY92s66ey38Dz29lnfM3TkAVAi-w/edit?usp=sharing)](#)
+- 📊 [[student profile.csv](https://docs.google.com/spreadsheets/d/1WlV-F6KoazIP9AQR_pb--WFR4aKfXQMTg6GaoEBVjJU/edit?usp=sharing)](#)
 
+- 📊 [[course.csv](https://docs.google.com/spreadsheets/d/1CXJU02gJJ1WyU8tpy7y9TR_tTO_FcgHRsPlxuJuzum0/edit?usp=sharing)](#)
 
-student profile csv
-
-course csv
+- 📊 [[result for different.csv](https://drive.google.com/drive/folders/1ryD-i9azSTIomBhkJF9JULIsoasdSBnT?usp=sharing)](#)
 
 results for different courses csv
 ## 🔍 Sample Queries
