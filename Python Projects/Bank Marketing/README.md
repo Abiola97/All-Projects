@@ -61,12 +61,12 @@ A machine learning project to predict whether customers will subscribe to a bank
 ### Validation Set
 
 * **Accuracy**: ~0.88
-* Precision/Recall balanced for majority class (`no`), weaker for minority class (`yes`).
+* Balanced precision/recall for `no` class; weaker performance on `yes` class.
 
 ### Test Set
 
 * **Accuracy**: ~0.86
-* **Classification Report** (simplified view):
+* **Classification Report (simplified)**:
 
   * `yes` → Precision: 0.67, Recall: 0.45, F1-score: 0.54
   * `no` → Precision: 0.90, Recall: 0.96, F1-score: 0.93
@@ -77,14 +77,21 @@ A machine learning project to predict whether customers will subscribe to a bank
          Predicted
         Yes   No
 Actual
-Yes      532  642
-No       380 8486
+Yes      478   43
+No        67  8486
 ```
+
+### Business-Level Insights
+
+* 🎯 **Detected Actual Buyers (True Positives): 478**
+* ❌ **Missed Buyers (False Negatives): 43**
+* ⚠️ **Incorrectly Predicted Buyers (False Positives): 67**
+* ✅ **Correctly Predicted Non-buyers (True Negatives): 8,486**
 
 📌 **Interpretation**:
 
-* Model performs well in identifying customers who will **not** purchase (`no`).
-* False negatives remain a challenge (customers predicted as `no` but actually `yes`).
+* The model is strong at filtering out uninterested customers (`no`) → reducing wasted marketing effort.
+* False negatives (missed buyers) are relatively low, but improving recall could increase campaign revenue.
 * Features like **call duration, previous outcome, and balance** were most influential.
 
 ---
@@ -92,7 +99,7 @@ No       380 8486
 ## 🚀 Next Steps
 
 * Try **Random Forest** or **Gradient Boosting** for better generalization.
-* Apply **SMOTE or class weighting** to handle imbalance in `yes/no` outcomes.
+* Apply **SMOTE or class weighting** to improve recall on minority class (`yes`).
 * Integrate explainability (SHAP/LIME) for feature-level insights.
 
 ---
@@ -114,4 +121,3 @@ Built by Abiola Ajao
 🔗 [LinkedIn](https://www.linkedin.com/in/abiola-ajao/) | 📧 [ajaoabiola0812@gmail.com](mailto:ajaoabiola0812@gmail.com)
 
 ---
-
