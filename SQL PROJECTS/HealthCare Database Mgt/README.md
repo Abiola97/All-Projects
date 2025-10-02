@@ -146,13 +146,14 @@ FROM healthcare
 WHERE Admission_Type = 'Emergency' AND Test_Results = 'Abnormal';
 ```
 
----
-
 ## 👤 Author
 
-Built by Abiola Ajao
-🎓 Master’s in Collective Intelligence @ UM6P
-💼 Data Analyst → Product Manager
-📍 Morocco & Nigeria
-🔗 LinkedIn | 📧 ajaoabiola0812@gmail.co
+Built by Abiola Ajao  
+🎓 Master’s in Collective Intelligence @ UM6P  
+💼 Data Analyst → Product Manager  
+📍 Morocco & Nigeria  
+🔗 [LinkedIn](https://www.linkedin.com/in/abiola-ajao/) | 📧 ajaoabiola0812@gmail.com
+
+
+
 
