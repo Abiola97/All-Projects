@@ -144,3 +144,9 @@ FROM student_results_db_view;
 
 Views like `student_results_db_view` are optimized for BI tools such as Power BI, Tableau, or Metabase. Schema supports easy joins for student profiles, course performance, and institutional KPIs.
 
+**👤 Author**
+Built by Abiola Ajao
+🎓 Master’s in Collective Intelligence @ UM6P
+💼 Data Analyst → Product Manager
+📍 Morocco & Nigeria
+🔗 LinkedIn | 📧 ajaoabiola0812@gmail.com
