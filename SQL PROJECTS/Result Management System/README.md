@@ -73,26 +73,74 @@ WHERE c.course_code = 'agric-s2';
 SELECT *, DENSE_RANK() OVER (ORDER BY total_score DESC) AS student_rank
 FROM student_results_db_view;
 ```
-
 ---
 
 ## 🧮 Stored Procedure: `view_table_rms()`
 
-Calculates:
+This procedure aggregates scores across 10 subjects for each student, calculating:
 
-- Total score across 10 subjects
-- Average score
-- Highest and lowest subject scores
+- `total_score`: Sum of all subject scores  
+- `average_score`: Rounded average across subjects  
+- `highest_score`: Maximum score among subjects  
+- `lowest_score`: Minimum score among subjects  
+
+### 📌 Procedure Definition
+
+```sql
+DELIMITER //
+
+CREATE PROCEDURE view_table_rms()
+BEGIN
+  SELECT *,
+    (agriculture + biology + chemistry + computer_sci + english + geography + literature + maths + physics + technical_drawing) AS total_score,
+    ROUND((agriculture + biology + chemistry + computer_sci + english + geography + literature + maths + physics + technical_drawing) / 10.0) AS average_score,
+    GREATEST(agriculture, biology, chemistry, computer_sci, english, geography, literature, maths, physics, technical_drawing) AS highest_score,
+    LEAST(agriculture, biology, chemistry, computer_sci, english, geography, literature, maths, physics, technical_drawing) AS lowest_score
+  FROM (
+    SELECT ag.id, s.admission_number,
+      CONCAT(s.firstname, ' ', s.lastname) AS student_name,
+      (ag.first_ca + ag.second_ca + ag.exam) AS agriculture,
+      (b.first_ca + b.second_ca + b.exam) AS biology,
+      (c.first_ca + c.second_ca + c.exam) AS chemistry,
+      (cs.first_ca + cs.second_ca + cs.exam) AS computer_sci,
+      (e.first_ca + e.second_ca + e.exam) AS english,
+      (g.first_ca + g.second_ca + g.exam) AS geography,
+      (l.first_ca + l.second_ca + l.exam) AS literature,
+      (m.first_ca + m.second_ca + m.exam) AS maths,
+      (p.first_ca + p.second_ca + p.exam) AS physics,
+      (t.first_ca + t.second_ca + t.exam) AS technical_drawing
+    FROM Student_Table s
+    JOIN agric ag ON s.admission_number = ag.student
+    JOIN bio b ON s.admission_number = b.student
+    JOIN chem c ON s.admission_number = c.student
+    JOIN compt cs ON s.admission_number = cs.student
+    JOIN english e ON s.admission_number = e.student
+    JOIN geo g ON s.admission_number = g.student
+    JOIN lit l ON s.admission_number = l.student
+    JOIN maths m ON s.admission_number = m.student
+    JOIN physics p ON s.admission_number = p.student
+    JOIN td t ON s.admission_number = t.student
+  ) AS rms_table;
+END //
+
+DELIMITER ;
+```
+
+### 📊 How to Use
 
 ```sql
 CALL view_table_rms();
 ```
 
----
+You can also rank students based on their total score:
+
+```sql
+SELECT *, DENSE_RANK() OVER (ORDER BY total_score DESC) AS student_rank
+FROM student_results_db_view;
+```
+
 
 ## 📈 Dashboard Integration
 
 Views like `student_results_db_view` are optimized for BI tools such as Power BI, Tableau, or Metabase. Schema supports easy joins for student profiles, course performance, and institutional KPIs.
 
-
-Let me know if you'd like a visual ERD diagram, dashboard mockup, or a LinkedIn post summary to go with this.
