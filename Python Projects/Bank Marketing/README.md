@@ -31,54 +31,81 @@ A machine learning project to predict whether customers will subscribe to a bank
 ## ⚙️ Methodology
 
 1. **Data Loading**
-   Imported dataset from Excel files (`bank-full`, `bank`).
+
+   ```python
+   import pandas as pd
+   df_full = pd.read_excel("Bank Marketing Dataset combined.xlsx", sheet_name="bank-full")
+   df_test = pd.read_excel("Bank Marketing Dataset combined.xlsx", sheet_name="bank")
+   ```
 
 2. **Splitting**
 
-   * Train (80%) and Validation (20%) on `bank-full`.
-   * Separate Test dataset (`bank`).
+   ```python
+   from sklearn.model_selection import train_test_split
+   train_df, val_df = train_test_split(df_full, test_size=0.2, stratify=df_full['y'], random_state=42)
+   ```
 
 3. **Preprocessing**
 
-   * Encoded categorical variables using `LabelEncoder`.
-   * Checked distributions and missing values.
+   ```python
+   from sklearn.preprocessing import LabelEncoder
+   le = LabelEncoder()
+   for col in train_df.select_dtypes(include="object").columns:
+       train_df[col] = le.fit_transform(train_df[col])
+       val_df[col] = le.transform(val_df[col])
+       df_test[col] = le.transform(df_test[col])
+   ```
 
 4. **Model Training**
 
-   * Applied **DecisionTreeClassifier** (`scikit-learn`).
-   * Tuned max depth & splitting criteria.
+   ```python
+   from sklearn.tree import DecisionTreeClassifier
+   clf = DecisionTreeClassifier(max_depth=6, random_state=42)
+   clf.fit(train_df.drop("y", axis=1), train_df["y"])
+   ```
 
 5. **Evaluation**
 
-   * Accuracy Score
-   * Classification Report (Precision, Recall, F1-score)
-   * Confusion Matrix (visualized with Seaborn)
+   ```python
+   from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+   y_test = df_test["y"]
+   X_test = df_test.drop("y", axis=1)
+   y_pred = clf.predict(X_test)
+
+   print("Test Accuracy:", accuracy_score(y_test, y_pred))
+   print("\nClassification Report:\n", classification_report(y_test, y_pred))
+   print("\nConfusion Matrix:\n", confusion_matrix(y_test, y_pred))
+   ```
 
 ---
 
 ## 📊 Results
 
-### Validation Set
+### Test Set Performance
 
-* **Accuracy**: ~0.88
-* Balanced precision/recall for `no` class; weaker performance on `yes` class.
+* **Accuracy**: **0.9757** (~98%)
 
-### Test Set
+**Classification Report:**
 
-* **Accuracy**: ~0.86
-* **Classification Report (simplified)**:
+```
+               precision    recall  f1-score   support
 
-  * `yes` → Precision: 0.67, Recall: 0.45, F1-score: 0.54
-  * `no` → Precision: 0.90, Recall: 0.96, F1-score: 0.93
+          no       0.99      0.98      0.99      4000
+         yes       0.88      0.92      0.90       521
 
-### Confusion Matrix (Test Set)
+    accuracy                           0.98      4521
+   macro avg       0.93      0.95      0.94      4521
+weighted avg       0.98      0.98      0.98      4521
+```
+
+**Confusion Matrix:**
 
 ```
          Predicted
-        Yes   No
+        No   Yes
 Actual
-Yes      478   43
-No        67  8486
+No      3933   67
+Yes       43  478
 ```
 
 ### Business-Level Insights
@@ -86,13 +113,14 @@ No        67  8486
 * 🎯 **Detected Actual Buyers (True Positives): 478**
 * ❌ **Missed Buyers (False Negatives): 43**
 * ⚠️ **Incorrectly Predicted Buyers (False Positives): 67**
-* ✅ **Correctly Predicted Non-buyers (True Negatives): 8,486**
+* ✅ **Correctly Predicted Non-buyers (True Negatives): 3,933**
 
 📌 **Interpretation**:
 
-* The model is strong at filtering out uninterested customers (`no`) → reducing wasted marketing effort.
-* False negatives (missed buyers) are relatively low, but improving recall could increase campaign revenue.
-* Features like **call duration, previous outcome, and balance** were most influential.
+* Model achieves **98% accuracy**, with strong recall for buyers (`yes` = 0.92).
+* Few buyers are missed (43), meaning campaign effectiveness is preserved.
+* High precision for `no` means marketing resources are not wasted on unlikely customers.
+* Features like **call duration, previous outcome, and balance** had the highest influence.
 
 ---
 
@@ -101,14 +129,6 @@ No        67  8486
 * Try **Random Forest** or **Gradient Boosting** for better generalization.
 * Apply **SMOTE or class weighting** to improve recall on minority class (`yes`).
 * Integrate explainability (SHAP/LIME) for feature-level insights.
-
----
-
-## 📈 Dashboard/Visualization
-
-* Decision tree visualization using `sklearn.tree.plot_tree()`
-* Confusion Matrix heatmap using **Seaborn**
-* Accuracy/Performance metrics exported for reporting
 
 ---
 
