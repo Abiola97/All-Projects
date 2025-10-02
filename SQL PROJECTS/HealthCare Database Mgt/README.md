@@ -150,11 +150,9 @@ WHERE Admission_Type = 'Emergency' AND Test_Results = 'Abnormal';
 
 ## 👤 Author
 
-Built by Abiola Ajao   
-💼 Data Analyst → Product Manager  
-📍 Morocco & Nigeria  
-🔗 [[LinkedIn](#)](https://www.linkedin.com/in/abiola-ajao/) | 
+Built by Abiola Ajao
+🎓 Master’s in Collective Intelligence @ UM6P
+💼 Data Analyst → Product Manager
+📍 Morocco & Nigeria
+🔗 LinkedIn | 📧 ajaoabiola0812@gmail.co
 
----
-
-Let me know if you'd like a dashboard mockup, ERD diagram, or a LinkedIn post summary to showcase this project with strategic impact.
