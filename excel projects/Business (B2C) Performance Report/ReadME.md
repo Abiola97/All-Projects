@@ -1,7 +1,6 @@
 
 
-
-# 📊 Business (B2C) Performance Dashboard (Excel)
+# 📊 Business Performance Dashboard (Excel)
 
 A dynamic Excel-based dashboard designed to transform raw service job data into actionable business insights. This project focuses on data cleaning, regional mapping, KPI generation, and interactive reporting using Power Query, PivotTables, and advanced formulas.
 
@@ -86,17 +85,10 @@ This dashboard analyzes service performance across multiple cities and regions, 
 
 ---
 
-## 🎥 Recording Requirement
+## 🎥 Project Execution Video
 
-This project was completed with a full screen recording showing:  
-- Data cleaning and transformation steps  
-- Dashboard creation and logic explanation  
-- Use of webcam and microphone for verification  
-- Final dashboard walkthrough
-
-📁 File Naming Convention:  
-- `AbiolaAjao_Exceltask.xlsx`  
-- `AbiolaAjao_ExcelTaskVideo.mp4` (uploaded via Google Drive)
+Watch the full recorded walkthrough of the project execution:  
+🔗 [YouTube Video](https://youtu.be/GwTBwsLpKzE?si=8obTKiEn6BBmpNsL)
 
 ---
 
