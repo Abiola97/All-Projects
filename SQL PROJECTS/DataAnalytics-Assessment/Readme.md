@@ -1,5 +1,5 @@
 
-## 🧠 Cowry Data Analyst Assessment
+## 🧠 Cowrywise Data Analyst Assessment
 
 This repository contains SQL Server solutions for the Cowry Wise Data Analyst Assessment. The queries demonstrate business insight, query optimization, and strategic thinking—core skills for data-driven product management.
 
