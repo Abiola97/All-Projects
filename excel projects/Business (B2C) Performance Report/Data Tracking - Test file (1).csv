@@ -1,0 +1,161 @@
+EstDateTimeStart,JobType,JobStatus,CreatedBy,Technicians,AccountName,Address1,City,Zip,OrderType,OrderNumber,DateCreated,SubTotal
+7/23/2025 14:00,Air Duct,Complete,Devin James,"Dave B, Ty Doe","Durand, Chloé",2132 Sunset Ct,Cornwall,R1N 0P1,Invoice,26704,7/3/2025 0:00,453
+7/23/2025 14:00,Air Duct,Complete,Chris Hamilton,"Chris Smith, Cameron Erroy","Rivard, Emilie",8672 Maple Ave,Brockville,X1B 5A0,Invoice,26801,7/16/2025 0:00,299
+7/23/2025 12:00,Air Duct,Complete,Devin James,"Dave B, Ty Doe","Lemoine, Clara",6363 Pine St,Cornwall,H3E 6C4,Invoice,26701,7/3/2025 0:00,438
+7/23/2025 10:00,Air Duct,Complete,Lou Mcdonalds,"Dave B, Ty Doe","Nguyen, Maxime",2512 Spruce St,Cornwall,V4C 3P6,Invoice,26655,6/25/2025 0:00,374
+7/23/2025 9:30,Dryer Vent,Complete,Adam smith ,"Chris Smith, Cameron Erroy","Fontaine, Julie",9808 Birch Ln,Harrowsmith,P2E 8E9,Invoice,26802,7/16/2025 0:00,328
+7/23/2025 8:30,Air Duct,Complete,John doe,"Dave B, Ty Doe","Gauthier, Marc",8577 Birch Ave,Cornwall,K3P 5R9,Invoice,26728,7/5/2025 0:00,404
+7/23/2025 8:00,Joseph Air Duct,Complete,Devin James,"Chris Smith, Cameron Erroy","Arsenault, Julien",9574 Birch Dr,Lake Opinicon,V0B 9B0,Invoice,26836,7/21/2025 0:00,449
+7/23/2025 8:00,Rework,Complete,John doe,"Dave B, Ty Doe","Bélanger, Luc",8089 Birch Rd,Cornwall,X4R 5S2,Invoice,26695,7/2/2025 0:00,642
+7/22/2025 15:00,Dryer Vent,Complete,Mark Anderson,"Dave B, Ty Doe","Tremblay, Pascal",4006 Willow Ln,Cornwall,L2Y 2S9,Invoice,26838,7/21/2025 0:00,199
+7/22/2025 13:30,Air Duct,Complete,Devin James,"Chris Smith, Brad Lisbon","Roy, Hugo",2954 Pine Blvd,Camden East,X7G 4P2,Invoice,26707,7/3/2025 0:00,453
+7/22/2025 12:00,Air Duct,Complete,Lou Mcdonalds,"Chris Smith, Brad Lisbon","Noël, Jonathan",3727 Spruce Ave,Bath,J4R 2M2,Invoice,26569,6/16/2025 0:00,299
+7/22/2025 12:00,OTTAWA DUCT,Complete,DevinJames,"Terry Crews, Moris Coldplay","Laroche, Samira",7271 Spruce Blvd,Ottawa,M1N 3H3,Invoice,26735,7/7/2025 0:00,533
+7/22/2025 10:00,OTTAWA DUCT,Complete,Devin James,"Terry Crews, Moris Coldplay","Cloutier, Jade",9046 River Rd,Ottawa,J5N 7M5,Invoice,26654,6/25/2025 0:00,453
+7/22/2025 9:30,Air Duct,Complete,Adam smith,"Chris Smith, Brad Lisbon","Boutin, Aline",5217 Oak Ct,Kingston,E8K 3X8,Invoice,26644,6/25/2025 0:00,584
+7/22/2025 8:00,OTTAWA DUCT,Complete,Lou Mcdonalds,"Terry Crews, Moris Coldplay","Desrosiers, Mireille",3306 Elm Rd,Ottawa,P8V 3C8,Invoice,26647,6/25/2025 0:00,378
+7/22/2025 8:00,Air Duct,Complete,Adam S mith,"Chris Smith, Brad Lisbon","Ménard, Malik",7065 Oak Blvd,Sydenham,Y0G 7A0,Invoice,26719,7/4/2025 0:00,464
+,,,,,,,,,,,,
+7/21/2025 14:00,Air Duct,Complete,Devin James,"Chris Smith, Brad Lisbon","Beaulieu, Nathan",8348 Willow Rd,North Augusta,N5B 0V5,Invoice,26652,6/25/2025 0:00,807
+7/21/2025 14:00,OTTAWA DUCT,Complete,Devin James,"Terry Crews, Moris Coldplay","Lopez, Adrien",3199 Cedar St,Ottawa,L8R 4N8,Invoice,26685,6/30/2025 0:00,653
+7/21/2025 12:30,Portable Duct,Complete,Devin James,"Terry Crews, Moris Coldplay","Caron, Amélie",9105 Cedar Blvd,Ottawa,T4E 9J4,Invoice,26554,6/12/2025 0:00,449
+7/21/2025 12:00,Dryer Vent,Complete,Devin James,"Terry Crews, Moris Coldplay","Bouchard, Étienne",2999 Sunset St,Ottawa,S2S 7C3,Invoice,26662,6/26/2025 0:00,199
+,,,,,,,,,,,,
+7/21/2025 10:00,OTTAWA DUCT,Complete,DevinJames,"Terry Crews, Moris Coldplay","Giroux, Sébastien",3836 River Cres,Ottawa,M6M 3G8,Invoice,26350,5/22/2025 0:00,498
+7/21/2025 10:00,Air Duct,Complete,Adam smith,"Chris Smith, Brad Lisbon","Pelletier, Diane",4775 Elm Rd,Arden,L5V 0J4,Invoice,26677,6/29/2025 0:00,449
+7/21/2025 8:00,Duct & Dryer,Complete,Chris Hamilton,"Terry Crews, Moris Coldplay",Éco Rénovation Experts,5014 Spruce Blvd,Ottawa,H2M 2A9,Invoice,26656,6/25/2025 0:00,658
+7/21/2025 8:00,Air Duct,Complete,hakim.b,"Chris Smith, Brad Lisbon",Groupe LLM Inc.,9961 Sunset Blvd,Maberly,J0J 4J9,Invoice,26616,6/23/2025 0:00,434
+7/21/2025 8:00,Commercial Work,Complete,hakim.b,Tom Summer,Pro-Réno Urgence,9434 Maple Pl,Ottawa,M1R 8H9,Invoice,26826,7/18/2025 0:00,12000
+7/21/2025 8:00,Commercial Work,Complete,hakim.b,"Dave B, Ty Doe","Morin, Camille",2639 River Blvd,Ottawa,M6B 4J4,Invoice,25865,3/23/2025 0:00,2500
+7/19/2025 8:00,Commercial Work,Complete,hakim.b,"Samantha Rose, Dave B, Ty Doe","Gagnon, Sophie",4113 River Rd,Ottawa,E9K 4P4,Invoice,26826,7/18/2025 0:00,12000
+7/18/2025 15:30,Dryer Vent,Complete,Mark Anderson,"Cameron Erroy, Dave B","Rodriguez, Samuel",871 Willow Ave,Brockville,M1M 0A0,Invoice,26820,7/18/2025 0:00,199
+7/18/2025 14:00,Air Duct,Complete,Adam smith,"Cameron Erroy, Dave B","Parent, Mireille",7080 Birch Way,Ingleside,E8N 7N4,Invoice,26702,7/3/2025 0:00,419
+7/18/2025 13:30,OTTAWA DUCT,Complete,Devin James,"Terry Crews, Moris Coldplay, Brad Lisbon","Bélisle, Roxane",2634 Willow Way,Ottawa,P9V 4S9,Invoice,26777,7/14/2025 0:00,299
+7/18/2025 12:00,OTTAWA DUCT,Complete,Devin James,"Terry Crews, Moris Coldplay, Brad Lisbon","Thibault, Yann",9049 Elm Cres,Ottawa,R9N 1N4,Invoice,26665,6/26/2025 0:00,573
+7/18/2025 10:00,Air Duct,Complete,Devin James,"Chris Smith, Ty Doe","Simard, Mathieu",279 Willow St,Napanee,V9B 5R3,Invoice,26705,7/3/2025 0:00,299
+7/18/2025 10:00,OTTAWA DUCT,Complete,Adam smith,"Terry Crews, Moris Coldplay, Brad Lisbon","Couture, Karine",7947 Spruce Dr,Ottawa,S6M 0G5,Invoice,26659,6/26/2025 0:00,479
+7/18/2025 8:00,OTTAWA DUCT,Complete,Devin James,"Terry Crews, Moris Coldplay, Brad Lisbon","Fortin, Julien",8884 River Ct,Ottawa,L4T 3L4,Invoice,26577,6/17/2025 0:00,827
+7/18/2025 8:00,Air Duct,Complete,Chris Hamilton,"Chris Smith, Ty Doe","Lefebvre, Alain",515 Cedar Dr,Gananoque,Y0T 2G9,Invoice,26636,6/24/2025 0:00,464
+7/18/2025 8:00,Air Duct,Complete,Devin James,"Cameron Erroy, Dave B","Vachon, Thierry",6685 River Rd,Williamstown,B8N 2K2,Invoice,26703,7/3/2025 0:00,428
+7/17/2025 14:30,Air Duct,Complete,Adam smith,"Cameron Erroy, Dave B","Mehta, Rohan",1262 Pine Ct,Brockville,G7V 2B3,Invoice,26678,6/30/2025 0:00,359
+7/17/2025 14:00,Air Duct,Complete,DevinJames,"Chris Smith, Ty Doe","Moretti, Giulia",1717 River St,Mallorytown,H5P 8C9,Invoice,26661,6/26/2025 0:00,419
+7/17/2025 13:00,Air Duct,Complete,Devin James,"Cameron Erroy, Dave B","Larivière, Hugo",2273 Cedar Ln,Brockville,B9T 3S1,Invoice,26657,6/25/2025 0:00,478
+7/17/2025 12:00,OTTAWA DUCT,Complete,Mark Anderson,1CA,"Tran, Kevin",652 River Cres,Ottawa,Y0Y 6R3,Invoice,26796,7/15/2025 0:00,404
+7/17/2025 12:00,OTTAWA DUCT,Complete,Adam smith,"Terry Crews, Moris Coldplay, Brad Lisbon","Sokolova, Elena",3698 River Ct,Ottawa,E9P 7J7,Invoice,26428,6/3/2025 0:00,638
+7/17/2025 12:00,Air Duct,Complete,Adam smith,"Chris Smith, Ty Doe","Deschamps, Louise",8795 Pine St,Kingston,B1E 0P8,Invoice,26555,6/13/2025 0:00,359
+7/17/2025 10:00,Air Duct,Complete,Chris Hamilton,"Chris Smith, Ty Doe",Résidence Belle-Vie,2528 Birch Dr,Kingston,M7C 3N3,Invoice,26614,6/22/2025 0:00,468
+7/17/2025 10:00,OTTAWA DUCT,Complete,Devin James,"Terry Crews, Moris Coldplay, Brad Lisbon","Tremblay, Marc-André",6018 Oak Pl,Ottawa,V6X 2C8,Invoice,26618,6/23/2025 0:00,378
+7/17/2025 8:00,Air Duct,Complete,Devin James,"Chris Smith, Ty Doe","Fournier, Camille",6667 Maple Blvd,Napanee,T1B 2K3,Invoice,26660,6/26/2025 0:00,314
+7/17/2025 8:00,Commercial Work,Complete,hakim.b,"Cameron Erroy, Dave B","Beauchamp, Philippe Marc",9575 Sunset Dr,Morrisburg,T8G 4P2,Invoice,26550,6/12/2025 0:00,400
+7/16/2025 14:30,OTTAWA DUCT,Complete,Adam smith,"Terry Crews, Moris Coldplay","Allard, Isabelle",5502 Elm Pl,Mississippi Mills,M2S 7A5,Invoice,26687,7/1/2025 0:00,374
+,,,,,,,,,,,,
+7/16/2025 14:00,Joseph Air Duct,Complete,Devin James,"Dave B, Brad Lisbon","Rousseau, Victor",9046 Willow Dr,Battersea,X5R 5B7,Invoice,26672,6/26/2025 0:00,693
+7/16/2025 13:00,Duct & Dryer,Complete,Mark Anderson,"Terry Crews, Moris Coldplay","Tremblay, Chantal",568 Oak Ct,Ottawa,M4T 8T4,Invoice,26741,7/8/2025 0:00,385.2
+7/16/2025 12:00,Air Duct,Complete,Devin James,1CA,"Laframboise, Mathieu",3764 Willow Way,Ottawa,J7E 5B2,Invoice,26697,7/2/2025 0:00,716
+7/16/2025 12:00,Joseph Air Duct,Complete,Devin James,"Dave B, Brad Lisbon","Tremblay, Chantal",703 Cedar Ln,Odessa,B0G 5R0,Invoice,26558,6/13/2025 0:00,479
+7/16/2025 12:00,Dryer Vent,Complete,John doe,"Terry Crews, Moris Coldplay","Girard, Stéphane",9446 River Way,Ottawa,L5L 2J1,Invoice,26686,6/30/2025 0:00,328
+7/16/2025 12:00,Air Duct,Complete,Chris Hamilton,"Chris Smith, Ty Doe","Martel, Olivier",3309 Pine Ln,Brockville,C7X 3K6,Invoice,26266,5/13/2025 0:00,324
+7/16/2025 10:00,Joseph Air Duct,Complete,Devin James,"Dave B, Brad Lisbon","Tremblay, Chantal",7377 Elm Ct,Godfrey,H6P 7Y5,Invoice,26390,5/28/2025 0:00,434
+7/16/2025 10:00,Air Duct,Complete,Chris Hamilton,"Chris Smith, Ty Doe","Leduc, Amélie",4687 Cedar Cres,Brockville,R8C 4V1,Invoice,26267,5/13/2025 0:00,264
+7/16/2025 10:00,OTTAWA DUCT,Complete,Devin James,"Terry Crews, Moris Coldplay","Khan, Aisha",4212 Birch Dr,Ottawa,C4C 9K5,Invoice,26670,6/26/2025 0:00,663
+7/16/2025 8:00,Air Duct,Complete,hakim.b,"Dave B, Brad Lisbon","Khan, Aisha",9978 River Ave,Tichborne,L9S 6H0,Invoice,26634,6/24/2025 0:00,434
+7/16/2025 8:00,Air Duct,Complete,Chris Hamilton,"Chris Smith, Ty Doe","Dubois, Étienne",8609 Oak Pl,Brockville,C7N 2A9,Invoice,26268,5/13/2025 0:00,279
+7/15/2025 15:00,OTTAWA DUCT,Complete,Lou Mcdonalds,"Terry Crews, Moris Coldplay","Koning, Élise",6442 Willow Cres,Ottawa,Y8E 0C9,Invoice,26629,6/24/2025 0:00,374
+7/15/2025 14:30,Work,Complete,Devin James,"Terry Crews, Moris Coldplay","Khan, Aisha",5984 Sunset Blvd,Ottawa,R0Y 0K3,Invoice,26714,7/4/2025 0:00,129.99
+7/15/2025 14:00,Work,Complete,Devin James,"Terry Crews, Moris Coldplay","Khan, Aisha",6434 Elm Ln,Ottawa,B1H 2S4,Invoice,26713,7/4/2025 0:00,129.99
+7/15/2025 14:00,Air Duct,Complete,Adam smith,"Cameron Erroy, Dave B","Chowdhury, Ravi",4512 Pine St,Mallorytown,V8S 5N0,Invoice,26422,6/2/2025 0:00,503
+7/15/2025 14:00,Air Duct,Complete,Adamsmith,"Chris Smith, Ty Doe","Khan, Aisha",7198 Sunset Rd,North Augusta,H7G 7V0,Invoice,26645,6/25/2025 0:00,428
+7/15/2025 13:30,Dryer Vent,Complete,Devin James,"Terry Crews, Moris Coldplay","Khan, Aisha",9294 Sunset Pl,Ottawa,K9S 7M8,Invoice,26712,7/4/2025 0:00,129.99
+7/15/2025 13:00,Dryer Vent,Complete,Devin James,"Terry Crews, Moris Coldplay","Silva, Mariana",6813 Elm Ln,Ottawa,T4L 0E5,Invoice,26711,7/4/2025 0:00,129.99
+7/15/2025 13:00,Air Duct,Complete,Devin James,"Cameron Erroy, Dave B","Khan, Aisha",7684 Birch Blvd,Kingston,N6K 2G5,Invoice,26696,7/2/2025 0:00,339
+7/15/2025 12:30,Dryer Vent,Complete,Devin James,"Terry Crews, Moris Coldplay","Roy, Guillaume",1879 Spruce Blvd,Ottawa,Y1X 2A9,Invoice,26710,7/4/2025 0:00,129.99
+7/15/2025 12:00,Dryer Vent,Complete,Devin James,"Terry Crews, Moris Coldplay","Moreau, Alexandre",2838 Sunset Ave,Ottawa,T8A 6H9,Invoice,26709,7/4/2025 0:00,129.99
+7/15/2025 12:00,Air Duct,Complete,Adam smith,"Chris Smith, Ty Doe","Falcone, Marco",3068 Oak Ave,Perth,T3B 9R1,Invoice,26274,5/13/2025 0:00,539
+7/15/2025 11:30,Portable Dryer,Complete,Devin James,"Terry Crews, Moris Coldplay",Alta Gestion Immobilière,8560 Oak St,Ottawa,E1K 4G5,Invoice,26762,7/11/2025 0:00,129.99
+7/15/2025 10:00,Air Duct,Complete,Chris Hamilton,"Chris Smith, Ty Doe","Weber, Anaïs",4956 Pine Cres,Smiths Falls,G7S 1K7,Invoice,26609,6/21/2025 0:00,299
+7/15/2025 10:00,Air Duct,Complete,Devin James,"Terry Crews, Moris Coldplay","Mayfield, Marie",8921 Elm Cres,Ottawa,H8Y 1L8,Invoice,26639,6/24/2025 0:00,404
+7/15/2025 10:00,Commercial Work,Complete,hakim.b,"Cameron Erroy, Dave B","Dufort, Julien",9822 Cedar Pl,Kingston,A4X 5X5,Invoice,26537,6/10/2025 0:00,374
+7/15/2025 9:00,Dryer Vent,Complete,Devin James,"Terry Crews, Moris Coldplay","Sawyer, Robert",8084 Birch Way,Ottawa,T7K 3H7,Invoice,26681,6/30/2025 0:00,349
+7/15/2025 8:00,Air Duct,Complete,Lou Mcdonalds,"Cameron Erroy, Dave B","Gagné, Émilie",379 Sunset Rd,Kingston,Y0H 9B1,Invoice,26646,6/25/2025 0:00,398
+7/15/2025 8:00,Commercial Work,Complete,hakim.b,"Kim Aguelira, Samantha Rose","Lemoine, Patrick",3384 Elm Blvd,Ottawa,M2P 1X5,Invoice,26763,7/11/2025 0:00,2350
+7/15/2025 8:00,Duct & Dryer,Complete,Devin James,"Chris Smith, Ty Doe","Bertrand, Claire",7609 Sunset Ct,Delta,R3B 7L4,Invoice,26717,7/4/2025 0:00,438
+7/15/2025 8:00,OTTAWA DUCT,Complete,Devin James,"Terry Crews, Moris Coldplay","Savard, Nicolas",234 Pine Pl,Carleton Place,E4B 5P0,Invoice,26631,6/24/2025 0:00,444
+,,,,,,,,,,,,
+7/14/2025 14:00,Air Duct,Complete,Lou Mcdonalds,"Terry Crews, Chris Smith","Arbour, Sophie",9751 Pine Blvd,Kingston,K5N 3P5,Invoice,26500,6/6/2025 0:00,453
+7/14/2025 13:30,OTTAWA DUCT,Complete,Devin James,"Moris Coldplay, Brad Lisbon","Gervais, Maëlle",3200 River St,Ottawa,T3V 3N0,Invoice,26669,6/26/2025 0:00,359
+7/14/2025 12:00,Air Duct,Complete,Adam smith,"Terry Crews, Chris Smith","Morin, Jade",2686 Oak Ln,Kingston,A3B 0K7,Invoice,26533,6/10/2025 0:00,464
+7/14/2025 12:00,Duct & Dryer,Complete,Chris Hamilton,"Moris Coldplay, Brad Lisbon","Roy, Camille",687 Pine Ct,Ottawa,N4P 1A3,Invoice,26653,6/25/2025 0:00,388
+7/14/2025 10:00,Air Duct,Complete,Chris Hamilton,"Moris Coldplay, Brad Lisbon","Labrie, Mélina",1130 Spruce Blvd,Ottawa,A8J 9S9,Invoice,26613,6/22/2025 0:00,419
+7/14/2025 10:00,Air Duct,Complete,Lou Mcdonalds,"Terry Crews, Chris Smith","Picard, Maxime",8398 Elm Dr,Kingston,B6P 7B7,Invoice,26522,6/9/2025 0:00,423
+7/14/2025 8:00,Air Duct,Complete,Chris Hamilton,"Terry Crews, Chris Smith","Gauthier, Henri",2869 Cedar Ln,Kingston,Y1K 0L0,Invoice,26615,6/22/2025 0:00,404
+,,,,,,,,,,,,
+7/11/2025 14:00,Air Duct,Complete,Lou Mcdonalds,"Ty Doe, Brad Lisbon","Lemoine, Alexandre",4799 Willow Rd,Spencerville,C8K 1G0,Invoice,26619,6/23/2025 0:00,443
+7/11/2025 12:00,OTTAWA DUCT,Complete,Adam smith,"Terry Crews, Moris Coldplay, Cameron Erroy","Bolduc, Valérie",2789 Elm St,Ottawa,B8N 9E7,Invoice,26694,7/2/2025 0:00,604
+7/11/2025 12:00,Air Duct,Complete,Lou Mcdonalds,"Ty Doe, Brad Lisbon","Benoît, Lucie",1474 Cedar Ave,Kemptville,K3X 5H0,Invoice,26548,6/12/2025 0:00,408
+7/11/2025 11:00,Dryer Vent,Complete,Adam smith,"Terry Crews, Moris Coldplay, Cameron Erroy","Paquin, Mireille",9506 Spruce Pl,Ottawa,N7V 5M7,Invoice,26726,7/4/2025 0:00,259
+7/11/2025 10:00,Air Duct,Complete,Devin James,"Ty Doe, Brad Lisbon","Jolicoeur, Manon",2646 Cedar Ave,Kemptville,C8Y 7R7,Invoice,26757,7/10/2025 0:00,494
+7/11/2025 9:30,OTTAWA DUCT,Complete,Lou Mcdonalds,"Terry Crews, Moris Coldplay, Cameron Erroy","Zhang, Wenjie",2900 Cedar Rd,Ottawa,K0Y 0X9,Invoice,26622,6/23/2025 0:00,374
+7/11/2025 8:00,Duct & Dryer,Complete,Mark Anderson,"Terry Crews, Moris Coldplay, Cameron Erroy","Thériault, Nadine",7953 Maple Pl,Ottawa,H1A 1L0,Invoice,26748,7/9/2025 0:00,603
+7/11/2025 8:00,Air Duct,Complete,Merry doris,"Ty Doe, Brad Lisbon","Vallée, Anissa",4616 Elm Pl,Brockville,G4J 5B6,Invoice,26543,6/11/2025 0:00,359
+7/10/2025 14:30,OTTAWA DUCT,Complete,Devin James,"Terry Crews, Moris Coldplay, Brad Lisbon","Proulx, Léa",7501 Elm Dr,Ottawa,V5S 3S0,Invoice,26591,6/18/2025 0:00,464
+7/10/2025 14:00,Air Duct,Complete,Adam smith,"Cameron Erroy, Ty Doe","Desrosiers, Josée",7267 Cedar Blvd,Brockville,R7E 7T1,Invoice,26680,6/30/2025 0:00,359
+7/10/2025 13:30,Dryer Vent,Complete,Chris Hamilton,"Terry Crews, Moris Coldplay, Brad Lisbon","Papadakis, Eleni",2230 River St,Ottawa,T9P 6K7,Invoice,26612,6/21/2025 0:00,328
+7/10/2025 12:00,Air Duct,Complete,Devin James,"Cameron Erroy, Ty Doe","Gagné, Laurent",4631 Pine Cres,Dunvegan,A0C 3S2,Invoice,26635,6/24/2025 0:00,389
+7/10/2025 10:00,OTTAWA DUCT,Complete,Devin James,"Terry Crews, Moris Coldplay, Brad Lisbon",Centre Santé Lotus  ,6748 Elm Ct,Ottawa,Y9Y 4R6,Invoice,26598,6/19/2025 0:00,498
+7/10/2025 8:00,OTTAWA DUCT,Complete,Devin James,"Terry Crews, Moris Coldplay, Brad Lisbon","Brunet, Olivier",6718 Willow Ct,Ottawa,B6P 2G9,Invoice,26739,7/7/2025 0:00,423
+7/9/2025 14:00,Air Duct,Complete,Lou Mcdonalds,"Cameron Erroy, Ty Doe","Laflamme, Mireille",8211 Maple Dr,L'Orignal,H0X 3K2,Invoice,26573,6/17/2025 0:00,428
+7/9/2025 12:00,Air Duct,Complete,Chris Hamilton,"Cameron Erroy, Ty Doe",,,Sainte-Eugene,G3T 0R0,Invoice,26580,6/17/2025 0:00,548
+,,,,,Solutions Restaura+ Inc.  ,1662 Willow Ct,,,,,,
+7/9/2025 8:30,Dryer Vent,Complete,Devin James,1CA,"Kassab, Nabil",2344 Spruce Pl,Ottawa,S4K 2N8,Invoice,26559,6/13/2025 0:00,199
+,,,,,,,,,,,,
+7/9/2025 8:00,Work,Complete,hakim.b,"Cameron Erroy, Ty Doe","Duchesne, François",2422 Cedar Ave,Alexandria,T7G 5Y4,Invoice,26587,6/18/2025 0:00,1399
+,,,,,,,,,,,,
+7/8/2025 14:00,Air Duct,Complete,Devin James,"Cameron Erroy, Ty Doe","Beauregard, Roxane",680 Willow Blvd,Brockville,A2G 6J7,Invoice,26624,6/23/2025 0:00,299
+7/8/2025 12:00,Air Duct,Complete,Adam smith,"Cameron Erroy, Ty Doe","Villeneuve, Nathalie",9119 Sunset Ave,Morrisburg,H2P 4N0,Invoice,26579,6/17/2025 0:00,359
+7/8/2025 10:00,Air Duct,Complete,ava.leblanc@1cleanair.ca,"Cameron Erroy, Ty Doe","Bergeron, Denis",8930 Spruce Ave,Cornwall,H8R 3J5,Invoice,26695,7/2/2025 0:00,642
+7/8/2025 8:00,Air Duct,Complete,Merry doris,"Cameron Erroy, Ty Doe","Sharma, Rakesh",1614 Elm St,Johnstown,N4X 0B4,Invoice,26732,7/7/2025 0:00,469
+,,,,,,,,,,,,
+7/7/2025 12:00,Duct & Dryer,Complete,Chris Hamilton,Ty Doe,"Paquin, Caroline",3416 Spruce Dr,Kingston,T1M 4J1,Invoice,26570,6/16/2025 0:00,413
+7/7/2025 10:00,Repair Install Dryer,Complete,Chris Hamilton,Ty Doe,Gestion Altura  ,9047 River Ln,Kingston,K9A 1Y2,Invoice,26576,6/17/2025 0:00,299
+7/7/2025 8:00,Commercial Work,Complete,hakim.b,Ty Doe,Centre de Présentation Résilia – Résilia Habitations  ,4861 Sunset Cres,Kingston,A4Y 9L8,Invoice,26581,6/17/2025 0:00,398
+,,,,,,,,,,,,
+7/4/2025 14:00,OTTAWA DUCT,Complete,Adam smith,1CA,"Giroux, Marc",8641 Willow Ln,Ottawa,H5K 1J1,Invoice,26688,7/1/2025 0:00,698
+7/4/2025 14:00,OTTAWA DUCT,Complete,Devin James,"Terry Crews, Moris Coldplay, Brad Lisbon","Sundaram, Anjali",2556 Birch Ct,Russell,M0K 6G1,Invoice,26603,6/19/2025 0:00,568
+7/4/2025 12:00,Air Duct,Complete,Chris Hamilton,"Chris Smith, Samantha Rose",Immobilier LMB  ,7000 Birch St,Cornwall,L5P 9L1,Invoice,26323,5/19/2025 0:00,606
+7/4/2025 12:00,OTTAWA DUCT,Complete,Adamsmith,"Terry Crews, Moris Coldplay, Brad Lisbon","Gauthier, Mélodie",3979 Maple Rd,Ottawa,H4V 8S8,Invoice,26585,6/18/2025 0:00,474
+7/4/2025 10:00,Air Duct,Complete,Chris Hamilton,"Chris Smith, Samantha Rose","Pereira, Sandra",7646 Sunset St,Kemptville,Y0V 8L9,Invoice,26567,6/16/2025 0:00,582
+7/4/2025 10:00,Air Duct,Complete,Adam smith,"Terry Crews, Moris Coldplay, Brad Lisbon","Morissette, Sylvie",4167 Birch Rd,Ottawa,P2Y 5S7,Invoice,26498,6/6/2025 0:00,494
+7/4/2025 10:00,Air Duct,Complete,Devin James,"Cruz Scrivener, Dave B","Dubois, Luc",527 Spruce Way,Kingston,H1G 0M4,Invoice,26308,5/15/2025 0:00,569
+7/4/2025 9:00,Air Duct,Complete,DevinJames,"Cruz Scrivener, Dave B","Karavolos, Eleni",902 Sunset Way,Kingston,L0X 5V1,Invoice,26538,6/10/2025 0:00,509
+7/4/2025 9:00,Air Duct,Complete,Adam smith,"Terry Crews, Moris Coldplay, Brad Lisbon","Marino, Claudia",1405 Sunset Dr,Ottawa,K5K 4S2,Invoice,26583,6/17/2025 0:00,654
+7/4/2025 8:00,Air Duct,Complete,Lou Mcdonalds,"Chris Smith, Samantha Rose","Fontaine, Martin",3306 Birch St,Merrickville,M7H 4N9,Invoice,26593,6/18/2025 0:00,473
+7/4/2025 8:00,Commercial Estimate,Complete,hakim.b,"Terry Crews, Moris Coldplay, Brad Lisbon","Benoît, Claire",4066 Sunset Pl,Ottawa,J5V 6Y9,Voided,26699,7/3/2025 0:00,1349
+7/3/2025 14:00,Commercial Work,Complete,hakim.b,1CA,"Nguyen, Marc",6196 Cedar Pl,Ottawa,K0M 3J0,Invoice,26575,6/17/2025 0:00,498
+7/3/2025 12:00,OTTAWA DUCT,Complete,Adam smith,"Moris Coldplay, Chris Smith","Caron, Julie",7686 Birch Rd,Ottawa,B5R 3Y1,Invoice,26604,6/20/2025 0:00,344
+7/3/2025 10:00,OTTAWA DUCT,Complete,DevinJames,"Moris Coldplay, Chris Smith","Lemoine, David",783 Maple St,Ottawa,L8P 8P1,Invoice,26571,6/16/2025 0:00,513
+7/3/2025 10:00,OTTAWA DUCT,Complete,John doe,1CA,"Perron, Sophie",1186 Cedar Ct,Ottawa,Y1V 4X1,Invoice,26508,6/8/2025 0:00,299
+7/3/2025 8:00,Commercial Work,Complete,hakim.b,"Moris Coldplay, Chris Smith","Leclerc, Antoine",9285 Cedar Ave,Ottawa,V8G 3R2,Invoice,26539,6/10/2025 0:00,792
+7/2/2025 14:00,Air Duct,Complete,Chris Hamilton,"Chris Smith, Cameron Erroy","Moreau, Élise",8615 Maple Rd,Smiths Falls,E0A 1E1,Invoice,26590,6/18/2025 0:00,433
+7/2/2025 14:00,OTTAWA DUCT,Complete,Lou Mcdonalds,"Moris Coldplay, Ty Doe",Lemoine Immobilier  ,9996 Pine Cres,Ottawa,N2C 0H0,Invoice,26562,6/13/2025 0:00,314
+7/2/2025 12:00,Air Duct,Complete,Devin James,"Chris Smith, Cameron Erroy","Gagnon, Manon",6510 Maple Dr,Smiths Falls,N8M 2P9,Invoice,26589,6/18/2025 0:00,423
+7/2/2025 12:00,OTTAWA DUCT,Complete,Devin James,"Moris Coldplay, Ty Doe","Lafond, Marie",4029 Spruce Ave,Ottawa,H6V 1C2,Invoice,26394,5/28/2025 0:00,374
+7/2/2025 11:00,Dryer Vent,Complete,Merry doris,"Moris Coldplay, Ty Doe","Mertikas, Gina",9515 Willow Dr,Ottawa,L0G 0G7,Invoice,26668,6/26/2025 0:00,199
+7/2/2025 10:00,OTTAWA DUCT,Complete,Lou Mcdonalds,"Moris Coldplay, Ty Doe","Deluca, Maria",3426 Sunset Ave,Ottawa,G7N 0N1,Invoice,26535,6/10/2025 0:00,449
+7/2/2025 8:00,Air Duct,Complete,Lou Mcdonalds,"Chris Smith, Cameron Erroy","Ayers, Brian",745 Oak Pl,Oxford Mills,N5J 4P0,Invoice,26469,6/5/2025 0:00,494
+,,,,,,,,,,,,
+7/2/2025 8:00,Air Duct,Complete,Devin James,1CA,"Tremblay, Julien",5932 Maple Cres,Ottawa,N9K 7X3,Invoice,26552,6/12/2025 0:00,324
+7/1/2025 14:00,Air Duct,Complete,Lou Mcdonalds,"Chris Smith, Cameron Erroy","Plamondon, Chantal",1135 Willow Rd,Brockville,T6P 0T7,Invoice,26663,6/26/2025 0:00,503
+7/1/2025 14:00,Air Duct,Complete,DevinJames,"Ty Doe, Brad Lisbon","Brouillette, Simon",3936 Pine Ct,Brockville,L8L 2X5,Invoice,26627,6/24/2025 0:00,478
+7/1/2025 12:00,Air Duct,Complete,Adam smith,"Chris Smith, Cameron Erroy","Lemoine, Denis",7970 Maple St,Perth,X0M 3V3,Invoice,26676,6/29/2025 0:00,642
+7/1/2025 12:00,Air Duct,Complete,Devin James,"Ty Doe, Brad Lisbon","Martel, Philippe",8426 River Ct,Mallorytown,X5V 4T1,Invoice,26626,6/24/2025 0:00,359
+7/1/2025 12:00,Duct & Dryer,Complete,Devin James,"Terry Crews, Moris Coldplay","Makris, Eleni",1803 Sunset Cres,Ottawa,K6L 1L2,Invoice,26530,6/9/2025 0:00,778
+7/1/2025 11:00,Dryer Vent,Complete,Devin James,"Terry Crews, Moris Coldplay","Dupont, Lise",4350 Sunset Ave,Ottawa,A9M 0B6,Invoice,26650,6/25/2025 0:00,349
+7/1/2025 8:00,Commercial Work,Complete,hakim.b,"Chris Smith, Cameron Erroy","Leroux, Damien",8880 Cedar Blvd,Perth,V6G 5V6,Invoice,26640,6/24/2025 0:00,949
+7/1/2025 8:00,OTTAWA DUCT,Complete,Lou Mcdonalds,"Terry Crews, Moris Coldplay","Marchand, Léa",9057 Birch Ln,Ottawa,C5P 6K0,Invoice,26551,6/12/2025 0:00,688
+6/27/2025 14:00,OTTAWA DUCT,Complete,Lou Mcdonalds,"Moris Coldplay, Ty Doe","Lambert, Isabelle",7514 Spruce Way,Ottawa,N1B 7J9,Invoice,26467,6/5/2025 0:00,398
+7/23/2025 8:00,Joseph Air Duct,Complete,Devin James,"Chris Smith, Cameron Erroy","Arsenault, Julien",9574 Birch Dr,Lake Opinicon,V0B 9B0,Invoice,26836,7/21/2025 0:00,449
+,,,,,,,,,,,,
+7/3/2025 12:00,OTTAWA DUCT,Complete,Adam smith,"Moris Coldplay, Chris Smith","Caron, Julie",7686 Birch Rd,Ottawa,B5R 3Y1,Invoice,26604,6/20/2025 0:00,344
+7/2/2025 12:00,Air Duct,Complete,Devin James,"Chris Smith, Cameron Erroy","Gagnon, Manon",6510 Maple Dr,Smiths Falls,N8M 2P9,Invoice,26589,6/18/2025 0:00,423
+7/3/2025 10:00,OTTAWA DUCT,Complete,John doe,1CA,"Perron, Sophie",1186 Cedar Ct,Ottawa,Y1V 4X1,Invoice,26508,6/8/2025 0:00,299
+7/10/2025 13:30,Dryer Vent,Complete,Chris Hamilton,"Terry Crews, Moris Coldplay, Brad Lisbon","Papadakis, Eleni",2230 River St,Ottawa,T9P 6K7,Invoice,26612,6/21/2025 0:00,328
