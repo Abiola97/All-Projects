@@ -71,10 +71,8 @@ A Natural Language Processing (NLP) project applying **collective intelligence p
 ## 👤 Author
 
 Developed by **Ajao Abiola Olanrewaju**  
-🎓 School of Collective Intelligence, UM6P  
+🎓 Graduate Student | School of Collective Intelligence, UM6P  
 💼 Co-Founder & CEO @ BizIntel Enterprise  
 🔗 [LinkedIn](https://www.linkedin.com/in/abiola-ajao/) | 📧 ajaoabiola0812@gmail.com  
 
  
-
-Would you like me to also prepare a **shorter “featured project” snippet** (like a one-liner with emoji + link + description) so you can pin it at the top of your GitHub profile alongside your other projects?
