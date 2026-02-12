@@ -1,6 +1,3 @@
-Here’s a **comprehensive README draft** for your **All Projects section**, styled like your examples (Investment Data Analysis, Bank Marketing Campaign). It’s structured, professional, and highlights the **NLP Collective Intelligence Sentiment Analysis Project (Any.do)** with workflow, tools, insights, and outcomes.
-
----
 
 # 🤖 From Friction to Flows: NLP-Based Feedback Review System for Optimizing Product Performance at Any.do
 
@@ -49,13 +46,16 @@ A Natural Language Processing (NLP) project applying **collective intelligence p
 ## 📷 Sample Visualizations
 
 **Sentiment Distribution Pie Chart**  
-<img width="500" alt="Sentiment Distribution" src="https://github.com/user-attachments/assets/example-sentiment-pie.png" />
+<img width="638" height="658" alt="image" src="https://github.com/user-attachments/assets/eb286764-de0a-475f-80c3-d110569e2905" />
+
 
 **Positive Word Cloud**  
-<img width="500" alt="Positive Word Cloud" src="https://github.com/user-attachments/assets/example-positive-cloud.png" />
+<img width="790" height="427" alt="image" src="https://github.com/user-attachments/assets/a681e09c-6575-48f9-ae12-5b273eb49fd7" />
+
 
 **Negative Word Cloud**  
-<img width="500" alt="Negative Word Cloud" src="https://github.com/user-attachments/assets/example-negative-cloud.png" />
+<img width="790" height="427" alt="image" src="https://github.com/user-attachments/assets/aad1d067-540b-4486-b815-974cb5ea271e" />
+
 
 ---
 
