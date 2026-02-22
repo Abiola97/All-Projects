@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maroyz Design | Afrocentric Luxury Fashion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Mulish', sans-serif; background-color: #faf5ff; color: #2d2d2d; scroll-behavior: smooth; }
+        h1, h2, h3, h4, .serif { font-family: 'Playfair Display', serif; }
+        
+        /* Editorial Product Cards */
+        .product-card { overflow: hidden; position: relative; transition: all 0.5s ease; border: 1px solid #f3f4f6; background-color: white; }
+        .product-card img { transition: transform 0.9s ease; width: 100%; height: 100%; object-fit: cover; }
+        .product-card:hover img { transform: scale(1.03); }
+        .product-card:hover { box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1); border-color: transparent; }
+        
+        /* Luxury Gradient Button */
+        .btn-luxury {
+            background: linear-gradient(135deg, #9333ea 0%, #c026d3 100%);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .btn-luxury:hover {
+            background: linear-gradient(135deg, #7e22ce 0%, #a21caf 100%);
+            box-shadow: 0 10px 15px -3px rgba(192, 38, 211, 0.3);
+        }
+
+        /* WhatsApp Button */
+        .btn-whatsapp {
+            background: linear-gradient(135deg, #a855f7 0%, #d946ef 100%);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .btn-whatsapp:hover {
+            background: linear-gradient(135deg, #9333ea 0%, #c026d3 100%);
+            box-shadow: 0 10px 15px -3px rgba(192, 38, 211, 0.3);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-fuchsia-200 selection:text-fuchsia-900">
+
+    <nav class="fixed w-full bg-white/95 backdrop-blur-md z-50 border-b border-purple-100 py-5">
+        <div class="max-w-7xl mx-auto px-6 md:px-8 flex justify-between items-center">
+            <div class="text-2xl md:text-3xl font-bold tracking-wider text-purple-900 serif">Maroyz Design.</div>
+            <div class="hidden md:flex space-x-8 text-xs tracking-[0.15em] font-bold text-gray-500 uppercase">
+                <a href="#about" class="hover:text-fuchsia-600 transition duration-300">The Brand</a>
+                <a href="#catalog" class="hover:text-fuchsia-600 transition duration-300">Collections</a>
+                <a href="#reviews" class="hover:text-fuchsia-600 transition duration-300">Clientele</a>
+            </div>
+            <a href="https://wa.me/2349032733370" target="_blank" class="btn-whatsapp px-5 py-2 text-xs font-bold uppercase tracking-widest rounded-full flex items-center gap-2">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 21.033c-1.895 0-3.753-.509-5.385-1.472l-5.962 1.564 1.595-5.811c-1.057-1.705-1.615-3.664-1.615-5.666 0-5.845 4.755-10.6 10.602-10.6 2.834 0 5.497 1.104 7.502 3.109 2.004 2.006 3.108 4.67 3.108 7.503-.001 5.846-4.757 10.603-10.603 10.603zm0-19.497c-4.902 0-8.895 3.993-8.895 8.896 0 1.569.41 3.101 1.189 4.453l-1.002 3.651 3.738-.98c1.312.716 2.788 1.094 4.312 1.094 4.903 0 8.896-3.994 8.896-8.897 0-4.902-3.993-8.895-8.896-8.895zm4.887 12.112c-.268-.134-1.586-.782-1.831-.871-.246-.089-.425-.134-.604.134-.179.268-.693.871-.849 1.05-.156.179-.313.201-.581.067-1.684-.845-2.956-1.583-4.108-3.528-.156-.268.016-.413.15-.547.12-.12.268-.313.403-.469.134-.156.179-.268.268-.446.089-.179.045-.335-.022-.469-.067-.134-.604-1.453-.827-1.99-.217-.522-.438-.451-.604-.459-.156-.008-.335-.008-.514-.008-.179 0-.469.067-.715.335-.246.268-.939.917-.939 2.234 0 1.318.961 2.593 1.095 2.772.134.179 1.89 2.885 4.581 4.047.641.276 1.141.441 1.533.565.644.204 1.23.175 1.693.106.522-.078 1.586-.648 1.81-1.274.223-.626.223-1.162.156-1.274-.067-.112-.246-.179-.514-.313z"/></svg>
+                Chat
+            </a>
+        </div>
+    </nav>
+
+    <header class="relative h-screen w-full overflow-hidden flex items-center justify-center bg-purple-900">
+        <div class="absolute inset-0 z-10 bg-gradient-to-r from-purple-900/90 to-fuchsia-900/60"></div>
+        <img src="https://i.pinimg.com/736x/63/c2/23/63c223b7ec5a7224d75fd33fe15eb6bf.jpg" class="absolute inset-0 w-full h-full object-cover object-top opacity-70" alt="Maroyz Design Hero">
+        <div class="relative z-20 px-6 text-center text-white w-full max-w-3xl mx-auto">
+            <p class="text-xs md:text-sm font-bold tracking-[0.4em] uppercase mb-6 text-fuchsia-200">Bespoke Elegance • Ready to Wear</p>
+            <h1 class="text-5xl md:text-7xl mb-8 leading-tight serif italic">
+                Reflect Your <br> Inner Beauty.
+            </h1>
+            <p class="text-base md:text-xl font-light tracking-wide mb-10 max-w-xl mx-auto leading-relaxed text-purple-50">
+                Crafting luxurious, Afrocentric pieces that embrace women of all sizes. Step into the room and be that Spotlight.
+            </p>
+            <a href="#catalog" class="btn-luxury inline-block px-10 py-4 text-xs font-bold uppercase tracking-[0.2em] rounded-full">
+                Shop The Collection
+            </a>
+        </div>
+    </header>
+
+    <section id="about" class="py-24 md:py-32 bg-white">
+        <div class="max-w-6xl mx-auto px-6 md:px-8 grid md:grid-cols-2 gap-16 md:gap-24 items-center">
+            <div class="order-2 md:order-1">
+                <div class="flex items-center space-x-4 mb-6">
+                    <div class="h-px w-12 bg-fuchsia-600"></div>
+                    <span class="text-xs font-bold tracking-[0.2em] text-fuchsia-600 uppercase">The Ethos</span>
+                </div>
+                
+                <h2 class="text-4xl md:text-5xl serif mb-6 text-purple-950 leading-tight">Maroyz Design. <br> <span class="italic text-purple-800 font-light">Crafted for Confidence.</span></h2>
+                
+                <p class="text-gray-600 mb-6 leading-relaxed text-lg font-light">
+                    <strong>Maroyz Design</strong> is a premium Afrocentric fashion brand dedicated to celebrating women in all their glorious shapes and sizes. As an expert fashion designer, pattern drafter, and crocheter, Mary Onyekachukwu Nwaokolobia brings bespoke pieces to life with an unmatched attention to detail.
+                </p>
+                
+                <p class="text-gray-600 mb-8 leading-relaxed font-light">
+                    The neatness of our finishing is our signature. We specialize in styling plus-size clients to absolute perfection, ensuring our garments not only fit beautifully but reflect your inner beauty, giving you the full confidence to be the highlight at any function or event.
+                </p>
+
+                <div class="bg-purple-50 p-6 md:p-8 rounded-2xl border border-purple-100">
+                    <h3 class="serif text-xl text-purple-900 mb-4">Contact Us</h3>
+                    <ul class="space-y-3 text-sm text-gray-700 font-medium">
+                        <li class="flex items-center gap-3"><span class="text-fuchsia-600 text-lg">📍</span> Abeokuta, Ogun State, Nigeria</li>
+                        <li class="flex items-center gap-3"><span class="text-fuchsia-600 text-lg">✉️</span> marynwaokolobia@gmail.com</li>
+                        <li class="flex items-center gap-3"><span class="text-fuchsia-600 text-lg">📞</span> WhatsApp: +234 903 273 3370</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="order-1 md:order-2 h-[500px] md:h-[650px] relative bg-purple-100 rounded-t-full overflow-hidden flex items-center justify-center border-4 border-white shadow-xl">
+                <img src="https://drive.google.com/thumbnail?id=1cmAM-ZO39aUOZZD4jQxwa0DRU6hyi6iH&sz=w1000" alt="Mary Onyekachukwu Nwaokolobia" class="object-cover w-full h-full">
+                <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 bg-white/95 backdrop-blur-md px-6 py-3 rounded-full shadow-lg whitespace-nowrap">
+                    <p class="text-[10px] font-bold tracking-[0.2em] text-purple-900 uppercase">Mary Onyekachukwu Nwaokolobia</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="catalog" class="py-24 md:py-32 bg-purple-50/50">
+        <div class="max-w-7xl mx-auto px-6 md:px-8">
+            <div class="mb-20 text-center">
+                <h2 class="text-4xl md:text-5xl serif mb-4 text-purple-950">The Curated Collection</h2>
+                <p class="text-fuchsia-600 text-xs tracking-[0.3em] uppercase font-bold">Ready to Wear & Bespoke</p>
+            </div>
+            
+            <div id="product-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+                <div class="col-span-full text-center py-16">
+                    <div class="w-12 h-12 border-t-4 border-fuchsia-600 border-solid rounded-full animate-spin mx-auto mb-4"></div>
+                    <p class="text-purple-900 font-medium tracking-widest uppercase text-xs">Loading latest collection from database...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reviews" class="py-24 md:py-32 bg-purple-950 text-white relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-fuchsia-600 rounded-full blur-3xl opacity-20 -translate-y-1/2 translate-x-1/2"></div>
+        <div class="absolute bottom-0 left-0 w-64 h-64 bg-purple-500 rounded-full blur-3xl opacity-20 translate-y-1/2 -translate-x-1/2"></div>
+        
+        <div class="max-w-6xl mx-auto px-6 md:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl serif italic text-fuchsia-100">Client's Reviews</h2>
+                <div class="w-20 h-px bg-fuchsia-400 mx-auto mt-6"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
+                <div class="p-8 border border-purple-800 bg-purple-900/50 rounded-2xl relative">
+                    <div class="text-5xl text-fuchsia-500 font-serif absolute -top-4 left-4">“</div>
+                    <p class="italic text-purple-100 mb-6 text-sm relative z-10 leading-relaxed">
+                        "The neatness of her finishing is what blew me away. The dress fit my curves perfectly and I was the absolute highlight of the party."
+                    </p>
+                    <div>
+                        <p class="font-bold text-xs tracking-widest uppercase text-white">Folake O.</p>
+                        <p class="text-[10px] text-fuchsia-300 mt-1 uppercase tracking-wider">Lagos</p>
+                    </div>
+                </div>
+
+                <div class="p-8 border border-purple-800 bg-purple-900/50 rounded-2xl relative">
+                    <div class="text-5xl text-fuchsia-500 font-serif absolute -top-4 left-4">“</div>
+                    <p class="italic text-purple-100 mb-6 text-sm relative z-10 leading-relaxed">
+                        "As a plus-size woman, finding a designer who understands proportions is so hard. Maroyz Design made me look and feel like royalty."
+                    </p>
+                    <div>
+                        <p class="font-bold text-xs tracking-widest uppercase text-white">Ngozi A.</p>
+                        <p class="text-[10px] text-fuchsia-300 mt-1 uppercase tracking-wider">Enugu</p>
+                    </div>
+                </div>
+
+                <div class="p-8 border border-purple-800 bg-purple-900/50 rounded-2xl relative">
+                    <div class="text-5xl text-fuchsia-500 font-serif absolute -top-4 left-4">“</div>
+                    <p class="italic text-purple-100 mb-6 text-sm relative z-10 leading-relaxed">
+                        "The fuchsia lace aso-ebi was a complete show-stopper at my sister's wedding. Excellent craftsmanship and the fit was impeccable."
+                    </p>
+                    <div>
+                        <p class="font-bold text-xs tracking-widest uppercase text-white">Tarela E.</p>
+                        <p class="text-[10px] text-fuchsia-300 mt-1 uppercase tracking-wider">Warri, Delta</p>
+                    </div>
+                </div>
+
+                <div class="p-8 border border-purple-800 bg-purple-900/50 rounded-2xl relative">
+                    <div class="text-5xl text-fuchsia-500 font-serif absolute -top-4 left-4">“</div>
+                    <p class="italic text-purple-100 mb-6 text-sm relative z-10 leading-relaxed">
+                        "Elegant, modest, and absolutely luxurious. The silver maternity caftan was so comfortable yet so incredibly rich in design."
+                    </p>
+                    <div>
+                        <p class="font-bold text-xs tracking-widest uppercase text-white">Aisha M.</p>
+                        <p class="text-[10px] text-fuchsia-300 mt-1 uppercase tracking-wider">Kano</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-purple-700 py-12 text-center text-white border-t border-purple-600">
+        <div class="max-w-4xl mx-auto px-6 flex flex-col items-center">
+            <h2 class="text-2xl serif mb-4 font-bold tracking-widest text-white">Maroyz Design.</h2>
+            <p class="text-xs uppercase tracking-[0.2em] text-purple-100 mb-8 font-medium">Reflect Your Inner Beauty</p>
+            
+            <div class="w-16 h-px bg-purple-400 mb-8"></div>
+            
+            <p class="text-[11px] uppercase tracking-widest text-purple-50 font-medium">
+                &copy; 2026 Maroyz Design. All Rights Reserved. <br><br>
+                <span class="opacity-80">Developed by</span> <a href="#" class="text-white hover:text-fuchsia-300 transition underline decoration-fuchsia-400 decoration-2 underline-offset-4 font-bold">Mable Media</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // The Magic: Fetching Products from Google Sheets
+        const sheetId = '1sjdY1v_Qvj_KKkRyLxsYIUNJdQ9M8xJ72Xm9pcx3IOU';
+        const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
+        const productGrid = document.getElementById('product-grid');
+
+        fetch(url)
+            .then(res => res.text())
+            .then(text => {
+                try {
+                    // Bulletproof JSON extraction
+                    const start = text.indexOf('{');
+                    const end = text.lastIndexOf('}');
+                    if (start === -1 || end === -1) throw new Error("Google sent an invalid format");
+                    
+                    const jsonString = text.substring(start, end + 1);
+                    const json = JSON.parse(jsonString);
+                    const rows = json.table.rows;
+                    let html = '';
+                    
+                    rows.forEach((row) => {
+                        // Bulletproof data extraction (converts numbers to strings safely)
+                        const getVal = (i) => row.c && row.c[i] && row.c[i].v !== null && row.c[i].v !== undefined ? String(row.c[i].v) : '';
+                        
+                        const productName = getVal(0);
+                        
+                        // Skip completely empty rows or the header row
+                        if(!productName || productName.toLowerCase().includes('product name')) return; 
+                        
+                        const color = getVal(1);
+                        const sizeGuide = getVal(2);
+                        const description = getVal(3);
+                        let imageLink = getVal(4);
+                        let waLink = getVal(5);
+                        
+                        // Convert standard Google Drive link to a displayable thumbnail
+                        if (imageLink && imageLink.includes('drive.google.com/file/d/')) {
+                            const fileId = imageLink.split('/d/')[1].split('/')[0];
+                            imageLink = `https://drive.google.com/thumbnail?id=${fileId}&sz=w1000`;
+                        }
+                        
+                        // Fallback WhatsApp Link
+                        if(!waLink) {
+                            const encodedMsg = encodeURIComponent(`Hi Maroyz Design, I would like to order the ${productName}.`);
+                            waLink = `https://wa.me/2349032733370?text=${encodedMsg}`;
+                        }
+
+                        // Build the Product Card
+                        html += `
+                            <div class="product-card group cursor-pointer flex flex-col h-full bg-white rounded-2xl">
+                                <div class="h-96 overflow-hidden relative shrink-0 bg-purple-50 flex items-center justify-center">
+                                    <img src="${imageLink}" alt="${productName}" onerror="this.src='https://via.placeholder.com/1000x1000?text=Image+Loading'">
+                                    <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[10px] font-bold tracking-widest uppercase text-purple-900 rounded-sm">${color || 'As Shown'}</div>
+                                </div>
+                                <div class="p-8 flex flex-col justify-between flex-grow">
+                                    <div>
+                                        <p class="text-[10px] text-fuchsia-600 uppercase tracking-widest font-bold mb-3">${sizeGuide || 'Custom Size Available'}</p>
+                                        <h3 class="serif text-2xl mb-4 italic text-purple-950">${productName}</h3>
+                                        <p class="text-sm text-gray-600 leading-relaxed font-light mb-6">
+                                            ${description}
+                                        </p>
+                                    </div>
+                                    <a href="${waLink}" target="_blank" class="w-full text-center btn-whatsapp py-3 text-xs font-bold uppercase tracking-widest transition block mt-auto rounded-xl">Order Now</a>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    if (html === '') {
+                        productGrid.innerHTML = '<div class="col-span-full text-center py-10 text-gray-500">Products are currently being updated. Please check back shortly!</div>';
+                    } else {
+                        productGrid.innerHTML = html;
+                    }
+                } catch(error) {
+                    console.error("Data processing error: ", error);
+                    productGrid.innerHTML = '<div class="col-span-full text-center py-10 text-red-600 font-bold">There was a formatting issue reading the spreadsheet. Please double check your rows.</div>';
+                }
+            })
+            .catch(err => {
+                console.error("Network error: ", err);
+                productGrid.innerHTML = '<div class="col-span-full text-center py-10 text-purple-800 font-bold">Unable to connect to the Google Sheet. Please check your internet connection and sheet permissions.</div>';
+            });
+    </script>
+</body>
+</html>
