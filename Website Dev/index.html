@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aeeshnamic Home of Fashion (AHF)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Lato', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            black: '#000000',
+                            white: '#ffffff',
+                            gray: '#f9f9f9',
+                            darkgray: '#333333'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .hero-slide {
+            transition: opacity 1.5s ease-in-out;
+            opacity: 0;
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            z-index: 0;
+        }
+        .hero-slide.active {
+            opacity: 1;
+        }
+        .loader {
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #000;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="font-sans text-brand-darkgray bg-brand-white antialiased selection:bg-brand-black selection:text-brand-white">
+
+    <nav class="fixed w-full z-50 bg-brand-white/95 backdrop-blur-md border-b border-gray-200 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#" class="flex items-center gap-3">
+                        <img src="https://drive.google.com/thumbnail?id=1qRebp-eyBfY4WTqnSATxGyAz0dtJF5Lj&sz=w1000" alt="AHF Logo" class="h-12 w-auto object-contain">
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-sm font-bold tracking-widest uppercase text-brand-black hover:text-gray-500 transition-colors">Home</a>
+                    <a href="#values" class="text-sm font-bold tracking-widest uppercase text-brand-black hover:text-gray-500 transition-colors">Our Values</a>
+                    <a href="#collection" class="text-sm font-bold tracking-widest uppercase text-brand-black hover:text-gray-500 transition-colors">Collection</a>
+                    <a href="#contact" class="text-sm font-bold tracking-widest uppercase text-brand-black hover:text-gray-500 transition-colors">Contact</a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-brand-black hover:text-gray-600 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-brand-white border-t border-gray-100 shadow-lg">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center">
+                <a href="#home" class="block px-3 py-3 text-sm font-bold tracking-widest uppercase text-brand-black hover:bg-gray-50">Home</a>
+                <a href="#values" class="block px-3 py-3 text-sm font-bold tracking-widest uppercase text-brand-black hover:bg-gray-50">Our Values</a>
+                <a href="#collection" class="block px-3 py-3 text-sm font-bold tracking-widest uppercase text-brand-black hover:bg-gray-50">Collection</a>
+                <a href="#contact" class="block px-3 py-3 text-sm font-bold tracking-widest uppercase text-brand-black hover:bg-gray-50">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <header id="home" class="relative h-screen w-full overflow-hidden flex items-center justify-center bg-[#f0f0f0]">
+        <img src="https://drive.google.com/thumbnail?id=1YGu1J9KOtD0PRJuz4LeawGDRLfRwQjHL&sz=w1000" alt="Fashion Slide 1" class="hero-slide active">
+        <img src="https://drive.google.com/thumbnail?id=13H7EDV7sSdO7OPwzzMukuI9ryXgyf1Lh&sz=w1000" alt="Fashion Slide 2" class="hero-slide">
+        
+        <div class="relative z-20 mx-4 max-w-2xl p-8 md:p-12 bg-white/70 backdrop-blur-md border border-white text-center shadow-2xl rounded-sm">
+            <h1 class="font-serif text-4xl md:text-6xl text-brand-black font-bold mb-4 leading-tight">
+                Timeless Elegance.<br>Modern Sophistication.
+            </h1>
+            <p class="text-brand-black font-bold text-sm md:text-base tracking-wide mb-8">
+                Redefining modest fashion since 2019. Express your cultural identity through clothing that reflects your heritage.
+            </p>
+            <a href="#collection" class="inline-block bg-brand-black text-brand-white font-bold px-10 py-4 text-sm tracking-widest uppercase hover:bg-gray-800 transition-colors duration-300">
+                View Collection
+            </a>
+        </div>
+    </header>
+
+    <section id="values" class="py-24 bg-brand-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="font-serif text-3xl md:text-4xl mb-6 text-brand-black font-bold">The AHF Identity</h2>
+                    <div class="w-12 h-0.5 bg-brand-black mb-8"></div>
+                    <p class="text-brand-darkgray leading-relaxed mb-6 text-lg font-bold">
+                        Founded in August 2019 by Adeleke Aishat Abosede, Aeeshnamic Home of Fashion (AHF) is a pioneering brand based in Lagos, Nigeria. We cater exclusively to women aged 18 to 65 who seek to bridge the critical gap between self-expression and social norms.
+                    </p>
+                    <p class="text-brand-darkgray leading-relaxed mb-8 text-lg font-bold">
+                        Our brand is anchored in the contrast of Black and White—representing elegance, strength, and clarity. Whether through our custom designs, ready-to-wear collections, or personalized styling advice, AHF allows you to wear your heritage with pride, authority, and pure sophistication.
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-6 border-t border-gray-200">
+                        <div>
+                            <h4 class="text-xs uppercase tracking-widest text-brand-black font-black mb-2">Location</h4>
+                            <p class="text-sm font-bold text-gray-700">Ikeja, Lagos, Nigeria</p>
+                        </div>
+                        <div>
+                            <h4 class="text-xs uppercase tracking-widest text-brand-black font-black mb-2">Direct Contact</h4>
+                            <p class="text-sm font-bold text-gray-700"><a href="mailto:aeesh.namiccollection@gmail.com" class="hover:text-brand-black transition">aeesh.namiccollection@gmail.com</a></p>
+                            <p class="text-sm font-bold text-gray-700 mt-1"><a href="tel:+2348139269363" class="hover:text-brand-black transition">+234 813 926 9363</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-center lg:justify-end">
+                    <img src="https://drive.google.com/thumbnail?id=1PcVVAKzF7p79T3XJHFzPgpr1urJwyRW7&sz=w1000" alt="AHF Editorial" class="w-full max-w-md h-auto object-contain shadow-xl">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="collection" class="py-24 bg-brand-gray border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-serif text-3xl md:text-4xl text-brand-black font-bold mb-4">Curated Collection</h2>
+                <div class="w-12 h-0.5 bg-brand-black mx-auto"></div>
+            </div>
+
+            <div id="loader-container" class="flex justify-center items-center py-20">
+                <div class="loader"></div>
+            </div>
+
+            <div id="catalog-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+                </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-brand-white border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="font-serif text-3xl text-brand-black font-bold mb-16">Client Experiences</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div class="p-6 bg-brand-gray/50 rounded-sm">
+                    <div class="text-4xl text-brand-black font-serif mb-4 font-bold">"</div>
+                    <p class="font-bold italic text-lg mb-6 text-brand-darkgray">AHF perfectly understands the balance between modesty and modern luxury. The craftsmanship is impeccable.</p>
+                    <p class="text-xs uppercase tracking-widest font-black text-brand-black">— Fatima Bello</p>
+                </div>
+                <div class="p-6 bg-brand-gray/50 rounded-sm">
+                    <div class="text-4xl text-brand-black font-serif mb-4 font-bold">"</div>
+                    <p class="font-bold italic text-lg mb-6 text-brand-darkgray">Finding pieces that resonate with my cultural identity while looking this sophisticated has been a game-changer.</p>
+                    <p class="text-xs uppercase tracking-widest font-black text-brand-black">— Amina Y.</p>
+                </div>
+                <div class="p-6 bg-brand-gray/50 rounded-sm">
+                    <div class="text-4xl text-brand-black font-serif mb-4 font-bold">"</div>
+                    <p class="font-bold italic text-lg mb-6 text-brand-darkgray">The attention to detail in their custom designs makes me feel powerful and elegant every time I wear AHF.</p>
+                    <p class="text-xs uppercase tracking-widest font-black text-brand-black">— Chidinma O.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="bg-brand-black text-brand-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-16 mb-16">
+                
+                <div class="flex flex-col">
+                    <div class="bg-white p-3 inline-block self-start mb-6 rounded-sm">
+                        <img src="https://drive.google.com/thumbnail?id=1qRebp-eyBfY4WTqnSATxGyAz0dtJF5Lj&sz=w1000" alt="AHF Logo" class="h-12 w-auto object-contain">
+                    </div>
+                    <p class="text-lg text-white font-bold leading-relaxed">
+                        Redefining modest fashion with a blend of timeless elegance and modern sophistication.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-black tracking-widest uppercase mb-6 text-white border-b-2 border-white/50 pb-2 inline-block">Contact Us</h4>
+                    <ul class="space-y-5 font-bold text-lg text-white">
+                        <li class="flex items-center gap-3">
+                            <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span>Lagos (Ikeja), Nigeria</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                            <a href="tel:+2348139269363" class="hover:underline transition">+234 813 926 9363</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            <a href="mailto:aeesh.namiccollection@gmail.com" class="hover:underline transition break-all">aeesh.namiccollection@gmail.com</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-black tracking-widest uppercase mb-6 text-white border-b-2 border-white/50 pb-2 inline-block">Information</h4>
+                    <ul class="space-y-5 font-bold text-lg text-white">
+                        <li><a href="#home" class="hover:underline transition flex items-center gap-3"><span class="w-2 h-2 bg-white rounded-full"></span> Home</a></li>
+                        <li><a href="#values" class="hover:underline transition flex items-center gap-3"><span class="w-2 h-2 bg-white rounded-full"></span> Our Values</a></li>
+                        <li><a href="#collection" class="hover:underline transition flex items-center gap-3"><span class="w-2 h-2 bg-white rounded-full"></span> Shop Collection</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="border-t-2 border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-white font-bold tracking-widest uppercase">
+                <p class="text-center md:text-left mb-4 md:mb-0">&copy; <span id="year"></span> Aeeshnamic Home of Fashion. All rights reserved.</p>
+                <p>Designed by <a href="#" class="underline hover:text-gray-300">Mable Media</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Set Year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Hero Slider Logic
+        const slides = document.querySelectorAll('.hero-slide');
+        let currentSlide = 0;
+        setInterval(() => {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }, 5000);
+
+        // Toggle Read More for Descriptions
+        window.toggleDescription = function(btn) {
+            const descParagraph = btn.previousElementSibling;
+            if (descParagraph.classList.contains('line-clamp-2')) {
+                descParagraph.classList.remove('line-clamp-2');
+                btn.textContent = 'READ LESS';
+            } else {
+                descParagraph.classList.add('line-clamp-2');
+                btn.textContent = 'READ MORE';
+            }
+        };
+
+        // Google Drive Image URL Converter
+        function convertDriveLink(url) {
+            if (!url || typeof url !== 'string') return 'https://via.placeholder.com/600x800/f9f9f9/333333?text=AHF+Exclusive';
+            const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+            if (match && match[1]) {
+                return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`;
+            }
+            return url;
+        }
+
+        // WhatsApp Custom URL Generator
+        function getWhatsAppLink(customLink, productName) {
+            if (customLink && typeof customLink === 'string' && customLink.trim() !== '') {
+                return customLink;
+            }
+            const phone = "2348139269363";
+            const message = `Hi Aeeshnamic Home of Fashion, I would like to order the ${productName}.`;
+            return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+        }
+
+        // Fetch Dynamic Data from Google Sheets
+        const sheetId = '1rUpS1ZxPGnHDhlfv10BEIJ7wCjqq38B78NPXsRX8sDo';
+        const endpoint = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
+
+        async function fetchProducts() {
+            const container = document.getElementById('catalog-container');
+            const loaderContainer = document.getElementById('loader-container');
+            
+            try {
+                const response = await fetch(endpoint);
+                const text = await response.text();
+                // Strip Google visualization wrapper
+                const jsonStr = text.substring(47).slice(0, -2);
+                const json = JSON.parse(jsonStr);
+                const rows = json.table.rows;
+
+                loaderContainer.style.display = 'none';
+
+                let hasProducts = false;
+
+                rows.forEach((row, index) => {
+                    const c = row.c;
+                    // Skip if row is empty or header
+                    if (!c || !c[0] || !c[0].v) return;
+                    if (index === 0 && c[0].v.toLowerCase().includes('product')) return;
+
+                    hasProducts = true;
+
+                    const name = c[0] && c[0].v ? c[0].v : 'AHF Exclusive';
+                    const color = c[1] && c[1].v ? c[1].v : '';
+                    const size = c[2] && c[2].v ? c[2].v : '';
+                    const desc = c[3] && c[3].v ? c[3].v : '';
+                    const imgLink = c[4] && c[4].v ? c[4].v : '';
+                    const waLink = c[5] && c[5].v ? c[5].v : '';
+
+                    const imgUrl = convertDriveLink(imgLink);
+                    const orderUrl = getWhatsAppLink(waLink, name);
+
+                    // Build Card with Read More Logic
+                    const card = `
+                        <div class="group relative flex flex-col bg-white border border-gray-100 p-3 hover:shadow-2xl transition-shadow duration-300">
+                            <div class="overflow-hidden aspect-[3/4] bg-gray-50 mb-6 relative rounded-sm">
+                                <img src="${imgUrl}" alt="${name}" loading="lazy" class="object-cover w-full h-full transform transition duration-700 group-hover:scale-105">
+                                <div class="absolute inset-0 bg-brand-black/0 group-hover:bg-brand-black/10 transition duration-500"></div>
+                            </div>
+                            <div class="flex flex-col flex-grow px-2 pb-2">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="font-serif text-xl font-bold text-brand-black leading-snug pr-4">${name}</h3>
+                                </div>
+                                ${color || size ? `
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    ${color ? `<span class="text-[10px] font-black uppercase tracking-wider bg-gray-200 px-2 py-1 text-brand-black">${color}</span>` : ''}
+                                    ${size ? `<span class="text-[10px] font-black uppercase tracking-wider border-2 border-gray-300 px-2 py-1 text-brand-black">${size}</span>` : ''}
+                                </div>` : ''}
+                                
+                                <div class="mb-6 flex-grow flex flex-col items-start">
+                                    <p class="text-sm font-bold text-gray-600 line-clamp-2 transition-all duration-300">${desc}</p>
+                                    ${desc.length > 70 ? `<button onclick="toggleDescription(this)" class="text-[10px] font-black uppercase tracking-widest text-brand-black mt-2 hover:text-gray-500 underline decoration-2 underline-offset-2">READ MORE</button>` : ''}
+                                </div>
+
+                                <a href="${orderUrl}" target="_blank" rel="noopener noreferrer" class="w-full inline-block text-center border-2 border-brand-black bg-brand-black text-brand-white font-black px-4 py-4 text-xs tracking-widest uppercase hover:bg-transparent hover:text-brand-black transition-colors duration-300 mt-auto">
+                                    Order via WhatsApp
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += card;
+                });
+
+                if (!hasProducts) {
+                    container.innerHTML = '<p class="col-span-full text-center text-gray-500 font-bold">The collection is currently being updated. Please check back soon.</p>';
+                }
+
+            } catch (error) {
+                console.error("Error fetching catalog:", error);
+                loaderContainer.innerHTML = '<p class="text-red-500 text-sm font-bold tracking-wide">Failed to load the collection. Please refresh the page.</p>';
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', fetchProducts);
+    </script>
+</body>
+</html>
