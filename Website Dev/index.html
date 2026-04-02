@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MABLE | The Fashion Architect</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Mulish:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Mulish', sans-serif; background-color: #ffffff; color: #2d2d2d; scroll-behavior: smooth; }
+        h1, h2, h3, .serif { font-family: 'Playfair Display', serif; }
+        .cinzel { font-family: 'Cinzel', serif; }
+        
+        /* Smooth Hover Effects */
+        .image-card { overflow: hidden; position: relative; transition: all 0.5s ease; border: 1px solid #f3f4f6; }
+        .image-card img { transition: transform 0.9s ease; width: 100%; height: 100%; object-fit: cover; }
+        .image-card:hover img { transform: scale(1.03); }
+        .image-card:hover { box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1); border-color: transparent; }
+        
+        /* Dual Hero Split */
+        .hero-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            height: 100vh;
+            width: 100%;
+        }
+        @media (max-width: 768px) {
+            .hero-split { grid-template-columns: 1fr; height: auto; }
+            .mobile-stack { height: 50vh; }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-black selection:text-white">
+
+    <nav class="fixed w-full bg-white/95 backdrop-blur-md z-50 border-b border-gray-100 py-6">
+        <div class="max-w-7xl mx-auto px-6 md:px-8 flex justify-between items-center">
+            <div class="text-2xl font-bold tracking-[0.2em] text-black uppercase cinzel">Mable.</div>
+            <div class="hidden md:flex space-x-12 text-xs tracking-[0.15em] font-bold text-gray-400 uppercase">
+                <a href="#about" class="hover:text-black transition duration-300">The Blueprint</a>
+                <a href="#projects" class="hover:text-black transition duration-300">The Architecture</a>
+                <a href="#reviews" class="hover:text-black transition duration-300">Clientele</a>
+                <a href="#contact" class="hover:text-black transition duration-300">Consult</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative h-screen w-full overflow-hidden flex items-center justify-center">
+        <div class="absolute inset-0 grid grid-cols-2 w-full h-full">
+            <div class="relative w-full h-full border-r border-white/10">
+                <div class="absolute inset-0 bg-black/5 z-10"></div> 
+                <img src="https://drive.google.com/thumbnail?id=1mKAsgSOhWzGD4aF-SG2wkx4irzjsflrZ&sz=w4000" class="object-cover w-full h-full object-center" alt="Premium Sourcing">
+            </div>
+
+            <div class="relative w-full h-full">
+                 <div class="absolute inset-0 bg-black/5 z-10"></div>
+                <img src="https://drive.google.com/thumbnail?id=1-4UkwtC__tXHQTdNVZGe1x_p_31F8l7g&sz=w4000" class="object-cover w-full h-full object-center" alt="Luxury Sourcing">
+            </div>
+        </div>
+
+        <div class="relative z-20 px-6">
+            <div class="bg-black/30 backdrop-blur-lg p-10 md:p-16 border border-white/10 shadow-2xl text-center text-white max-w-2xl mx-auto">
+                <p class="text-xs font-bold tracking-[0.4em] uppercase mb-6 text-white/90">Design • Sourcing • Strategy</p>
+                <h1 class="text-5xl md:text-7xl mb-8 leading-tight cinzel">
+                    MABLE
+                </h1>
+                <p class="text-base md:text-lg font-light tracking-wide mb-10 max-w-md mx-auto leading-relaxed text-gray-50 italic">
+                    "The Fashion Architect" <br>
+                    <span class="text-xs uppercase tracking-widest opacity-80 mt-2 block not-italic font-normal">Building Identity Through Fabric & Fit</span>
+                </p>
+                <a href="#about" class="pointer-events-auto inline-block bg-white text-black px-10 py-4 text-xs font-bold hover:bg-black hover:text-white transition duration-500 uppercase tracking-[0.2em]">
+                    View The Blueprint
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section id="about" class="py-24 md:py-32 bg-white">
+        <div class="max-w-6xl mx-auto px-6 md:px-8 grid md:grid-cols-2 gap-20 items-center">
+            
+            <div class="order-2 md:order-1">
+                <div class="flex items-center space-x-4 mb-8">
+                    <div class="h-px w-12 bg-black"></div>
+                    <span class="text-xs font-bold tracking-[0.2em] text-gray-400 uppercase">The Ethos</span>
+                </div>
+                
+                <h2 class="text-4xl md:text-6xl serif mb-8 leading-tight">We Don't Just Style. <br> <span class="italic text-gray-400">We Build.</span></h2>
+                
+                <p class="text-gray-600 mb-6 leading-relaxed text-lg font-light">
+                    <strong>MABLE operates as the architect of your personal brand.</strong> Just as a building requires a blueprint, a wardrobe requires a strategy. We bridge the gap between creative aspiration and technical execution.
+                </p>
+                
+                <p class="text-gray-600 mb-8 leading-relaxed font-light">
+                    Our role is the "backend management" of style. From negotiating with vendors for premium textiles to engineering the perfect fit for the Nigerian climate, MABLE handles the logistics. You simply inhabit the structure we build.
+                </p>
+                
+                <div class="grid grid-cols-2 gap-8 border-t border-gray-100 pt-8">
+                    <div>
+                        <h4 class="font-bold uppercase text-xs tracking-widest mb-2 text-black">The Foundation</h4>
+                        <p class="text-sm text-gray-500">Fabric Sourcing & Logistics</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold uppercase text-xs tracking-widest mb-2 text-black">The Finish</h4>
+                        <p class="text-sm text-gray-500">Bespoke Fit & Aesthetics</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-1 md:order-2 h-[500px] md:h-[650px] relative bg-gray-50 overflow-hidden">
+                <img src="https://drive.google.com/thumbnail?id=1YHFMBtm9_sRJT5G7y5vXZd9j66Z1gLSt&sz=w4000" alt="Mable Creative Director" class="object-cover w-full h-full grayscale hover:grayscale-0 transition duration-1000">
+                <div class="absolute bottom-6 left-6 bg-white/90 backdrop-blur px-4 py-2">
+                    <p class="text-[10px] font-bold tracking-widest uppercase">Creative Director</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="py-24 md:py-32 bg-stone-50">
+        <div class="max-w-7xl mx-auto px-6 md:px-8">
+            <div class="mb-24 text-center">
+                <h2 class="text-5xl serif mb-6">The Architecture</h2>
+                <p class="text-gray-400 text-xs tracking-[0.3em] uppercase">MABLE Sourcing Archives 2024-2025</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                
+                <div class="image-card group cursor-pointer h-full bg-white shadow-sm flex flex-col">
+                    <div class="h-96 overflow-hidden relative shrink-0">
+                        <img src="https://drive.google.com/thumbnail?id=1Y9PSUD4bw2U4SPQw7w4Ii7ffkP8ZUuIu&sz=w4000" alt="Royal Blue Set">
+                         <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[10px] font-bold tracking-widest uppercase">Lounge Structure</div>
+                    </div>
+                    <div class="p-8 flex flex-col justify-between flex-grow bg-white">
+                        <div>
+                            <p class="text-xs text-gray-400 uppercase tracking-wide mb-3">Client: Tony L.</p>
+                            <h3 class="serif text-2xl mb-4 italic">The Royal Blue Set</h3>
+                            <p class="text-sm text-gray-600 leading-relaxed font-light">
+                                <strong>The Goal:</strong> Tony wanted "off-duty luxury." A lounge set for travel that felt like pajamas but looked like a uniform. <br>
+                                <strong>The Execution:</strong> We sourced a premium high-GSM cotton material. It provides warmth for AC environments but remains breathable. The fit was tailored to be relaxed yet structured—perfect for an airport run.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="image-card group cursor-pointer h-full bg-white shadow-sm flex flex-col">
+                    <div class="h-96 overflow-hidden relative shrink-0">
+                        <img src="https://drive.google.com/thumbnail?id=1mKAsgSOhWzGD4aF-SG2wkx4irzjsflrZ&sz=w4000" alt="Premium Suit">
+                         <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[10px] font-bold tracking-widest uppercase">Statement Architecture</div>
+                    </div>
+                    <div class="p-8 flex flex-col justify-between flex-grow bg-white">
+                        <div>
+                            <p class="text-xs text-gray-400 uppercase tracking-wide mb-3">Client: Mahmoud D.</p>
+                            <h3 class="serif text-2xl mb-4 italic">The Rust Structure Suit</h3>
+                            <p class="text-sm text-gray-600 leading-relaxed font-light">
+                                <strong>The Goal:</strong> Mahmoud wanted to be the undisputed show-stopper at an exclusive party. The brief was to create a "spectacle" that would keep people talking. <br>
+                                <strong>The Execution:</strong> MABLE sourced a thick, structured cotton drill in a deep rust tone. The fabric’s rigidity created a sharp, architectural silhouette that held its stance all night. He didn't just attend the party; he became the visual highlight.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="image-card group cursor-pointer h-full bg-white shadow-sm flex flex-col">
+                    <div class="h-96 overflow-hidden relative shrink-0">
+                        <img src="https://drive.google.com/thumbnail?id=177HigVthv54Yk3meFz2hJS4WlOjodQqA&sz=w4000" alt="Boss Lady">
+                         <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[10px] font-bold tracking-widest uppercase">Event Construction</div>
+                    </div>
+                    <div class="p-8 flex flex-col justify-between flex-grow bg-white">
+                        <div>
+                            <p class="text-xs text-gray-400 uppercase tracking-wide mb-3">Client: Louiza W.</p>
+                            <h3 class="serif text-2xl mb-4 italic">The Sequin Special</h3>
+                            <p class="text-sm text-gray-600 leading-relaxed font-light">
+                                <strong>The Goal:</strong> A high-profile gala requiring absolute glamour. <br>
+                                <strong>The Execution:</strong> A complex sourcing project. We located a high-density red sequin fabric that reflects light beautifully without looking cheap. Tailored into a sharp blazer, it balances the feminine sparkle with a "Boss Lady" structure.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="image-card group cursor-pointer h-full bg-white shadow-sm flex flex-col">
+                    <div class="h-96 overflow-hidden relative shrink-0">
+                         <img src="https://drive.google.com/thumbnail?id=1yKv-qSHw0ts1yS67i9S-k0_a1o0Sdzrt&sz=w4000" alt="Wine Suit">
+                         <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[10px] font-bold tracking-widest uppercase">Persona Styling</div>
+                    </div>
+                    <div class="p-8 flex flex-col justify-between flex-grow bg-white">
+                        <div>
+                            <p class="text-xs text-gray-400 uppercase tracking-wide mb-3">Client: Abiola A.</p>
+                            <h3 class="serif text-2xl mb-4 italic">The Dapper Wine Series</h3>
+                            <p class="text-sm text-gray-600 leading-relaxed font-light">
+                                <strong>The Goal:</strong> A milestone birthday demanding a "Modern Gentleman" aesthetic. <br>
+                                <strong>The Execution:</strong> Color theory was key. We sourced a deep wine fabric to enrich the skin tone, styled with a beret for an artistic edge. It’s timeless, but with a specific point of view.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="image-card group cursor-pointer h-full bg-white shadow-sm flex flex-col">
+                    <div class="h-96 overflow-hidden relative shrink-0">
+                        <img src="https://drive.google.com/thumbnail?id=1pt28OdqTHKo2MbFF_vDrlfRij1QWO9A-&sz=w4000" alt="Calypso Beach">
+                         <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[10px] font-bold tracking-widest uppercase">Inventory</div>
+                    </div>
+                    <div class="p-8 flex flex-col justify-between flex-grow bg-white">
+                        <div>
+                            <p class="text-xs text-gray-400 uppercase tracking-wide mb-3">Client: Tola K.</p>
+                            <h3 class="serif text-2xl mb-4 italic">The Vacation Ready Set</h3>
+                            <p class="text-sm text-gray-600 leading-relaxed font-light">
+                                <strong>The Goal:</strong> "Lagos to Maldives." Tola needed a vacation wardrobe in 48 hours. <br>
+                                <strong>The Execution:</strong> Fast-track sourcing of limited inventory beachwear. We focused on lightweight chiffons that travel well without wrinkling. Delivered on time, ready to fly.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="image-card group cursor-pointer h-full bg-white shadow-sm flex flex-col">
+                    <div class="h-96 overflow-hidden relative shrink-0">
+                         <img src="https://drive.google.com/thumbnail?id=1LOX_eKGSBcNznRdcp0vk2Y23T-qFSDv7&sz=w4000" alt="Checkered Shirt">
+                         <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[10px] font-bold tracking-widest uppercase">Visuals</div>
+                    </div>
+                    <div class="p-8 flex flex-col justify-between flex-grow bg-white">
+                        <div>
+                            <p class="text-xs text-gray-400 uppercase tracking-wide mb-3">Client: Mahmoud D.</p>
+                            <h3 class="serif text-2xl mb-4 italic">The Art of Black & White</h3>
+                            <p class="text-sm text-gray-600 leading-relaxed font-light">
+                                <strong>The Goal:</strong> Mahmoud is a Travel Vlogger. He needs outfits that pop on camera but aren't distracting. <br>
+                                <strong>The Execution:</strong> MABLE sourced this bold chessboard print because it reads well on video. Paired with minimalist shorts, it frames his face perfectly for content creation.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="image-card group cursor-pointer h-full bg-white shadow-sm flex flex-col">
+                    <div class="h-96 overflow-hidden relative shrink-0">
+                        <img src="https://drive.google.com/thumbnail?id=1ZgPR_-PpzhVHat8-TolJHfgG_TerQgYl&sz=w4000" alt="Sneaker Restoration">
+                         <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[10px] font-bold tracking-widest uppercase">Restoration</div>
+                    </div>
+                    <div class="p-8 flex flex-col justify-between flex-grow bg-white">
+                        <div>
+                            <p class="text-xs text-gray-400 uppercase tracking-wide mb-3">Client: Okiemute (AfroPopQueen)</p>
+                            <h3 class="serif text-2xl mb-4 italic">The Glitter Revival</h3>
+                            <p class="text-sm text-gray-600 leading-relaxed font-light">
+                                <strong>The Goal:</strong> "Don't throw them away." <br>
+                                <strong>The Execution:</strong> This proves our resourcefulness. We took a pair of "dead" high-tops and revitalized them with a custom glitter application. We don't just buy clothes; we solve problems.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="image-card group cursor-pointer h-full bg-white shadow-sm flex flex-col">
+                    <div class="h-96 overflow-hidden relative shrink-0">
+                         <img src="https://drive.google.com/thumbnail?id=1xTRHTN4fBjYwSLBAci3gXI9aAGNxbW-M&sz=w4000" alt="Blue Crepe">
+                         <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[10px] font-bold tracking-widest uppercase">Textile Sourcing</div>
+                    </div>
+                    <div class="p-8 flex flex-col justify-between flex-grow bg-white">
+                        <div>
+                            <p class="text-xs text-gray-400 uppercase tracking-wide mb-3">Client: Mahmoud D.</p>
+                            <h3 class="serif text-2xl mb-4 italic">The Midnight Crepe Fit</h3>
+                            <p class="text-sm text-gray-600 leading-relaxed font-light">
+                                <strong>The Goal:</strong> A request for "Minimalist Elegance" for a travel dinner. <br>
+                                <strong>The Execution:</strong> A specific fabric hunt. We sourced a heavy-weight Italian Crepe that drapes perfectly, creating a clean, seamless 2-piece silhouette that packs easily in a suitcase.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="image-card group cursor-pointer h-full bg-white shadow-sm flex flex-col">
+                    <div class="h-96 overflow-hidden relative shrink-0">
+                        <img src="https://drive.google.com/thumbnail?id=1a4BpR6kvsWLtxjPmWWRHxivDO6QVLtPU&sz=w4000" alt="Couple Shoot">
+                         <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[10px] font-bold tracking-widest uppercase">Duo Styling</div>
+                    </div>
+                    <div class="p-8 flex flex-col justify-between flex-grow bg-white">
+                        <div>
+                            <p class="text-xs text-gray-400 uppercase tracking-wide mb-3">Clients: Louiza & King</p>
+                            <h3 class="serif text-2xl mb-4 italic">The Power Couple Series</h3>
+                            <p class="text-sm text-gray-600 leading-relaxed font-light">
+                                <strong>The Goal:</strong> A pre-wedding shoot that needed to look cohesive, not "matchy-matchy." <br>
+                                <strong>The Execution:</strong> We coordinated the sourcing to match navy tones across different fabric types—suit wool for him, flowing silk for her. Visual harmony achieved.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="reviews" class="py-32 bg-black text-white">
+        <div class="max-w-4xl mx-auto px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl serif italic">Client Voices</h2>
+                <div class="w-20 h-px bg-white/20 mx-auto mt-6"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-16">
+                <div class="relative">
+                    <div class="text-6xl text-gray-800 font-serif absolute -top-10 -left-4">“</div>
+                    <p class="italic text-gray-300 mb-8 text-lg relative z-10 leading-relaxed font-light">
+                        "As a vlogger, I'm always on the move. MABLE understands that my clothes need to look good on camera but also survive a flight. They sourced, fitted, and delivered with military precision."
+                    </p>
+                    <div>
+                        <p class="font-bold text-sm tracking-widest uppercase text-white">Mahmoud D.</p>
+                        <p class="text-xs text-gray-500 mt-1 uppercase tracking-wider">Travel Vlogger</p>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <div class="text-6xl text-gray-800 font-serif absolute -top-10 -left-4">“</div>
+                    <p class="italic text-gray-300 mb-8 text-lg relative z-10 leading-relaxed font-light">
+                        "I value privacy and efficiency above all. MABLE managed the entire sourcing process for my seasonal refresh. They understood my taste immediately—no wasted time, just perfect execution."
+                    </p>
+                    <div>
+                        <p class="font-bold text-sm tracking-widest uppercase text-white">Louis</p>
+                        <p class="text-xs text-gray-500 mt-1 uppercase tracking-wider">Private Client</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-32 bg-white border-t border-gray-100">
+        <div class="max-w-2xl mx-auto px-8 text-center">
+            <h2 class="text-5xl serif mb-8">Execute The Vision.</h2>
+            <p class="text-gray-500 mb-10 text-lg font-light">
+                Available for brand sourcing projects and wardrobe management.
+            </p>
+            <div class="space-y-4">
+                <p class="font-bold text-xl tracking-[0.2em] uppercase cinzel">MABLE HQ</p>
+                <a href="mailto:mablewears.ng@gmail.com" class="text-black font-semibold hover:text-gray-600 transition block text-2xl underline decoration-1 underline-offset-8 decoration-gray-300">mablewears.ng@gmail.com</a>
+                <p class="text-gray-400 font-mono mt-4 text-sm">+234 808 841 4644</p>
+                <p class="text-gray-300 text-[10px] mt-8 uppercase tracking-[0.3em]">Lagos • Global Sourcing</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-white py-10 text-center text-[10px] text-gray-300 border-t border-gray-50 uppercase tracking-widest">
+        &copy; 2026 MABLE The Fashion Architect. Confidential Portfolio.
+    </footer>
+
+    <script>
+        // Fix for smooth scrolling on local file systems
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
