@@ -1,0 +1,701 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>FeedSpark Analyzer</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+<style>
+/* Layout: sidebar config + main results, stacks to single column on mobile */
+:root {
+  --bg:        #0d1117;
+  --surface:   #161b22;
+  --surface2:  #21262d;
+  --border:    #30363d;
+  --fg:        #e6edf3;
+  --fg2:       #8b949e;
+  --accent:    #11dfa9;
+  --danger:    #f85149;
+  --radius:    8px;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg:      #f6f8fa;
+    --surface: #ffffff;
+    --surface2:#f0f2f5;
+    --border:  #d0d7de;
+    --fg:      #1f2328;
+    --fg2:     #57606a;
+    --accent:  #0d8c6d;
+    --danger:  #cf222e;
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg:      #f6f8fa;
+  --surface: #ffffff;
+  --surface2:#f0f2f5;
+  --border:  #d0d7de;
+  --fg:      #1f2328;
+  --fg2:     #57606a;
+  --accent:  #0d8c6d;
+  --danger:  #cf222e;
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-body);
+  font-size: 14px;
+  background: var(--bg);
+  color: var(--fg);
+  min-height: 100%;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0;
+}
+
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 max(24px, env(safe-area-inset-left, 0px));
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 56px;
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 10;
+}
+.logo { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 16px; letter-spacing: -0.3px; }
+.logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+.header-badge { font-size: 11px; font-weight: 500; color: var(--fg2); background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 2px 8px; }
+.header-spacer { flex: 1; }
+.theme-btn { background: none; border: 1px solid var(--border); color: var(--fg2); border-radius: var(--radius); padding: 6px 10px; cursor: pointer; font-size: 13px; transition: color .15s, border-color .15s; }
+.theme-btn:hover { color: var(--fg); border-color: var(--fg2); }
+
+.app { display: grid; grid-template-columns: 340px 1fr; gap: 0; min-height: calc(100vh - 56px); }
+@media (max-width: 800px) { .app { grid-template-columns: 1fr; } }
+
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--fg2); margin-bottom: 8px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+
+.api-key-wrap {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--fg2);
+}
+.api-key-wrap .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+input[type="text"], select, textarea {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 13px;
+  padding: 8px 12px;
+  width: 100%;
+  outline: none;
+  transition: border-color .15s;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+textarea { resize: vertical; min-height: 80px; }
+
+.file-input-label {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface2); border: 1px dashed var(--border); border-radius: var(--radius);
+  padding: 12px; cursor: pointer; transition: border-color .15s; font-size: 13px; color: var(--fg2);
+}
+.file-input-label:hover { border-color: var(--accent); color: var(--fg); }
+.file-input-label input { display: none; }
+#file-name { font-size: 12px; color: var(--fg2); margin-top: 4px; }
+
+.divider { display: flex; align-items: center; gap: 10px; color: var(--fg2); font-size: 11px; }
+.divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+
+.run-btn {
+  background: var(--accent); color: #0a1a15; border: none; border-radius: var(--radius);
+  font-family: var(--font-body); font-size: 14px; font-weight: 600; padding: 10px 16px;
+  cursor: pointer; width: 100%; transition: opacity .15s, transform .1s;
+}
+.run-btn:hover:not(:disabled) { opacity: .9; }
+.run-btn:active:not(:disabled) { transform: scale(.98); }
+.run-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.col-selector { display: none; }
+.col-selector.visible { display: flex; flex-direction: column; gap: 6px; }
+
+.main { padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+
+.empty-state {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12px; color: var(--fg2); text-align: center; min-height: 320px;
+}
+.empty-icon { font-size: 48px; opacity: .4; }
+.empty-state p { max-width: 280px; line-height: 1.6; }
+
+.progress-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; display: none; }
+.progress-wrap.visible { display: block; }
+.progress-label { display: flex; justify-content: space-between; font-size: 13px; color: var(--fg2); margin-bottom: 10px; }
+.progress-bar-bg { background: var(--surface2); border-radius: 99px; height: 6px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background: var(--accent); border-radius: 99px; width: 0%; transition: width .3s ease; }
+.progress-status { font-size: 12px; color: var(--fg2); margin-top: 8px; font-family: var(--font-mono); }
+
+/* Single result */
+.single-result { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; display: none; }
+.single-result.visible { display: block; }
+.result-theme-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--fg2); margin-bottom: 6px; }
+.result-theme-val { font-size: 20px; font-weight: 600; }
+
+/* Bulk result */
+.bulk-result { display: none; }
+.bulk-result.visible { display: flex; flex-direction: column; gap: 20px; }
+
+.summary-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.summary-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 4px; }
+.summary-num { font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -1px; color: var(--accent); }
+.summary-label { font-size: 12px; color: var(--fg2); }
+
+.chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+.chart-title { font-size: 13px; font-weight: 600; margin-bottom: 16px; }
+.chart-wrap { max-height: 320px; }
+
+.theme-table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.theme-table-title { padding: 14px 16px; font-size: 13px; font-weight: 600; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.theme-count-badge { font-size: 11px; font-weight: 500; color: var(--fg2); background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 2px 8px; }
+.theme-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.theme-table th { padding: 8px 16px; text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--fg2); background: var(--surface2); border-bottom: 1px solid var(--border); }
+.theme-table td { padding: 9px 16px; border-bottom: 1px solid var(--border); }
+.theme-table tr:last-child td { border-bottom: none; }
+.theme-bar-bg { background: var(--surface2); border-radius: 99px; height: 5px; min-width: 60px; }
+.theme-bar-fill { height: 100%; background: var(--accent); border-radius: 99px; }
+.special-badge { font-size: 11px; font-weight: 500; color: var(--fg2); background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; margin-left: 6px; }
+
+.download-btn {
+  background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius);
+  color: var(--fg); font-family: var(--font-body); font-size: 14px; font-weight: 500;
+  padding: 10px 16px; cursor: pointer; width: 100%; transition: border-color .15s, background .15s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.download-btn:hover { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, var(--surface2)); }
+
+.error-log {
+  background: color-mix(in srgb, var(--danger) 10%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--danger) 40%, var(--border));
+  border-radius: var(--radius); padding: 12px 16px;
+  font-family: var(--font-mono); font-size: 12px; color: var(--danger);
+  white-space: pre-wrap; word-break: break-all; max-height: 160px; overflow-y: auto; display: none;
+}
+.error-log.visible { display: block; }
+</style>
+
+<header class="header">
+  <div class="logo"><div class="logo-dot"></div>FeedSpark</div>
+  <span class="header-badge">Theme Clustering 🇳🇬</span>
+  <div class="header-spacer"></div>
+  <button class="theme-btn" onclick="toggleTheme()">☀︎ / ☾</button>
+</header>
+
+<div class="app">
+  <aside class="sidebar">
+
+    <div class="field">
+      <div class="section-label">API Status</div>
+      <div class="api-key-wrap">
+        <div class="dot"></div>
+        <span id="apiStatusText">Key loaded from settings</span>
+      </div>
+      <div id="apiKeyFieldWrap" style="display:none; margin-top:6px;">
+        <input type="text" id="apiKeyInput" placeholder="Paste your Gemini API key (AIza…)" autocomplete="off">
+        <button onclick="saveApiKey()" style="margin-top:6px;width:100%;padding:7px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--fg);font-family:var(--font-body);font-size:12px;cursor:pointer;">Save Key</button>
+      </div>
+      <button onclick="toggleApiField()" id="apiToggleBtn" style="background:none;border:none;color:var(--fg2);font-size:12px;cursor:pointer;text-align:left;padding:0;margin-top:4px;">Change key</button>
+    </div>
+
+    <div class="field">
+      <div class="section-label">1 · Upload Excel / CSV</div>
+      <label class="file-input-label">
+        <span>📂</span><span id="fileLabelText">Choose file…</span>
+        <input type="file" id="fileInput" accept=".csv,.xlsx,.xls" onchange="onFileChange()">
+      </label>
+      <div id="file-name"></div>
+    </div>
+
+    <div class="col-selector" id="colSelector">
+      <div class="section-label">Column to cluster</div>
+      <select id="colSelect"></select>
+    </div>
+
+    <div class="divider">OR</div>
+
+    <div class="field">
+      <div class="section-label">2 · Single Response</div>
+      <textarea id="textInput" rows="3" placeholder="E.g., The primary health care no get drugs at all…"></textarea>
+    </div>
+
+    <button class="run-btn" id="runBtn" onclick="runAnalysis()">Run Clustering</button>
+  </aside>
+
+  <main class="main">
+    <div class="empty-state" id="emptyState">
+      <div class="empty-icon">🗂</div>
+      <strong>No data yet</strong>
+      <p>Upload a spreadsheet and pick the open-ended column to cluster into themes.</p>
+    </div>
+
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-label">
+        <span id="progressLabel">Preparing…</span>
+        <span id="progressPct">0%</span>
+      </div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+      <div class="progress-status" id="progressStatus"></div>
+    </div>
+
+    <div class="error-log" id="errorLog"></div>
+
+    <div class="single-result" id="singleResult">
+      <div class="result-theme-label">Assigned Theme</div>
+      <div class="result-theme-val" id="resTheme">—</div>
+    </div>
+
+    <div class="bulk-result" id="bulkResult">
+      <div class="summary-row">
+        <div class="summary-card">
+          <div class="summary-num" id="statTotal">0</div>
+          <div class="summary-label">Total responses</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num" id="statThemes">0</div>
+          <div class="summary-label">Unique themes</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num" id="statCoded">0</div>
+          <div class="summary-label">Substantive</div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">Theme Frequency</div>
+        <div class="chart-wrap"><canvas id="themeChart"></canvas></div>
+      </div>
+
+      <div class="theme-table-wrap">
+        <div class="theme-table-title">
+          All Themes
+          <span class="theme-count-badge" id="themeCountBadge">0 themes</span>
+        </div>
+        <table class="theme-table">
+          <thead><tr><th>Theme</th><th>Count</th><th>Share</th></tr></thead>
+          <tbody id="themeTableBody"></tbody>
+        </table>
+      </div>
+
+      <button class="download-btn" onclick="downloadExcel()">⬇ Download Annotated Excel (.xlsx)</button>
+    </div>
+  </main>
+</div>
+
+<script>
+// ─── Embedded API key (saved to localStorage) ────────────────────────────────
+// To hardcode: replace '' below with your key string.
+const HARDCODED_KEY = '';
+
+let finalData = null;
+let chartInstance = null;
+let loadedHeaders = [];
+const delay = ms => new Promise(r => setTimeout(r, ms));
+
+// Special categories — matched before sending to AI
+const SPECIAL = [
+  { patterns: [/^none$/i, /^nothing$/i, /^no response$/i, /^no answer$/i, /^nil$/i, /^n\/a$/i, /^-$/], label: 'None' },
+  { patterns: [/^refused?$/i, /^i refuse/i, /^he refuse/i, /^she refuse/i], label: 'Refused' },
+  { patterns: [/prefer not/i, /don'?t want to (say|answer)/i, /not willing/i, /no comment/i], label: 'Prefer Not to Say' },
+  { patterns: [/can'?t (remember|recall)/i, /cannot (remember|recall)/i, /don'?t (remember|recall)/i, /i forget/i, /i don'?t know/i, /^dk$/i, /^don'?t know$/i], label: 'Cannot Recall' },
+];
+
+function checkSpecial(text) {
+  const t = text.trim();
+  if (!t) return '__SKIP__';
+  for (const cat of SPECIAL) {
+    for (const pat of cat.patterns) {
+      if (pat.test(t)) return cat.label;
+    }
+  }
+  return null;
+}
+
+// ─── API key management ───────────────────────────────────────────────────────
+function getApiKey() {
+  if (HARDCODED_KEY) return HARDCODED_KEY;
+  try { return localStorage.getItem('fs_api_key') || ''; } catch { return ''; }
+}
+function saveApiKey() {
+  const val = document.getElementById('apiKeyInput').value.trim();
+  if (!val) return;
+  try { localStorage.setItem('fs_api_key', val); } catch {}
+  document.getElementById('apiStatusText').textContent = 'Key saved ✓';
+  document.getElementById('apiKeyFieldWrap').style.display = 'none';
+  document.getElementById('apiToggleBtn').textContent = 'Change key';
+}
+function toggleApiField() {
+  const wrap = document.getElementById('apiKeyFieldWrap');
+  const btn = document.getElementById('apiToggleBtn');
+  if (wrap.style.display === 'none') {
+    wrap.style.display = 'block';
+    btn.textContent = 'Cancel';
+  } else {
+    wrap.style.display = 'none';
+    btn.textContent = 'Change key';
+  }
+}
+
+// ─── On load: show key status ─────────────────────────────────────────────────
+(function initKeyStatus() {
+  const k = getApiKey();
+  if (HARDCODED_KEY) {
+    // Hide key UI entirely when key is embedded
+    document.querySelector('.field').style.display = 'none';
+  } else if (k) {
+    document.getElementById('apiStatusText').textContent = 'Key ready ✓';
+  } else {
+    document.getElementById('apiStatusText').textContent = 'No key — add one below';
+    document.getElementById('apiKeyFieldWrap').style.display = 'block';
+    document.getElementById('apiToggleBtn').textContent = 'Cancel';
+  }
+})();
+
+// ─── Theme toggle ─────────────────────────────────────────────────────────────
+function toggleTheme() {
+  const root = document.documentElement;
+  root.setAttribute('data-theme', root.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+}
+
+// ─── File change ──────────────────────────────────────────────────────────────
+function onFileChange() {
+  const f = document.getElementById('fileInput').files[0];
+  document.getElementById('file-name').textContent = f ? f.name : '';
+  document.getElementById('fileLabelText').textContent = f ? f.name : 'Choose file…';
+  document.getElementById('colSelector').classList.remove('visible');
+  document.getElementById('colSelect').innerHTML = '';
+  if (!f) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+    const ws = wb.Sheets[wb.SheetNames[0]];
+    const rows = XLSX.utils.sheet_to_json(ws, { defval: '' });
+    if (!rows.length) return;
+    loadedHeaders = Object.keys(rows[0]);
+    const sel = document.getElementById('colSelect');
+    loadedHeaders.forEach(h => {
+      const opt = document.createElement('option');
+      opt.value = h; opt.textContent = h;
+      sel.appendChild(opt);
+    });
+    document.getElementById('colSelector').classList.add('visible');
+  };
+  reader.readAsArrayBuffer(f);
+}
+
+// ─── Gemini API call ──────────────────────────────────────────────────────────
+async function callGemini(texts, knownThemes, apiKey) {
+  const models = ['gemini-3.8-flash', 'gemini-3.5-flash-lite'];
+
+  const themeHint = knownThemes.length
+    ? `\n\nThemes identified so far (reuse these where appropriate, do NOT add more than needed):\n${knownThemes.map(t => `- ${t}`).join('\n')}`
+    : '';
+
+  const prompt = `You are a senior research analyst at a Nigerian polling firm. Cluster these open-ended survey responses into concise, descriptive themes.
+
+RULES:
+1. Return ONLY a valid JSON array — no markdown fences, no extra text, nothing before [ or after ].
+2. Array length MUST be exactly ${texts.length}.
+3. Each item is a single string: the assigned theme label.
+4. Theme labels: Title Case, 2-5 words, descriptive and specific to what the respondent actually said. Good examples: "Healthcare Access Issues", "Cost of Living Concerns", "Government Performance", "Improved Road Network".
+5. Cluster FREELY based on the actual meaning. Be adaptive — let the data drive the themes.
+6. Reuse the SAME label for similar responses. Merge near-duplicates. Aim for 10-20 substantive themes across the full dataset.
+7. ONLY apply these reserved labels when the response is LITERALLY one of these — never use them for real answers:
+   - Literally says "none", "nothing", "no response", "nil", "N/A" → "None"
+   - Literally says "refused" or "I refuse" → "Refused"
+   - Literally says "prefer not to say" / "don't want to answer" → "Prefer Not to Say"
+   - Literally says "can't remember", "don't know", "DK", "I forget" → "Cannot Recall"
+   - Any vague but substantive answer (e.g. "I don't know but maybe roads") gets a REAL theme like "Infrastructure Improvement".${themeHint}
+
+Responses to classify:
+${JSON.stringify(texts)}`;
+
+  const payload = {
+    contents: [{ parts: [{ text: prompt }] }],
+    generationConfig: { temperature: 0.05, maxOutputTokens: 4096 }
+  };
+
+  let lastErr = null;
+  for (const model of models) {
+    try {
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+        { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }
+      );
+      const json = await res.json();
+      if (json.error) { lastErr = (lastErr||'') + `\nAPI error (${model}): ${json.error.code} — ${json.error.message}`; continue; }
+      if (!res.ok)    { lastErr = (lastErr||'') + `\nHTTP ${res.status} from ${model}`; continue; }
+
+      const raw = json.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ?? '';
+      let parsed = null;
+
+      if (raw.startsWith('[')) { try { parsed = JSON.parse(raw); } catch {} }
+      if (!parsed) { const m = raw.match(/\[[\s\S]*\]/); if (m) { try { parsed = JSON.parse(m[0]); } catch {} } }
+      if (!parsed) {
+        const stripped = raw.replace(/^```json\s*/i,'').replace(/```\s*$/,'').trim();
+        const m2 = stripped.match(/\[[\s\S]*\]/);
+        if (m2) { try { parsed = JSON.parse(m2[0]); } catch {} }
+      }
+
+      if (parsed && Array.isArray(parsed)) {
+        while (parsed.length < texts.length) parsed.push('None');
+        return { ok: true, data: parsed.slice(0, texts.length) };
+      }
+      lastErr = (lastErr||'') + `\nParse error (${model}). Raw:\n${raw.slice(0,300)}`;
+    } catch (err) {
+      lastErr = (lastErr||'') + `\nNetwork error (${model}): ${err.message}`;
+    }
+  }
+  return { ok: false, error: lastErr };
+}
+
+// ─── Main ─────────────────────────────────────────────────────────────────────
+async function runAnalysis() {
+  const apiKey = getApiKey();
+  if (!apiKey) { showError('No API key found. Please add your Gemini key above.'); return; }
+
+  const fileInput = document.getElementById('fileInput');
+  const textInput = document.getElementById('textInput').value.trim();
+  const runBtn = document.getElementById('runBtn');
+
+  hideAll(); runBtn.disabled = true; clearError();
+
+  if (fileInput.files.length > 0) {
+    await runBulk(fileInput.files[0], apiKey);
+  } else if (textInput) {
+    await runSingle(textInput, apiKey);
+  } else {
+    showEmpty();
+  }
+  runBtn.disabled = false;
+}
+
+async function runSingle(text, apiKey) {
+  const special = checkSpecial(text);
+  if (special) {
+    document.getElementById('resTheme').textContent = special;
+    document.getElementById('singleResult').classList.add('visible');
+    return;
+  }
+  setProgress('Classifying response…', 50);
+  const result = await callGemini([text], [], apiKey);
+  hideProgress();
+  if (!result.ok) { showError(result.error); showEmpty(); return; }
+  document.getElementById('resTheme').textContent = result.data[0] || '—';
+  document.getElementById('singleResult').classList.add('visible');
+}
+
+async function runBulk(file, apiKey) {
+  const reader = new FileReader();
+  reader.readAsArrayBuffer(file);
+  reader.onload = async function(e) {
+    const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+    const ws = wb.Sheets[wb.SheetNames[0]];
+    const jsonData = XLSX.utils.sheet_to_json(ws, { defval: '' });
+    if (!jsonData.length) { showEmpty(); return; }
+
+    const textCol = document.getElementById('colSelect').value || Object.keys(jsonData[0])[0];
+    const BATCH = 50;
+    let errors = [];
+    let knownThemes = [];
+
+    for (let i = 0; i < jsonData.length; i += BATCH) {
+      const chunk = jsonData.slice(i, i + BATCH);
+      const pct = Math.round((i / jsonData.length) * 100);
+      setProgress(
+        `Batch ${Math.ceil(i/BATCH)+1} — rows ${i+1}–${Math.min(i+BATCH, jsonData.length)} of ${jsonData.length}`,
+        pct,
+        `Column: "${textCol}"`
+      );
+
+      // Pre-classify special responses client-side
+      const texts = chunk.map(row => String(row[textCol] ?? '').trim());
+      const preClassified = texts.map(t => checkSpecial(t));
+
+      // Only send non-blank, non-special texts to AI
+      const aiIndices = [];
+      const aiTexts = [];
+      texts.forEach((t, idx) => {
+        if (!preClassified[idx]) { aiIndices.push(idx); aiTexts.push(t); }
+      });
+
+      let aiThemes = [];
+      if (aiTexts.length > 0) {
+        const result = await callGemini(aiTexts, knownThemes, apiKey);
+        if (!result.ok) {
+          errors.push(`Batch ${Math.ceil(i/BATCH)+1}: ${result.error}`);
+          aiThemes = aiTexts.map(() => 'Unclassified');
+        } else {
+          aiThemes = result.data;
+          // Update known themes list for consistency across batches
+          aiThemes.forEach(t => {
+            const clean = String(t).trim();
+            if (clean && !['','None','Refused','Prefer Not to Say','Cannot Recall','Unclassified'].includes(clean) && !knownThemes.includes(clean)) {
+              knownThemes.push(clean);
+            }
+          });
+        }
+      }
+
+      // Merge back
+      let aiPtr = 0;
+      texts.forEach((_, idx) => {
+        const globalIdx = i + idx;
+        if (preClassified[idx] === '__SKIP__') {
+          jsonData[globalIdx]['AI_Theme'] = ''; // leave blank
+        } else if (preClassified[idx]) {
+          jsonData[globalIdx]['AI_Theme'] = preClassified[idx];
+        } else {
+          jsonData[globalIdx]['AI_Theme'] = aiThemes[aiPtr++] || 'Unclassified';
+        }
+      });
+
+      await delay(500);
+    }
+
+    finalData = jsonData;
+    hideProgress();
+    if (errors.length) showError(errors.join('\n'));
+    renderBulk(jsonData);
+  };
+}
+
+function renderBulk(data) {
+  const total = data.length;
+  const themeMap = {};
+  const SPECIAL_LABELS = ['', 'None', 'Refused', 'Prefer Not to Say', 'Cannot Recall'];
+  let substantive = 0;
+
+  data.forEach(r => {
+    const t = String(r.AI_Theme || '').trim();
+    if (t === '') return; // skip blank rows entirely from theme counts
+    themeMap[t] = (themeMap[t] || 0) + 1;
+    if (!SPECIAL_LABELS.includes(t)) substantive++;
+  });
+
+  const allThemes = Object.entries(themeMap).sort((a, b) => b[1] - a[1]);
+  const uniqueCount = allThemes.length;
+
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statThemes').textContent = uniqueCount;
+  document.getElementById('statCoded').textContent = substantive;
+  document.getElementById('themeCountBadge').textContent = `${uniqueCount} theme${uniqueCount !== 1 ? 's' : ''}`;
+
+  // Table
+  const tbody = document.getElementById('themeTableBody');
+  tbody.innerHTML = '';
+  allThemes.forEach(([theme, count]) => {
+    const pct = Math.round((count / total) * 100);
+    const isSpecial = SPECIAL_LABELS.includes(theme);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${theme}${isSpecial ? `<span class="special-badge">system</span>` : ''}</td>
+      <td style="font-variant-numeric:tabular-nums;">${count}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="theme-bar-bg" style="flex:1;"><div class="theme-bar-fill" style="width:${pct}%;opacity:${isSpecial?.5:1}"></div></div>
+          <span style="font-size:12px;color:var(--fg2);min-width:32px;text-align:right;">${pct}%</span>
+        </div>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+
+  // Chart — top substantive themes only
+  const chartThemes = allThemes.filter(([t]) => !SPECIAL_LABELS.includes(t)).slice(0, 15);
+  renderChart(chartThemes.map(([t]) => t), chartThemes.map(([, c]) => c));
+  document.getElementById('bulkResult').classList.add('visible');
+}
+
+function renderChart(labels, data) {
+  const ctx = document.getElementById('themeChart').getContext('2d');
+  if (chartInstance) chartInstance.destroy();
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark' ||
+    (!document.documentElement.getAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const textColor = isDark ? '#8b949e' : '#57606a';
+  const gridColor = isDark ? '#21262d' : '#e8eaed';
+
+  chartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{ data, backgroundColor: '#11dfa9', borderRadius: 4, borderSkipped: false }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: gridColor }, ticks: { color: textColor, font: { family: 'Inter', size: 11 } } },
+        y: { grid: { display: false }, ticks: { color: textColor, font: { family: 'Inter', size: 11 } } }
+      }
+    }
+  });
+  // Adjust chart height based on item count
+  document.querySelector('.chart-wrap').style.height = `${Math.max(200, labels.length * 28)}px`;
+}
+
+function downloadExcel() {
+  if (!finalData) return;
+  const ws = XLSX.utils.json_to_sheet(finalData);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Clustered_Themes');
+  XLSX.writeFile(wb, 'FeedSpark_Themes.xlsx');
+}
+
+function hideAll() {
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('singleResult').classList.remove('visible');
+  document.getElementById('bulkResult').classList.remove('visible');
+  hideProgress();
+}
+function showEmpty() { document.getElementById('emptyState').style.display = ''; }
+function setProgress(label, pct, status = '') {
+  document.getElementById('progressWrap').classList.add('visible');
+  document.getElementById('progressLabel').textContent = label;
+  document.getElementById('progressPct').textContent = `${Math.round(pct)}%`;
+  document.getElementById('progressFill').style.width = `${pct}%`;
+  document.getElementById('progressStatus').textContent = status;
+}
+function hideProgress() { document.getElementById('progressWrap').classList.remove('visible'); }
+function showError(msg) { const el = document.getElementById('errorLog'); el.textContent = '⚠ ' + msg.trim(); el.classList.add('visible'); }
+function clearError() { document.getElementById('errorLog').classList.remove('visible'); }
+</script>
+
+</body></html>
