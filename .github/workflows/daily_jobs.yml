@@ -1,0 +1,50 @@
+name: Daily Job Pipeline
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Python dependencies
+        run: pip install -r job_pipeline/requirements.txt
+
+      - name: Install Node dependencies
+        run: cd job_pipeline && npm install
+
+      - name: Write Google credentials from secret
+        run: echo '${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}' > job_pipeline/service_account.json
+
+      - name: Run pipeline
+        env:
+          GOOGLE_CREDS_PATH: job_pipeline/service_account.json
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          SHEET_ID: ${{ secrets.SHEET_ID }}
+        run: cd job_pipeline && python pipeline.py
+
+      - name: Upload CVs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: generated-cvs-${{ github.run_number }}
+          path: job_pipeline/outputs/*.docx
+          retention-days: 7
