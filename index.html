@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DataPrep — SPSS &amp; XLSForm Generator</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<style>
+:root {
+  --blue-600: #1D4ED8; --blue-500: #3B82F6; --blue-400: #60A5FA;
+  --blue-100: #DBEAFE; --blue-50: #EFF6FF;
+  --slate-900: #0F172A; --slate-800: #1E293B; --slate-700: #334155;
+  --slate-600: #475569; --slate-400: #94A3B8; --slate-300: #CBD5E1;
+  --slate-200: #E2E8F0; --slate-100: #F1F5F9; --slate-50: #F8FAFC;
+  --success: #059669; --warning: #D97706; --error: #DC2626;
+  --bg: #FFFFFF; --bg-subtle: var(--slate-50); --bg-panel: var(--slate-100);
+  --border: var(--slate-200); --border-med: var(--slate-300);
+  --text: var(--slate-900); --text-muted: var(--slate-600); --text-faint: var(--slate-400);
+  --accent: var(--blue-600); --accent-bg: var(--blue-50); --accent-mid: var(--blue-100);
+  --font-ui: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --radius-sm: 6px; --radius: 10px; --radius-lg: 14px;
+  --shadow-sm: 0 1px 3px rgba(15,23,42,.07),0 1px 2px rgba(15,23,42,.05);
+  --shadow: 0 4px 12px rgba(15,23,42,.10),0 1px 3px rgba(15,23,42,.06);
+  --shadow-lg: 0 12px 32px rgba(15,23,42,.14),0 4px 8px rgba(15,23,42,.08);
+}
+@media (prefers-color-scheme:dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme:dark;
+    --bg:#0F172A; --bg-subtle:#1E293B; --bg-panel:#1E293B;
+    --border:#2D3F55; --border-med:#3B526A;
+    --text:#F1F5F9; --text-muted:#94A3B8; --text-faint:#64748B;
+    --accent:var(--blue-400); --accent-bg:rgba(59,130,246,.12); --accent-mid:rgba(59,130,246,.22);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme:dark;
+  --bg:#0F172A; --bg-subtle:#1E293B; --bg-panel:#1E293B;
+  --border:#2D3F55; --border-med:#3B526A;
+  --text:#F1F5F9; --text-muted:#94A3B8; --text-faint:#64748B;
+  --accent:var(--blue-400); --accent-bg:rgba(59,130,246,.12); --accent-mid:rgba(59,130,246,.22);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:var(--font-ui);font-size:14px;line-height:1.5;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
+.app{display:flex;flex-direction:column;height:100%;min-height:100%}
+.nav{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:56px;background:var(--bg);border-bottom:1px solid var(--border);box-shadow:var(--shadow-sm);position:sticky;top:0;z-index:100}
+.nav-brand{display:flex;align-items:center;gap:10px}
+.nav-logo{width:32px;height:32px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px;letter-spacing:-.5px;flex-shrink:0}
+.nav-title{font-weight:700;font-size:16px;color:var(--text);letter-spacing:-.3px}
+.nav-subtitle{font-size:11px;color:var(--text-muted);margin-top:1px}
+.nav-actions{display:flex;align-items:center;gap:8px}
+.badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--accent-mid);color:var(--accent);letter-spacing:.2px}
+.btn-icon{width:34px;height:34px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg);color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .15s}
+.btn-icon:hover{background:var(--bg-subtle);color:var(--text);border-color:var(--border-med)}
+.app-mode-bar{flex-shrink:0;display:flex;border-bottom:1px solid var(--border);background:var(--bg);padding:0 20px;gap:2px;overflow-x:auto}
+.app-mode-btn{padding:10px 18px;border:none;border-bottom:3px solid transparent;background:transparent;font-family:var(--font-ui);font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;white-space:nowrap;transition:all .15s;margin-bottom:-1px}
+.app-mode-btn:hover{color:var(--text)}
+.app-mode-btn.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+.workspace{flex:1;display:flex;overflow:hidden}
+.sidebar{width:380px;flex-shrink:0;display:flex;flex-direction:column;border-right:1px solid var(--border);background:var(--bg);overflow-y:auto}
+.output-area{flex:1;display:flex;flex-direction:column;background:var(--bg-subtle);overflow:hidden;min-width:0}
+.sidebar-section{padding:16px 20px;border-bottom:1px solid var(--border)}
+.sidebar-section:last-child{border-bottom:none}
+.section-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:var(--text-faint);margin-bottom:12px}
+.mode-tabs{display:flex;background:var(--bg-panel);border-radius:var(--radius-sm);padding:3px;gap:2px;margin-bottom:14px}
+.mode-tab{flex:1;padding:6px 8px;border:none;background:transparent;border-radius:5px;font-family:var(--font-ui);font-size:12px;font-weight:500;color:var(--text-muted);cursor:pointer;text-align:center;transition:all .15s;white-space:nowrap}
+.mode-tab.active{background:var(--bg);color:var(--accent);box-shadow:var(--shadow-sm)}
+.drop-zone{border:2px dashed var(--border-med);border-radius:var(--radius);padding:28px 16px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg);position:relative}
+.drop-zone.drag-over{border-color:var(--accent);background:var(--accent-bg)}
+.drop-zone.has-file{border-style:solid;border-color:var(--accent);background:var(--accent-bg)}
+.drop-icon{font-size:28px;margin-bottom:8px;display:block}
+.drop-title{font-weight:600;font-size:13px;color:var(--text);margin-bottom:4px}
+.drop-sub{font-size:12px;color:var(--text-muted)}
+.drop-input{display:none}
+.file-chip{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg);border:1px solid var(--accent);border-radius:var(--radius-sm);margin-top:10px;font-size:12px}
+.file-chip-icon{color:var(--accent);font-size:16px}
+.file-chip-name{flex:1;font-weight:500;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-chip-remove{background:none;border:none;cursor:pointer;color:var(--text-faint);font-size:14px;padding:0 2px}
+.file-chip-remove:hover{color:var(--error)}
+.paste-area{width:100%;min-height:160px;padding:12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text);font-family:var(--font-ui);font-size:13px;line-height:1.6;resize:vertical;outline:none;transition:border-color .15s}
+.paste-area:focus{border-color:var(--accent)}
+.paste-area::placeholder{color:var(--text-faint)}
+.field{margin-bottom:12px}
+.field-label{display:block;font-size:12px;font-weight:500;color:var(--text-muted);margin-bottom:5px}
+.field-input{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text);font-family:var(--font-ui);font-size:13px;outline:none;transition:border-color .15s}
+.field-input:focus{border-color:var(--accent)}
+.output-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.output-card{padding:10px;border:1.5px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all .15s;background:var(--bg)}
+.output-card:hover{border-color:var(--accent);background:var(--accent-bg)}
+.output-card.active{border-color:var(--accent);background:var(--accent-bg)}
+.output-card-icon{font-size:18px;margin-bottom:4px}
+.output-card-title{font-weight:600;font-size:12px;color:var(--text)}
+.output-card-desc{font-size:11px;color:var(--text-muted);margin-top:2px}
+.output-card.active .output-card-title{color:var(--accent)}
+.api-row{display:flex;gap:8px;align-items:flex-end}
+.api-row .field{flex:1;margin-bottom:0}
+.btn-sm{padding:8px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg-panel);color:var(--text-muted);font-family:var(--font-ui);font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0}
+.btn-sm:hover{background:var(--bg-subtle);color:var(--text)}
+.btn-generate{width:100%;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius-sm);font-family:var(--font-ui);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;letter-spacing:-.1px}
+.btn-generate:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 4px 12px rgba(29,78,216,.3)}
+.btn-generate:active{transform:translateY(0)}
+.btn-generate:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-generate .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+.btn-generate.loading .spinner{display:block}
+.btn-generate.loading .btn-label{display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.output-header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--bg);border-bottom:1px solid var(--border);flex-shrink:0}
+.output-title-row{display:flex;align-items:center;gap:10px}
+.output-title{font-weight:600;font-size:14px;color:var(--text)}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--text-faint);flex-shrink:0;transition:background .3s}
+.status-dot.ready{background:var(--success)}
+.status-dot.working{background:var(--warning);animation:pulse 1s infinite}
+.status-dot.error{background:var(--error)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.output-actions{display:flex;gap:6px}
+.btn-action{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg);color:var(--text-muted);font-family:var(--font-ui);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s}
+.btn-action:hover{background:var(--bg-subtle);color:var(--text);border-color:var(--border-med)}
+.btn-action.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-action.primary:hover{filter:brightness(1.08)}
+.btn-action:disabled{opacity:.4;cursor:not-allowed}
+.code-wrapper{flex:1;overflow:auto;padding:20px;background:var(--bg-subtle)}
+.code-block{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);overflow:auto;box-shadow:var(--shadow-sm)}
+.code-block-header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--bg-panel);border-radius:var(--radius) var(--radius) 0 0}
+.code-lang{font-size:11px;font-weight:600;color:var(--text-faint);text-transform:uppercase;letter-spacing:.5px}
+.code-lines{font-size:11px;color:var(--text-faint)}
+pre{margin:0;padding:16px;overflow-x:auto;font-family:var(--font-mono);font-size:12.5px;line-height:1.7;color:var(--text);tab-size:2;min-width:0}
+.sp-keyword{color:#1D4ED8;font-weight:600}
+.sp-comment{color:#64748B;font-style:italic}
+.sp-string{color:#059669}
+.sp-number{color:#9333EA}
+.sp-varname{color:#C2410C}
+.sp-section{color:#1D4ED8;font-weight:700}
+:root[data-theme="dark"] .sp-keyword{color:#60A5FA}
+:root[data-theme="dark"] .sp-comment{color:#64748B}
+:root[data-theme="dark"] .sp-string{color:#34D399}
+:root[data-theme="dark"] .sp-number{color:#C084FC}
+:root[data-theme="dark"] .sp-varname{color:#FB923C}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .sp-keyword{color:#60A5FA}
+  :root:not([data-theme="light"]) .sp-string{color:#34D399}
+  :root:not([data-theme="light"]) .sp-number{color:#C084FC}
+  :root:not([data-theme="light"]) .sp-varname{color:#FB923C}
+}
+.empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:40px 24px;text-align:center}
+.empty-icon{font-size:48px;opacity:.3}
+.empty-title{font-weight:600;font-size:15px;color:var(--text)}
+.empty-sub{font-size:13px;color:var(--text-muted);max-width:300px;line-height:1.5}
+.feature-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;justify-content:center}
+.feature-pill{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;background:var(--bg);border:1px solid var(--border);border-radius:20px;font-size:11px;color:var(--text-muted)}
+.progress-wrap{padding:0 20px 16px;flex-shrink:0}
+.progress-bar-track{height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.progress-bar-fill{height:100%;background:var(--accent);border-radius:2px;width:0%;transition:width .4s ease}
+.progress-label{font-size:11px;color:var(--text-muted);margin-top:6px;display:flex;align-items:center;gap:6px}
+.toast-container{position:fixed;bottom:20px;right:20px;z-index:999;display:flex;flex-direction:column;gap:8px}
+.toast{padding:10px 14px;border-radius:var(--radius-sm);background:var(--slate-800);color:#fff;font-size:13px;font-weight:500;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:8px;animation:slideUp .2s ease;max-width:280px}
+.toast.success{background:#065F46}
+.toast.error{background:#7F1D1D}
+@keyframes slideUp{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
+.convert-row{display:flex;align-items:center;gap:8px}
+.convert-row .field{flex:1;margin-bottom:0}
+.convert-arrow{color:var(--text-faint);font-size:16px;flex-shrink:0}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);margin-bottom:8px}
+.toggle-row-label{font-size:12px;font-weight:500;color:var(--text)}
+.toggle-row-sub{font-size:11px;color:var(--text-muted)}
+.toggle{position:relative;width:34px;height:20px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0;position:absolute}
+.toggle-track{position:absolute;inset:0;background:var(--border-med);border-radius:20px;cursor:pointer;transition:background .2s}
+.toggle input:checked+.toggle-track{background:var(--accent)}
+.toggle-track::after{content:'';position:absolute;left:2px;top:2px;width:16px;height:16px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle input:checked+.toggle-track::after{transform:translateX(14px)}
+@media (max-width:700px){
+  .workspace{flex-direction:column}
+  .sidebar{width:100%;border-right:none;border-bottom:1px solid var(--border);max-height:55vh}
+  .output-area{min-height:45vh}
+  .nav-subtitle{display:none}
+}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--text-faint)}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="nav-brand">
+      <div class="nav-logo">DP</div>
+      <div>
+        <div class="nav-title">DataPrep</div>
+        <div class="nav-subtitle">Survey Data Preparation System</div>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <span class="badge">FREE</span>
+      <button class="btn-icon" id="themeToggle" title="Toggle theme">🌙</button>
+    </div>
+  </nav>
+
+  <!-- App mode tabs -->
+  <div class="app-mode-bar">
+    <button class="app-mode-btn active" data-appmode="spss">📊 SPSS Syntax</button>
+    <button class="app-mode-btn" data-appmode="xlsform">📋 XLSForm</button>
+    <button class="app-mode-btn" data-appmode="convert">🔄 Convert</button>
+  </div>
+
+  <!-- Workspace -->
+  <div class="workspace">
+
+    <!-- ── SPSS Sidebar ── -->
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="section-label">Input Source</div>
+        <div class="mode-tabs">
+          <button class="mode-tab active" data-mode="docx">📄 DOCX/PDF</button>
+          <button class="mode-tab" data-mode="xls">📊 Excel</button>
+          <button class="mode-tab" data-mode="paste">✏️ Paste Text</button>
+        </div>
+        <div id="mode-docx" class="mode-panel">
+          <div class="drop-zone" id="dropZone" tabindex="0" role="button">
+            <span class="drop-icon">📋</span>
+            <div class="drop-title">Drop questionnaire here</div>
+            <div class="drop-sub">DOCX or PDF — survey instrument</div>
+            <input type="file" class="drop-input" id="fileInput" accept=".docx,.doc,.pdf">
+          </div>
+          <div id="fileChip" style="display:none" class="file-chip">
+            <span class="file-chip-icon">📄</span>
+            <span class="file-chip-name" id="fileChipName"></span>
+            <button class="file-chip-remove" id="fileRemove">✕</button>
+          </div>
+        </div>
+        <div id="mode-xls" class="mode-panel" style="display:none">
+          <div class="drop-zone" id="dropZoneXls" tabindex="0" role="button">
+            <span class="drop-icon">📊</span>
+            <div class="drop-title">Drop Excel / CSV here</div>
+            <div class="drop-sub">XLS, XLSX, or CSV data file</div>
+            <input type="file" class="drop-input" id="xlsInput" accept=".xls,.xlsx,.csv">
+          </div>
+          <div id="xlsChip" style="display:none" class="file-chip">
+            <span class="file-chip-icon">📊</span>
+            <span class="file-chip-name" id="xlsChipName"></span>
+            <button class="file-chip-remove" id="xlsRemove">✕</button>
+          </div>
+        </div>
+        <div id="mode-paste" class="mode-panel" style="display:none">
+          <textarea class="paste-area" id="pasteArea" placeholder="Paste your survey questions here…&#10;&#10;Example:&#10;Q1. What is your gender?&#10;1. Male&#10;2. Female&#10;&#10;Q2. What is your age group?&#10;1. 18-25&#10;2. 26-35"></textarea>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="section-label">Dataset Settings</div>
+        <div class="field">
+          <label class="field-label">Dataset Name</label>
+          <input type="text" class="field-input" id="datasetName" value="SurveyData" placeholder="e.g. KwaraGovSurvey">
+        </div>
+        <div class="field">
+          <label class="field-label">Save Path (.sav)</label>
+          <input type="text" class="field-input" id="savePath" value="C:\Users\a.ajao\Downloads\NOI Projects\Data Files\Survey.sav" placeholder="C:\Users\…\Survey.sav">
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="section-label">Options</div>
+        <div class="toggle-row">
+          <div><div class="toggle-row-label">Include Geo Variables</div><div class="toggle-row-sub">Zone · State · LGA with full Nigeria codes</div></div>
+          <label class="toggle"><input type="checkbox" id="includeGeo" checked><span class="toggle-track"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div><div class="toggle-row-label">Include Demographics</div><div class="toggle-row-sub">Gender · Age · Religion · Ethnicity…</div></div>
+          <label class="toggle"><input type="checkbox" id="includeDem" checked><span class="toggle-track"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div><div class="toggle-row-label">Add Clustered Theme Fields</div><div class="toggle-row-sub">STRING _clustered_themes (A1000) per open-end</div></div>
+          <label class="toggle"><input type="checkbox" id="includeThemes" checked><span class="toggle-track"></span></label>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="section-label">Output Type</div>
+        <div class="output-grid">
+          <div class="output-card active" data-out="sps">
+            <div class="output-card-icon">📝</div>
+            <div class="output-card-title">SPSS Syntax</div>
+            <div class="output-card-desc">.sps file — variable dictionary</div>
+          </div>
+          <div class="output-card" data-out="convert">
+            <div class="output-card-icon">🔄</div>
+            <div class="output-card-title">Convert File</div>
+            <div class="output-card-desc">XLS ↔ CSV ↔ format bridge</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="section-label">Gemini API Key</div>
+        <div class="api-row">
+          <div class="field"><input type="password" class="field-input" id="apiKey" placeholder="AIza… (Gemini API key)" autocomplete="off"></div>
+          <button class="btn-sm" id="saveKey">Save</button>
+        </div>
+        <div style="font-size:11px;color:var(--text-faint);margin-top:6px;line-height:1.5;">Key stored in browser only — never sent anywhere except Google's Gemini API.</div>
+      </div>
+
+      <div class="sidebar-section">
+        <button class="btn-generate" id="generateBtn">
+          <div class="spinner"></div>
+          <span class="btn-label">⚡ Generate SPSS Syntax</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ── XLSForm Sidebar ── -->
+    <aside class="sidebar" id="xlsformSidebar" style="display:none">
+      <div class="sidebar-section">
+        <div class="section-label">Survey Input</div>
+        <div class="mode-tabs">
+          <button class="mode-tab active" data-mode="docx" data-panel="xls-mode-docx">DOCX/PDF</button>
+          <button class="mode-tab" data-mode="paste" data-panel="xls-mode-paste">Paste Text</button>
+        </div>
+        <div id="xls-mode-docx" class="mode-panel">
+          <div class="drop-zone" id="xlsDropZone" tabindex="0" role="button">
+            <span class="drop-icon">📄</span>
+            <div class="drop-title">Drop questionnaire here</div>
+            <div class="drop-sub">DOCX or PDF · click to browse</div>
+            <input type="file" class="drop-input" id="xlsDocxInput" accept=".docx,.pdf,.doc">
+          </div>
+          <div class="file-chip" id="xlsDocxChip" style="display:none">
+            <span class="file-chip-icon">📄</span>
+            <span class="file-chip-name" id="xlsDocxChipName"></span>
+            <button class="file-chip-remove" id="xlsDocxRemove">✕</button>
+          </div>
+        </div>
+        <div id="xls-mode-paste" class="mode-panel" style="display:none">
+          <textarea class="paste-area" id="xlsPasteArea" placeholder="Paste your survey questions here…"></textarea>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="section-label">Form Settings</div>
+        <div class="field"><label class="field-label">Form Title</label><input type="text" class="field-input" id="formTitle" placeholder="e.g. NOI Polls Q3 Survey 2026"></div>
+        <div class="field"><label class="field-label">Form ID</label><input type="text" class="field-input" id="formId" placeholder="e.g. noi_q3_2026"></div>
+        <div class="field"><label class="field-label">Version</label><input type="text" class="field-input" id="formVersion" value="1"></div>
+        <div class="field">
+          <label class="field-label">Default Language</label>
+          <select class="field-input" id="formLang">
+            <option value="English">English</option>
+            <option value="Hausa">Hausa</option>
+            <option value="Yoruba">Yoruba</option>
+            <option value="Igbo">Igbo</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="section-label">Options</div>
+        <div class="toggle-row">
+          <div><div class="toggle-row-label">Include Geo Cascade</div><div class="toggle-row-sub">Zone → State → LGA as select_one</div></div>
+          <label class="toggle"><input type="checkbox" id="xlsIncludeGeo" checked><span class="toggle-track"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div><div class="toggle-row-label">Include Demographics</div><div class="toggle-row-sub">Gender, Age, Religion, Ethnicity</div></div>
+          <label class="toggle"><input type="checkbox" id="xlsIncludeDem" checked><span class="toggle-track"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div><div class="toggle-row-label">Mark required fields</div><div class="toggle-row-sub">Add required=yes to all questions</div></div>
+          <label class="toggle"><input type="checkbox" id="xlsRequired" checked><span class="toggle-track"></span></label>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="section-label">Gemini API Key</div>
+        <div class="api-row">
+          <div class="field"><input type="password" class="field-input" id="xlsApiKey" placeholder="AIza… (Gemini API key)" autocomplete="off"></div>
+          <button class="btn-sm" id="xlsSaveKey">Save</button>
+        </div>
+        <div style="font-size:11px;color:var(--text-faint);margin-top:6px;">Key stored in browser only.</div>
+      </div>
+
+      <div class="sidebar-section">
+        <button class="btn-generate" id="xlsGenerateBtn">
+          <div class="spinner"></div>
+          <span class="btn-label">📋 Generate XLSForm</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ── Output Area ── -->
+    <div class="output-area">
+      <div class="output-header">
+        <div class="output-title-row">
+          <div class="status-dot" id="statusDot"></div>
+          <div class="output-title" id="outputTitle">Ready to generate</div>
+        </div>
+        <div class="output-actions">
+          <button class="btn-action" id="copyBtn" disabled>📋 Copy</button>
+          <button class="btn-action primary" id="downloadBtn" disabled>⬇ Download .sps</button>
+        </div>
+      </div>
+
+      <div class="progress-wrap" id="progressWrap" style="display:none">
+        <div class="progress-bar-track"><div class="progress-bar-fill" id="progressFill"></div></div>
+        <div class="progress-label" id="progressLabel">Initialising…</div>
+      </div>
+
+      <!-- SPSS empty state -->
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">🗂️</div>
+        <div class="empty-title">No output yet</div>
+        <div class="empty-sub">Upload a questionnaire or paste your survey questions, then click Generate to build the SPSS variable dictionary.</div>
+        <div class="feature-pills">
+          <span class="feature-pill">✓ INPUT PROGRAM bootstrap</span>
+          <span class="feature-pill">✓ Nigeria geo variables</span>
+          <span class="feature-pill">✓ A1000 string fields</span>
+          <span class="feature-pill">✓ MRSETS for multi-select</span>
+          <span class="feature-pill">✓ No Value=1 warning</span>
+          <span class="feature-pill">✓ en_US locale</span>
+        </div>
+      </div>
+
+      <!-- SPSS code output -->
+      <div class="code-wrapper" id="codeWrapper" style="display:none">
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">SPSS Syntax</span>
+            <span class="code-lines" id="lineCount"></span>
+          </div>
+          <pre id="codeOutput"></pre>
+        </div>
+      </div>
+
+      <!-- XLSForm output -->
+      <div class="code-wrapper" id="xlsformWrapper" style="display:none">
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">XLSForm</span>
+            <span class="code-lines" id="xlsLineCount"></span>
+          </div>
+          <pre id="xlsOutput"></pre>
+        </div>
+      </div>
+
+      <!-- XLSForm empty state -->
+      <div class="empty-state" id="xlsEmptyState" style="display:none">
+        <div class="empty-icon">📋</div>
+        <div class="empty-title">No XLSForm yet</div>
+        <div class="empty-sub">Upload a questionnaire DOCX or paste your survey questions, set your form ID and title, then click Generate XLSForm.</div>
+        <div class="feature-pills">
+          <span class="feature-pill">✓ survey + choices + settings sheets</span>
+          <span class="feature-pill">✓ 2-pass generation (no truncation)</span>
+          <span class="feature-pill">✓ Geo cascade (Zone→State→LGA)</span>
+          <span class="feature-pill">✓ required=yes</span>
+          <span class="feature-pill">✓ Kobo/SurveyCTO ready</span>
+        </div>
+      </div>
+
+      <!-- Convert panel -->
+      <div class="code-wrapper" id="convertPanel" style="display:none">
+        <div class="code-block">
+          <div class="code-block-header"><span class="code-lang">File Conversion</span></div>
+          <div style="padding:24px">
+            <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;line-height:1.6;">Upload an Excel or CSV file in the <strong>Excel tab</strong>, then choose the output format:</p>
+            <div class="convert-row" style="margin-bottom:12px;">
+              <div class="field"><label class="field-label">Source format</label><select class="field-input" id="convertFrom"><option value="xls">Excel (.xlsx / .xls)</option><option value="csv">CSV</option></select></div>
+              <div class="convert-arrow">→</div>
+              <div class="field"><label class="field-label">Target format</label><select class="field-input" id="convertTo"><option value="csv">CSV</option><option value="xls">Excel (.xlsx)</option><option value="spss_note">SPSS .sav (needs Python backend)</option></select></div>
+            </div>
+            <button class="btn-generate" id="convertBtn" style="max-width:200px;"><div class="spinner"></div><span class="btn-label">🔄 Convert File</span></button>
+            <div id="convertNote" style="display:none;margin-top:14px;padding:12px;background:var(--accent-bg);border:1px solid var(--accent-mid);border-radius:var(--radius-sm);font-size:12px;color:var(--text-muted);line-height:1.6;">
+              <strong>Note:</strong> Converting to SPSS .sav requires the Python backend. Download the <a href="#" id="pyBackendLink" style="color:var(--accent);text-decoration:none;">backend script</a> and run locally.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /output-area -->
+  </div><!-- /workspace -->
+</div><!-- /app -->
+
+<div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+<script>
+/* ── State ── */
+const state = {
+  mode: 'docx', outputType: 'sps', appMode: 'spss',
+  docxFile: null, xlsFile: null, xlsDocxFile: null,
+  generatedSyntax: '', generatedXlsForm: '', apiKey: ''
+};
+
+/* ── Theme ── */
+const themeBtn = document.getElementById('themeToggle');
+let currentTheme = 'system';
+try { currentTheme = localStorage.getItem('dp_theme') || 'system'; } catch(e){}
+applyTheme(currentTheme);
+themeBtn.addEventListener('click', () => {
+  const next = currentTheme === 'dark' ? 'light' : 'dark';
+  currentTheme = next; applyTheme(next);
+  try { localStorage.setItem('dp_theme', next); } catch(e){}
+});
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t === 'system' ? '' : t);
+  themeBtn.textContent = t === 'dark' ? '☀️' : '🌙';
+}
+
+/* ── App mode switcher ── */
+document.querySelectorAll('.app-mode-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.app-mode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.appMode = btn.dataset.appmode;
+    applyAppMode();
+  });
+});
+
+function applyAppMode() {
+  const spss = state.appMode === 'spss';
+  const xls  = state.appMode === 'xlsform';
+  const conv = state.appMode === 'convert';
+  document.querySelector('aside.sidebar:not(#xlsformSidebar)').style.display = spss ? '' : 'none';
+  document.getElementById('xlsformSidebar').style.display = xls ? '' : 'none';
+  document.getElementById('emptyState').style.display     = spss && !state.generatedSyntax ? '' : 'none';
+  document.getElementById('codeWrapper').style.display    = spss && state.generatedSyntax  ? '' : 'none';
+  document.getElementById('xlsEmptyState').style.display  = xls  && !state.generatedXlsForm ? '' : 'none';
+  document.getElementById('xlsformWrapper').style.display = xls  && state.generatedXlsForm  ? '' : 'none';
+  document.getElementById('convertPanel').style.display   = conv ? '' : 'none';
+  const dlBtn = document.getElementById('downloadBtn');
+  const cpBtn = document.getElementById('copyBtn');
+  if (xls) {
+    dlBtn.textContent = '⬇ Download .xlsx';
+    dlBtn.disabled = !state.generatedXlsForm;
+    cpBtn.disabled = !state.generatedXlsForm;
+    document.getElementById('outputTitle').textContent = state.generatedXlsForm ? 'XLSForm ready' : 'Ready to generate';
+  } else if (spss) {
+    dlBtn.textContent = '⬇ Download .sps';
+    dlBtn.disabled = !state.generatedSyntax;
+    cpBtn.disabled = !state.generatedSyntax;
+  } else {
+    dlBtn.disabled = true; cpBtn.disabled = true;
+  }
+}
+
+/* ── Persist API key ── */
+try {
+  const saved = localStorage.getItem('dp_api_key');
+  if (saved) { state.apiKey = saved; document.getElementById('apiKey').value = saved; }
+} catch(e){}
+
+document.getElementById('saveKey').addEventListener('click', () => {
+  const key = document.getElementById('apiKey').value.trim();
+  if (!key) return toast('Enter a key first', 'error');
+  state.apiKey = key;
+  try { localStorage.setItem('dp_api_key', key); } catch(e){}
+  toast('Gemini API key saved ✓', 'success');
+});
+
+const xlsApiKeyEl = document.getElementById('xlsApiKey');
+try { if (state.apiKey) xlsApiKeyEl.value = state.apiKey; } catch(e){}
+document.getElementById('xlsSaveKey').addEventListener('click', () => {
+  const key = xlsApiKeyEl.value.trim();
+  if (!key) return toast('Enter a key first', 'error');
+  state.apiKey = key;
+  document.getElementById('apiKey').value = key;
+  try { localStorage.setItem('dp_api_key', key); } catch(e){}
+  toast('Gemini API key saved ✓', 'success');
+});
+
+/* ── XLSForm sidebar mode tabs ── */
+document.querySelectorAll('#xlsformSidebar .mode-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('#xlsformSidebar .mode-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('#xlsformSidebar .mode-panel').forEach(p => p.style.display = 'none');
+    document.getElementById(tab.dataset.panel).style.display = 'block';
+  });
+});
+
+/* ── Drop zones ── */
+setupDropZone('dropZone','fileInput','fileChip','fileChipName','fileRemove','docxFile',
+  ['application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/pdf','application/msword']);
+setupDropZone('dropZoneXls','xlsInput','xlsChip','xlsChipName','xlsRemove','xlsFile',
+  ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/vnd.ms-excel','text/csv','application/csv']);
+setupDropZone('xlsDropZone','xlsDocxInput','xlsDocxChip','xlsDocxChipName','xlsDocxRemove','xlsDocxFile',
+  ['application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/pdf','application/msword']);
+
+function setupDropZone(zoneId, inputId, chipId, chipNameId, removeId, stateKey, types) {
+  const zone = document.getElementById(zoneId);
+  const input = document.getElementById(inputId);
+  const chip = document.getElementById(chipId);
+  const chipName = document.getElementById(chipNameId);
+  const removeBtn = document.getElementById(removeId);
+  zone.addEventListener('click', () => input.click());
+  zone.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') input.click(); });
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('drag-over'); const f = e.dataTransfer.files[0]; if (f) setFile(f); });
+  input.addEventListener('change', () => { if (input.files[0]) setFile(input.files[0]); });
+  function setFile(f) {
+    state[stateKey] = f;
+    chipName.textContent = f.name;
+    chip.style.display = 'flex';
+    zone.classList.add('has-file');
+    zone.querySelector('.drop-title').textContent = 'File ready';
+  }
+  removeBtn.addEventListener('click', () => {
+    state[stateKey] = null;
+    chip.style.display = 'none';
+    zone.classList.remove('has-file');
+    zone.querySelector('.drop-title').textContent = zoneId === 'dropZone' ? 'Drop questionnaire here' : zoneId === 'dropZoneXls' ? 'Drop Excel / CSV here' : 'Drop questionnaire here';
+    input.value = '';
+  });
+}
+
+/* ── SPSS Generate ── */
+document.getElementById('generateBtn').addEventListener('click', () => {
+  if (state.outputType === 'convert') { handleConvert(); return; }
+  handleGenerate();
+});
+
+async function handleGenerate() {
+  const apiKey = document.getElementById('apiKey').value.trim() || state.apiKey;
+  if (!apiKey) { toast('Enter your Gemini API key first', 'error'); return; }
+  state.apiKey = apiKey;
+  const hasInput = state.docxFile || document.getElementById('pasteArea').value.trim();
+  if (!hasInput) { toast('Upload a file or paste survey text', 'error'); return; }
+
+  const datasetName = document.getElementById('datasetName').value.trim() || 'SurveyData';
+  const savePath = document.getElementById('savePath').value.trim() || 'C:\\Survey.sav';
+  const includeGeo = document.getElementById('includeGeo').checked;
+  const includeDem = document.getElementById('includeDem').checked;
+  const includeThemes = document.getElementById('includeThemes').checked;
+
+  setStatus('working', 'Generating syntax…');
+  setProgress(0, 'Reading questionnaire…');
+  const btn = document.getElementById('generateBtn');
+  btn.classList.add('loading'); btn.disabled = true;
+
+  try {
+    let surveyContent = '';
+    if (state.docxFile) { surveyContent = await fileToText(state.docxFile); }
+    else { surveyContent = document.getElementById('pasteArea').value.trim(); }
+
+    setProgress(25, 'Building master prompt…');
+    const prompt = buildMasterPrompt(surveyContent, datasetName, savePath, includeGeo, includeDem, includeThemes);
+    setProgress(50, 'Calling Gemini API…');
+
+    const geminiModel = 'gemini-3.8-flash';
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${encodeURIComponent(apiKey)}`;
+
+    async function callGeminiSpss(p) {
+      return fetch(geminiUrl, {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ contents: [{ parts: [{ text: p }] }], generationConfig: { maxOutputTokens: 8192, temperature: 0.2 } })
+      });
+    }
+    let response = await callGeminiSpss(prompt);
+    if (response.status === 503 || response.status === 429) {
+      setProgress(55, 'Retrying (high demand)…');
+      await new Promise(r => setTimeout(r, 3000));
+      response = await callGeminiSpss(prompt);
+    }
+    setProgress(80, 'Processing response…');
+    if (!response.ok) { const err = await response.json().catch(() => ({})); throw new Error(err.error?.message || `API error ${response.status}`); }
+    const data = await response.json();
+    let syntax = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const match = syntax.match(/```(?:spss|sps)?\n?([\s\S]*?)```/i);
+    if (match) syntax = match[1].trim();
+    setProgress(100, 'Done!');
+    state.generatedSyntax = syntax;
+    showSyntax(syntax);
+    setStatus('ready', 'Syntax generated ✓');
+    toast('SPSS syntax ready ✓', 'success');
+  } catch(err) {
+    setStatus('error', 'Error: ' + err.message);
+    toast('Error: ' + err.message, 'error');
+  } finally {
+    btn.classList.remove('loading'); btn.disabled = false;
+    setTimeout(() => hideProgress(), 1500);
+  }
+}
+
+/* ── XLSForm Generate (2-pass) ── */
+document.getElementById('xlsGenerateBtn').addEventListener('click', generateXlsForm);
+
+async function generateXlsForm() {
+  const apiKey = document.getElementById('xlsApiKey').value.trim() || state.apiKey;
+  if (!apiKey) { toast('Enter your Gemini API key first', 'error'); return; }
+  state.apiKey = apiKey;
+
+  const btn = document.getElementById('xlsGenerateBtn');
+  btn.classList.add('loading'); btn.disabled = true;
+
+  const formTitle   = document.getElementById('formTitle').value.trim() || 'Survey';
+  const formId      = document.getElementById('formId').value.trim() || 'survey_form';
+  const formVersion = document.getElementById('formVersion').value.trim() || '1';
+  const formLang    = document.getElementById('formLang').value;
+  const includeGeo  = document.getElementById('xlsIncludeGeo').checked;
+  const includeDem  = document.getElementById('xlsIncludeDem').checked;
+  const required    = document.getElementById('xlsRequired').checked;
+
+  const geminiModel = 'gemini-3.8-flash';
+  const geminiUrl   = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${encodeURIComponent(apiKey)}`;
+
+  async function callGemini(prompt, maxTokens) {
+    let res = await fetch(geminiUrl, {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { maxOutputTokens: maxTokens, temperature: 0.1 } })
+    });
+    if (res.status === 503 || res.status === 429) {
+      setProgress(null, 'Retrying (high demand)…');
+      await new Promise(r => setTimeout(r, 3500));
+      res = await fetch(geminiUrl, { method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { maxOutputTokens: maxTokens, temperature: 0.1 } }) });
+    }
+    if (!res.ok) { const err = await res.json().catch(() => ({})); throw new Error(err.error?.message || `API error ${res.status}`); }
+    const data = await res.json();
+    let text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const fence = text.match(/```[a-z]*\n?([\s\S]*?)```/i);
+    if (fence) text = fence[1].trim();
+    return text;
+  }
+
+  try {
+    let surveyContent = '';
+    const xlsPanel = document.querySelector('#xlsformSidebar .mode-tab.active');
+    const xlsMode  = xlsPanel ? xlsPanel.dataset.mode : 'paste';
+    if (xlsMode === 'docx' && state.xlsDocxFile) {
+      setProgress(5, 'Reading file…');
+      surveyContent = await fileToText(state.xlsDocxFile);
+      if (surveyContent.startsWith('[')) { toast(surveyContent, 'error'); return; }
+    } else {
+      surveyContent = document.getElementById('xlsPasteArea').value.trim();
+    }
+    if (!surveyContent) { toast('Paste questions or upload a file first', 'error'); return; }
+
+    // Pre-process: replace long preamble paragraphs with placeholder
+    const lines = surveyContent.split('\n');
+    const processedLines = [];
+    for (const line of lines) {
+      const l = line.trim();
+      if (l.length === 0) { processedLines.push(line); continue; }
+      const looksLikeQuestion = /^(Q\d|[A-Z]\d|\d+[.)]\s|[a-z][.)]\s|\*|\-|\•|Section|SECTION|Part |PART )/.test(l);
+      if (l.length > 300 && !looksLikeQuestion) {
+        processedLines.push('[INTRO NOTE]');
+      } else if (l.length > 180) {
+        processedLines.push(line.substring(0, 175) + '…');
+      } else {
+        processedLines.push(line);
+      }
+    }
+    const trimmedContent = processedLines.join('\n');
+
+    // Pass 1: SURVEY sheet only
+    setProgress(15, 'Pass 1/2 — generating survey sheet…');
+    const surveyPrompt = buildXlsFormPrompt(trimmedContent, formTitle, formId, formVersion, formLang, includeGeo, includeDem, required, 'survey');
+    let surveySheet = await callGemini(surveyPrompt, 16000);
+    if (!surveySheet.includes('===SURVEY===')) surveySheet = '===SURVEY===\n' + surveySheet;
+    const cut = surveySheet.indexOf('===CHOICES===');
+    if (cut !== -1) surveySheet = surveySheet.substring(0, cut).trim();
+
+    // Pass 2: choices
+    setProgress(55, 'Pass 2/2 — generating survey choices…');
+    const choicesPrompt = buildXlsFormChoicesPrompt(trimmedContent, surveySheet, formTitle, formId, formVersion, formLang, includeGeo, includeDem);
+    let surveyChoicesRaw = await callGemini(choicesPrompt, 16000);
+    surveyChoicesRaw = surveyChoicesRaw.replace(/^===SURVEY_CHOICES_ONLY===\s*/m, '').replace(/^list_name\t.*\n/m, '').trim();
+
+    setProgress(85, 'Merging sheets…');
+    const standardChoices = buildStandardChoices(formLang, includeGeo, includeDem);
+    const choicesHeader = `list_name\tname\tlabel::${formLang}`;
+    const fullChoices = `===CHOICES===\n${choicesHeader}\n${standardChoices}\n${surveyChoicesRaw}`;
+    const settingsSheet = `===SETTINGS===\nform_title\tform_id\tversion\tdefault_language\n${formTitle}\t${formId}\t${formVersion}\t${formLang}`;
+    const result = surveySheet + '\n' + fullChoices + '\n' + settingsSheet;
+    state.generatedXlsForm = result;
+    setProgress(100, 'Done!');
+
+    const pre = document.getElementById('xlsOutput');
+    pre.textContent = result;
+    document.getElementById('xlsLineCount').textContent = result.split('\n').length + ' rows';
+    document.getElementById('xlsformWrapper').style.display = 'block';
+    document.getElementById('xlsEmptyState').style.display = 'none';
+    document.getElementById('downloadBtn').disabled = false;
+    document.getElementById('copyBtn').disabled = false;
+    document.getElementById('downloadBtn').textContent = '⬇ Download .xlsx';
+    document.getElementById('outputTitle').textContent = 'XLSForm ready ✓';
+    setStatus('ready', 'XLSForm generated ✓ (2-pass)');
+    toast('XLSForm ready — full survey + choices complete ✓', 'success');
+
+  } catch(err) {
+    setStatus('error', 'Error: ' + err.message);
+    toast('Error: ' + err.message, 'error');
+  } finally {
+    btn.classList.remove('loading'); btn.disabled = false;
+    setTimeout(() => hideProgress(), 2000);
+  }
+}
+
+/* ── XLSForm prompt builders ── */
+function buildXlsFormPrompt(surveyText, title, formId, version, lang, includeGeo, includeDem, required, passMode) {
+  const reqVal = required ? 'yes' : '';
+  const geoBlock = includeGeo ? `After consent, add a geo group BEFORE the survey questions:
+begin_group grp_geo / Geographic Information (required blank)
+  note: Geographic Location
+  select_one zone_list / geo_zone / Geopolitical Zone (required=yes)
+    choices: 1=North Central,2=North East,3=North West,4=South East,5=South South,6=South West,99=Prefer not to say
+  select_one state_list / geo_state / State (required=yes, choice_filter: zone=\${geo_zone})
+    choices sheet must have a zone column (integers 1-6) on every state row
+  text / geo_lga / LGA (required=yes)
+end_group` : '(No geo cascade needed)';
+
+  const demBlock = includeDem ? `After geo, add a demographics group BEFORE the survey questions:
+begin_group grp_dem / Demographic Information (required blank)
+  select_one gender_list / dem_gender / Gender: 1=Male,2=Female,99=Prefer not to say
+  select_one age_list / dem_age / Age Group: 1=18-25,2=26-35,3=36-45,4=46-55,5=56-65,6=65+,99=Prefer not to say
+  select_one edu_list / dem_education / Education: 1=No formal,2=Primary,3=Secondary,4=Tertiary,5=Postgraduate,99=Prefer not to say
+  select_one religion_list / dem_religion / Religion: 1=Christianity,2=Islam,3=Traditional,4=Other,99=Prefer not to say
+  select_one ethnicity_list / dem_ethnicity / Ethnicity: 1=Yoruba,2=Igbo,3=Hausa/Fulani,4=Other,99=Prefer not to say
+end_group` : '(No standard demographics needed)';
+
+  const surveyOnlyMode = passMode === 'survey';
+  return `TASK: Convert the survey questionnaire at the bottom of this prompt into a complete XLSForm SURVEY sheet.
+
+═══ CRITICAL RULES ═══
+1. Script EVERY question from the questionnaire in order — do NOT stop early.
+2. For QUESTION labels and ANSWER OPTION labels: copy the exact wording from the questionnaire.
+3. For NOTE rows (section headings, intro placeholders like [INTRO NOTE], interviewer instructions): use a SHORT label — maximum 60 characters. Never reproduce a long paragraph in a note label. Use "Interviewer introduction" for [INTRO NOTE].
+4. Do NOT invent questions or skip any numbered question or sub-item.
+
+═══ OUTPUT FORMAT ═══
+${surveyOnlyMode
+  ? 'Output ONLY the SURVEY sheet (tab-separated). Begin with the marker ===SURVEY=== on its own line. Do NOT output ===CHOICES=== or ===SETTINGS===. A second API call will generate those.'
+  : 'Three sheets as tab-separated values, each preceded by its marker on its own line:\n===SURVEY===\n===CHOICES===\n===SETTINGS==='}
+
+SURVEY columns (tab-separated, this exact order):
+type\tname\tlabel::${lang}\thint::${lang}\trequired\trelevant\tconstraint\tconstraint_message\tchoice_filter\tappearance
+
+CHOICES columns: list_name\tname\tlabel::${lang}
+
+SETTINGS columns: form_title\tform_id\tversion\tdefault_language
+
+═══ TYPE MAPPING ═══
+- One answer only → select_one list_name
+- Multiple answers / "tick all" / "multiple response" → select_multiple list_name
+- Free text / open-ended / "specify" → text
+- Section heading → note (required blank)
+- [INTRO NOTE] placeholder → one note row with label "Interviewer introduction"
+- Group open → begin_group (required blank, name=group id, label=group title)
+- Group close → end_group (type=end_group, all other columns blank)
+- Table/grid of rated items → one select_one row per lettered sub-item (a, b, c...), all sharing one list_name
+
+═══ NAMING ═══
+- Variables: snake_case with Q number prefix — q1_consent, q2_smartphone, q3_internet_freq
+- Sub-items in a table: q9a_, q9b_, q9c_ etc.
+- Lists: reuse identical lists — yes_no_pnts, agree_5pt_dk, confid_5pt_dk, barrier_5pt_dk
+- Codes: integers only — 1,2,3...98=Other/Specify, 99=DK/Refused/Prefer not to say
+
+═══ SKIP LOGIC ═══
+Use the relevant column to encode every skip instruction:
+- "Skip to Q5 if Yes (Q3)" → Q4 gets: relevant = \${q3_var} != 1
+- "Terminate if No" → note row: relevant = \${q1_consent} = 2
+
+${geoBlock}
+
+${demBlock}
+
+═══ REQUIRED ═══
+required = ${reqVal || 'yes'} for all leaf questions
+required = blank for note, begin_group, end_group
+
+═══ FORM SETTINGS ═══
+form_title = ${title}   form_id = ${formId}   version = ${version}   default_language = ${lang}
+
+═══ THE QUESTIONNAIRE (script every question below, in order) ═══
+
+${surveyText}
+
+═══ BEFORE YOU OUTPUT — VERIFY ═══
+- A row for EVERY numbered question in order
+- A separate row for EVERY lettered sub-item in every table
+- All skip logic encoded as relevant expressions
+${surveyOnlyMode ? '- Output ONLY the ===SURVEY=== sheet — stop after the last question row.' : '- All three sheets.'}
+
+Output raw TSV only — no markdown, no explanation.`;
+}
+
+function buildXlsFormChoicesPrompt(surveyText, surveySheet, title, formId, version, lang, includeGeo, includeDem) {
+  const listNames = new Set();
+  surveySheet.split('\n').forEach(line => {
+    const m = line.match(/^select_(?:one|multiple)\s+(\S+)/);
+    if (m) listNames.add(m[1]);
+  });
+  const STANDARD = new Set(['zone_list','state_list','gender_list','age_list','edu_list','religion_list','ethnicity_list','yes_no_pns','yes_no_list','yes_no']);
+  const surveyLists = [...listNames].filter(n => !STANDARD.has(n));
+
+  const listContext = [];
+  surveySheet.split('\n').forEach(line => {
+    const m = line.match(/^select_(?:one|multiple)\s+(\S+)\s+(\S+)\s+(.+)/);
+    if (m && surveyLists.includes(m[1])) listContext.push(`${m[1]} — for question: ${m[3].substring(0,80)}`);
+  });
+
+  return `You are an XLSForm expert. Generate ONLY the survey-specific choice lists below.
+Standard lists (geo, demographics, yes/no) are hardcoded separately — do NOT generate them.
+
+LISTS TO GENERATE (${surveyLists.length} lists):
+${surveyLists.join('\n')}
+
+QUESTION CONTEXT (what each list is used for):
+${listContext.join('\n')}
+
+QUESTIONNAIRE TEXT (extract exact option wording from here):
+${surveyText}
+
+RULES:
+- Columns (tab-separated): list_name  name  label::${lang}
+- Use EXACT wording from the questionnaire for every option
+- Codes: integers 1,2,3... ; 98=Other/Specify ; 99=Don't know/Refused
+- Likert agree (likert_agree): 1=Strongly Disagree, 2=Disagree, 3=Neutral, 4=Agree, 5=Strongly Agree, 99=Don't know
+- Confidence (likert_confidence): 1=Not at all confident, 2=Slightly, 3=Somewhat, 4=Very, 5=Extremely confident, 99=Don't know
+- Barrier (barrier_scale): 1=Not a barrier, 2=Minor barrier, 3=Moderate, 4=Major barrier, 5=Extreme barrier, 99=Don't know
+- Generate EVERY list named above — do not stop early
+
+DO NOT GENERATE: zone_list, state_list, gender_list, age_list, edu_list, religion_list, ethnicity_list, yes_no_pns, yes_no_list, yes_no
+
+OUTPUT (raw TSV only, no markdown, no explanation, start with marker):
+===SURVEY_CHOICES_ONLY===
+list_name\tname\tlabel::${lang}`;
+}
+
+function buildStandardChoices(lang, includeGeo, includeDem) {
+  const t = '\t'; let rows = [];
+  rows.push(`yes_no_pns${t}1${t}Yes`,`yes_no_pns${t}2${t}No`,`yes_no_pns${t}99${t}Prefer not to say`);
+  rows.push(`yes_no_list${t}1${t}Yes`,`yes_no_list${t}2${t}No`,`yes_no_list${t}99${t}Prefer not to say`);
+  rows.push(`yes_no${t}1${t}Yes`,`yes_no${t}2${t}No`,`yes_no${t}99${t}Prefer not to say`);
+
+  if (includeGeo) {
+    rows.push(
+      `zone_list${t}1${t}North Central`,`zone_list${t}2${t}North East`,`zone_list${t}3${t}North West`,
+      `zone_list${t}4${t}South East`,`zone_list${t}5${t}South South`,`zone_list${t}6${t}South West`,
+      `zone_list${t}99${t}Prefer not to say`
+    );
+    const states = [
+      ['Benue',1],['FCT Abuja',1],['Kogi',1],['Kwara',1],['Nasarawa',1],['Niger',1],['Plateau',1],
+      ['Adamawa',2],['Bauchi',2],['Borno',2],['Gombe',2],['Taraba',2],['Yobe',2],
+      ['Jigawa',3],['Kaduna',3],['Kano',3],['Katsina',3],['Kebbi',3],['Sokoto',3],['Zamfara',3],
+      ['Abia',4],['Anambra',4],['Ebonyi',4],['Enugu',4],['Imo',4],
+      ['Akwa Ibom',5],['Bayelsa',5],['Cross River',5],['Delta',5],['Edo',5],['Rivers',5],
+      ['Ekiti',6],['Lagos',6],['Ogun',6],['Ondo',6],['Osun',6],['Oyo',6]
+    ];
+    states.forEach(([name, zone], i) => rows.push(`state_list${t}${i+1}${t}${name}${t}${zone}`));
+    rows.push(`state_list${t}99${t}Prefer not to say${t}99`);
+  }
+
+  if (includeDem) {
+    rows.push(
+      `gender_list${t}1${t}Male`,`gender_list${t}2${t}Female`,`gender_list${t}99${t}Prefer not to say`,
+      `age_list${t}1${t}18-25`,`age_list${t}2${t}26-35`,`age_list${t}3${t}36-45`,
+      `age_list${t}4${t}46-55`,`age_list${t}5${t}56-65`,`age_list${t}6${t}65+`,`age_list${t}99${t}Prefer not to say`,
+      `edu_list${t}1${t}No formal education`,`edu_list${t}2${t}Primary`,`edu_list${t}3${t}Secondary`,
+      `edu_list${t}4${t}Tertiary`,`edu_list${t}5${t}Postgraduate`,`edu_list${t}99${t}Prefer not to say`,
+      `religion_list${t}1${t}Christianity`,`religion_list${t}2${t}Islam`,
+      `religion_list${t}3${t}Traditional/African`,`religion_list${t}4${t}Other`,`religion_list${t}99${t}Prefer not to say`,
+      `ethnicity_list${t}1${t}Yoruba`,`ethnicity_list${t}2${t}Igbo`,`ethnicity_list${t}3${t}Hausa/Fulani`,
+      `ethnicity_list${t}4${t}Other`,`ethnicity_list${t}99${t}Prefer not to say`
+    );
+  }
+  return rows.join('\n');
+}
+
+/* ── SPSS Master prompt ── */
+function buildMasterPrompt(surveyText, datasetName, savePath, includeGeo, includeDem, includeThemes) {
+  const geoBlock = includeGeo ? `
+NUMERIC DEM_GEO_ZONE (F1.0).
+NUMERIC DEM_STATE (F2.0).
+NUMERIC DEM_LGA (F3.0).
+
+VALUE LABELS DEM_GEO_ZONE
+  1 'North Central' 2 'North East' 3 'North West'
+  4 'South East' 5 'South South' 6 'South West' 99 'Refused'.
+
+VALUE LABELS DEM_STATE
+  1 'Abia' 2 'Adamawa' 3 'Akwa Ibom' 4 'Anambra' 5 'Bauchi'
+  6 'Bayelsa' 7 'Benue' 8 'Borno' 9 'Cross River' 10 'Delta'
+  11 'Ebonyi' 12 'Edo' 13 'Ekiti' 14 'Enugu' 15 'Gombe'
+  16 'Imo' 17 'Jigawa' 18 'Kaduna' 19 'Kano' 20 'Katsina'
+  21 'Kebbi' 22 'Kogi' 23 'Kwara' 24 'Lagos' 25 'Nasarawa'
+  26 'Niger' 27 'Ogun' 28 'Ondo' 29 'Osun' 30 'Oyo'
+  31 'Plateau' 32 'Rivers' 33 'Sokoto' 34 'Taraba' 35 'Yobe'
+  36 'Zamfara' 37 'FCT Abuja' 99 'Refused'.
+
+VARIABLE LABELS DEM_GEO_ZONE 'Geopolitical Zone' /DEM_STATE 'State of Residence' /DEM_LGA 'Local Government Area'.` : '';
+
+  const demNote = includeDem ? `
+Include standard demographic variables:
+NUMERIC DEM_GENDER (F1.0). NUMERIC DEM_AGE (F2.0). NUMERIC DEM_RELIGION (F1.0).
+NUMERIC DEM_ETHNICITY (F2.0). NUMERIC DEM_EDUCATION (F2.0). NUMERIC DEM_OCCUPATION (F2.0).
+NUMERIC DEM_SETTLEMENT (F1.0). NUMERIC DEM_DISABILITY (F1.0). NUMERIC DEM_LANG (F1.0).
+
+Standard value labels:
+DEM_GENDER: 1 'Male' 2 'Female' 3 'Other' 99 'Refused'
+DEM_AGE: 1 '0-17 (Terminate)' 2 '18-25' 3 '26-35' 4 '36-45' 5 '46-60' 6 '61+' 99 'Refused'
+DEM_SETTLEMENT: 1 'Urban' 2 'Peri-urban' 3 'Rural' 4 'Don''t know'
+DEM_DISABILITY: 1 'Yes' 2 'No'
+DEM_LANG: 1 'Hausa' 2 'Igbo' 3 'Yoruba' 4 'English' 5 'Pidgin English' 6 'Code mix'` : '';
+
+  const themesNote = includeThemes
+    ? 'For every open-ended question, add BOTH STRING Q#_OTH (A1000) AND STRING Q#_clustered_themes (A1000).'
+    : 'For every open-ended question, add STRING Q#_OTH (A1000). Do NOT add _clustered_themes fields.';
+
+  return `You are an SPSS syntax expert. Read the survey questionnaire below and generate a complete, error-free SPSS syntax file that builds the variable dictionary for data entry.
+
+═══════════════════════════════════════════════════════
+SECTION 1 — DATASET BOOTSTRAP (ALWAYS USE THIS METHOD)
+═══════════════════════════════════════════════════════
+
+NEVER use NEW FILE. NEVER use DATA LIST FREE / dummy.
+Always bootstrap using the INPUT PROGRAM method EXACTLY as shown:
+
+SET LOCALE='en_US'.
+DATASET CLOSE ALL.
+
+INPUT PROGRAM.
+  LOOP #i = 1 TO 1.
+    END CASE.
+  END LOOP.
+  END FILE.
+END INPUT PROGRAM.
+DATASET NAME ${datasetName} WINDOW=FRONT.
+EXECUTE.
+
+═══════════════════════════════════════════════════════
+SECTION 2 — VARIABLE NAMING RULES
+═══════════════════════════════════════════════════════
+
+1. Single-response questions: NUMERIC Q# (F1.0) — use F2.0 if more than 9 options.
+2. Multi-select questions: binary dummies Q#_1 Q#_2 … (F1.0). 0='Not Selected' 1='Selected'.
+3. Open-ended fields: STRING Q#_OTH (A1000) — ALWAYS A1000, NEVER A255.
+4. ${themesNote}
+5. DEM variables follow same rules: F1.0 for ≤9 options, F2.0 for 10+ options.
+
+═══════════════════════════════════════════════════════
+SECTION 3 — VARIABLE LABELS
+═══════════════════════════════════════════════════════
+
+Write the full question text as the variable label prefixed with the Q number.
+Include routing notes in square brackets [Skip to Q9 if Certain].
+Always close VARIABLE LABELS block with a full stop (.), not a slash.
+
+═══════════════════════════════════════════════════════
+SECTION 4 — VALUE LABELS
+═══════════════════════════════════════════════════════
+
+Apply value labels to EVERY numeric variable.
+Binary dummies: 0 'Not Selected' 1 'Selected'.
+Always escape apostrophes: 'Don''t know'  'voter''s card'.
+Always close VALUE LABELS with a full stop (.), not a slash.
+
+═══════════════════════════════════════════════════════
+SECTION 5 — MRSETS (ONLY FOR MULTI-SELECT QUESTIONS)
+═══════════════════════════════════════════════════════
+
+MRSETS
+  /MCGROUP NAME=$Q#_Name
+    LABEL='Full label'
+    VARIABLES=Q#_1 Q#_2 Q#_3.
+
+CRITICAL: NEVER include VALUE=1 — it causes a warning in older SPSS versions.
+
+═══════════════════════════════════════════════════════
+SECTION 6 — ABSOLUTE PROHIBITIONS
+═══════════════════════════════════════════════════════
+
+NEVER use NEW FILE anywhere.
+NEVER use DATA LIST FREE / dummy.
+NEVER use DELETE VARIABLES.
+NEVER use VALUE=1 inside MRSETS.
+NEVER use SET LOCALE='en_NG' — only 'en_US'.
+NEVER use A255 for strings — always A1000.
+NEVER close blocks with / — always full stop.
+NEVER run EXECUTE before dataset is active.
+
+═══════════════════════════════════════════════════════
+SECTION 7 — CLOSING BLOCK
+═══════════════════════════════════════════════════════
+
+End every syntax with:
+
+EXECUTE.
+
+SAVE OUTFILE='${savePath.replace(/\\/g, '\\\\')}'
+  /COMPRESSED.
+
+═══════════════════════════════════════════════════════
+SECTION 8 — DEMOGRAPHICS & GEOGRAPHY
+═══════════════════════════════════════════════════════
+
+${demNote}
+${geoBlock}
+
+═══════════════════════════════════════════════════════
+SECTION 9 — OUTPUT FORMAT
+═══════════════════════════════════════════════════════
+
+Return ONLY the complete SPSS syntax inside a single code block.
+No explanations outside the code block.
+Use * comment lines inside syntax to mark sections.
+
+═══════════════════════════════════════════════════════
+SURVEY QUESTIONNAIRE TO PROCESS:
+═══════════════════════════════════════════════════════
+
+${surveyText}
+`;
+}
+
+/* ── File reading ── */
+async function fileToText(file) {
+  const name = (file.name || '').toLowerCase();
+  if (file.type === 'text/plain' || name.endsWith('.txt')) {
+    return new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = e => resolve(e.target.result);
+      r.onerror = reject;
+      r.readAsText(file);
+    });
+  }
+  if (name.endsWith('.docx') || name.endsWith('.doc') ||
+      file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+    return new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = async e => {
+        try {
+          if (typeof mammoth === 'undefined') { resolve('[DOCX reader not loaded. Please paste your survey text instead.]'); return; }
+          const result = await mammoth.extractRawText({ arrayBuffer: e.target.result });
+          const text = (result.value || '').trim();
+          if (text.length < 50) { resolve('[DOCX appears to have no readable text. Please paste your survey text instead.]'); }
+          else { resolve(text); }
+        } catch(err) { resolve('[DOCX could not be read: ' + err.message + '. Please paste your survey text instead.]'); }
+      };
+      r.onerror = reject;
+      r.readAsArrayBuffer(file);
+    });
+  }
+  // PDF basic extraction
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = e => {
+      try {
+        const bytes = new Uint8Array(e.target.result);
+        const str = new TextDecoder('latin1').decode(bytes);
+        const parts = [];
+        const re = /\(([^)]{1,300})\)\s*Tj/g;
+        let m;
+        while ((m = re.exec(str)) !== null) parts.push(m[1]);
+        const text = parts.join(' ').replace(/\\n/g, '\n').trim();
+        if (text.length > 80) { resolve(text); }
+        else { resolve('[PDF text could not be extracted automatically. Please paste your survey text instead.]'); }
+      } catch(err) { resolve('[PDF could not be read. Please paste your survey text instead.]'); }
+    };
+    r.onerror = reject;
+    r.readAsArrayBuffer(file);
+  });
+}
+
+/* ── Show SPSS syntax ── */
+function showSyntax(syntax) {
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('convertPanel').style.display = 'none';
+  document.getElementById('codeWrapper').style.display = 'block';
+  const lines = syntax.split('\n');
+  document.getElementById('lineCount').textContent = lines.length + ' lines';
+  document.getElementById('codeOutput').innerHTML = highlightSPSS(syntax);
+  document.getElementById('copyBtn').disabled = false;
+  document.getElementById('downloadBtn').disabled = false;
+}
+
+function highlightSPSS(code) {
+  const keywords = /\b(NUMERIC|STRING|VARIABLE LABELS|VALUE LABELS|MRSETS|MCGROUP|EXECUTE|SAVE|INPUT PROGRAM|END INPUT PROGRAM|LOOP|END LOOP|END CASE|END FILE|DATASET|DATASET NAME|DATASET CLOSE|SET|MISSING VALUES|FORMATS|IF|COMPUTE|DO IF|END IF|ELSE IF|ELSE|RECODE|INTO|FREQUENCIES|CROSSTABS|DESCRIPTIVES|MEANS)\b/g;
+  return code
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .split('\n').map(line => {
+      if (line.trim().startsWith('*')) return `<span class="sp-comment">${line}</span>`;
+      if (/^[═─]+$/.test(line.trim())) return `<span class="sp-section">${line}</span>`;
+      return line
+        .replace(keywords, m => `<span class="sp-keyword">${m}</span>`)
+        .replace(/'[^']*'/g, m => `<span class="sp-string">${m}</span>`)
+        .replace(/\(F\d+\.\d+\)/g, m => `<span class="sp-number">${m}</span>`)
+        .replace(/\b(Q\d+(?:_\d+)?|DEM_\w+)\b/g, m => `<span class="sp-varname">${m}</span>`);
+    }).join('\n');
+}
+
+/* ── Mode tabs (SPSS sidebar) ── */
+document.querySelectorAll('.mode-tab').forEach(tab => {
+  if (tab.closest('#xlsformSidebar')) return; // handled separately
+  tab.addEventListener('click', () => {
+    const container = tab.closest('.mode-tabs');
+    container.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    state.mode = tab.dataset.mode;
+    document.querySelectorAll('.mode-panel').forEach(p => {
+      if (!p.closest('#xlsformSidebar')) p.style.display = 'none';
+    });
+    const panel = document.getElementById('mode-' + state.mode);
+    if (panel) panel.style.display = 'block';
+  });
+});
+
+/* ── Output type cards ── */
+document.querySelectorAll('[data-out]').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('[data-out]').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    state.outputType = card.dataset.out;
+    updateOutputView();
+  });
+});
+
+function updateOutputView() {
+  const isConvert = state.outputType === 'convert';
+  document.getElementById('generateBtn').querySelector('.btn-label').textContent =
+    isConvert ? '🔄 Convert File' : '⚡ Generate SPSS Syntax';
+  if (isConvert && !state.generatedSyntax) {
+    document.getElementById('emptyState').style.display = 'none';
+    document.getElementById('codeWrapper').style.display = 'none';
+    document.getElementById('convertPanel').style.display = 'block';
+  } else if (state.generatedSyntax && !isConvert) {
+    document.getElementById('emptyState').style.display = 'none';
+    document.getElementById('convertPanel').style.display = 'none';
+    document.getElementById('codeWrapper').style.display = 'block';
+  }
+}
+
+/* ── Copy & Download ── */
+document.getElementById('copyBtn').addEventListener('click', async () => {
+  if (state.appMode === 'xlsform') {
+    if (!state.generatedXlsForm) return;
+    try { await navigator.clipboard.writeText(state.generatedXlsForm); toast('XLSForm copied to clipboard ✓', 'success'); }
+    catch(e) { toast('Select text in the panel and copy manually (Ctrl+C)', ''); }
+    return;
+  }
+  if (!state.generatedSyntax) return;
+  try { await navigator.clipboard.writeText(state.generatedSyntax); toast('Copied to clipboard ✓', 'success'); }
+  catch(e) { toast('Select text and copy manually (Ctrl+C)', ''); }
+});
+
+document.getElementById('downloadBtn').addEventListener('click', () => {
+  if (state.appMode === 'xlsform') {
+    if (!state.generatedXlsForm) return;
+    const formId = (document.getElementById('formId')?.value.trim() || 'survey_form');
+    if (typeof XLSX !== 'undefined') { buildAndDownloadXlsx(state.generatedXlsForm, formId); }
+    else {
+      const blob = new Blob([state.generatedXlsForm], { type: 'text/tab-separated-values' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = formId + '_xlsform.tsv';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+      toast('Downloaded as .tsv — open in Excel then save as .xlsx', 'success');
+    }
+    return;
+  }
+  if (!state.generatedSyntax) return;
+  const name = (document.getElementById('datasetName').value.trim() || 'Survey') + '_syntax.sps';
+  const blob = new Blob([state.generatedSyntax], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = name;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+  toast('Downloaded: ' + name, 'success');
+});
+
+function buildAndDownloadXlsx(tsvContent, formId) {
+  const parts = tsvContent.split(/===SURVEY===|===CHOICES===|===SETTINGS===/i).map(s => s.trim()).filter(Boolean);
+  const sheetNames = ['survey', 'choices', 'settings'];
+  const wb = XLSX.utils.book_new();
+  parts.forEach((part, i) => {
+    const rows = part.split('\n').map(r => r.split('\t'));
+    const ws = XLSX.utils.aoa_to_sheet(rows);
+    XLSX.utils.book_append_sheet(wb, ws, sheetNames[i] || 'sheet'+(i+1));
+  });
+  XLSX.writeFile(wb, formId + '_xlsform.xlsx');
+  toast('Downloaded: ' + formId + '_xlsform.xlsx', 'success');
+}
+
+/* ── Convert panel ── */
+document.getElementById('convertBtn')?.addEventListener('click', handleConvert);
+document.getElementById('convertTo')?.addEventListener('change', function() {
+  const note = document.getElementById('convertNote');
+  if (note) note.style.display = this.value === 'spss_note' ? 'block' : 'none';
+});
+
+async function handleConvert() {
+  if (document.getElementById('convertTo')?.value === 'spss_note') { toast('SPSS .sav export requires the Python backend', 'error'); return; }
+  if (!state.xlsFile) { toast('Upload an Excel or CSV file first', 'error'); return; }
+  const btn = document.getElementById('convertBtn');
+  if (btn) { btn.classList.add('loading'); btn.disabled = true; }
+  try {
+    const text = await state.xlsFile.text();
+    const outName = state.xlsFile.name.replace(/\.[^.]+$/, '') + '.csv';
+    const blob = new Blob([text], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = outName;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+    toast('Converted and downloaded: ' + outName, 'success');
+  } catch(err) { toast('Conversion error: ' + err.message, 'error'); }
+  finally { if (btn) { btn.classList.remove('loading'); btn.disabled = false; } }
+}
+
+document.getElementById('pyBackendLink')?.addEventListener('click', e => {
+  e.preventDefault();
+  const script = `#!/usr/bin/env python3
+"""DataPrep Python Backend — pip install pyreadstat pandas flask flask-cors openpyxl"""
+from flask import Flask, request, send_file, jsonify
+from flask_cors import CORS
+import pandas as pd, pyreadstat, io, tempfile, os
+app = Flask(__name__)
+CORS(app)
+@app.route('/convert', methods=['POST'])
+def convert():
+    f = request.files.get('file'); fmt = request.form.get('to', 'csv')
+    if not f: return jsonify({'error':'No file'}), 400
+    name = f.filename.lower()
+    if name.endswith('.csv'): df = pd.read_csv(f)
+    elif name.endswith(('.xlsx','.xls')): df = pd.read_excel(f)
+    else: return jsonify({'error':'Unsupported format'}), 400
+    buf = io.BytesIO()
+    if fmt == 'csv': df.to_csv(buf, index=False); buf.seek(0); return send_file(buf, mimetype='text/csv', as_attachment=True, download_name='output.csv')
+    elif fmt == 'xlsx': df.to_excel(buf, index=False); buf.seek(0); return send_file(buf, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', as_attachment=True, download_name='output.xlsx')
+    elif fmt == 'sav':
+        with tempfile.NamedTemporaryFile(suffix='.sav', delete=False) as tmp:
+            pyreadstat.write_sav(df, tmp.name); tmp_path = tmp.name
+        return send_file(tmp_path, mimetype='application/octet-stream', as_attachment=True, download_name='output.sav')
+if __name__ == '__main__': app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+`;
+  const blob = new Blob([script], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'dataprep_backend.py';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+  toast('backend.py downloaded', 'success');
+});
+
+/* ── Progress & Status helpers ── */
+function setProgress(pct, label) {
+  document.getElementById('progressWrap').style.display = 'block';
+  if (pct !== null) document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = label;
+}
+function hideProgress() { document.getElementById('progressWrap').style.display = 'none'; }
+function setStatus(type, msg) {
+  document.getElementById('statusDot').className = 'status-dot ' + type;
+  document.getElementById('outputTitle').textContent = msg;
+}
+
+/* ── Toast ── */
+function toast(msg, type='') {
+  const t = document.createElement('div');
+  t.className = 'toast' + (type ? ' ' + type : '');
+  t.textContent = msg;
+  document.getElementById('toastContainer').appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+</script>
+</body>
+</html>
