@@ -24,7 +24,18 @@ SEARCH_TERMS = [
     'Research Analyst', 'Data Analyst', 'Market Research Analyst',
     'BI Analyst', 'Market Intelligence Analyst', 'AI Analyst',
     'Data Scientist', 'Research Associate', 'Analytics Consultant',
-    'Marketing Analyst', 'Business Analyst'
+    'Business Analyst', 'Survey Analyst', 'Monitoring and Evaluation Analyst',
+    'Remote Data Analyst', 'Virtual Assistant', 'Remote Research Analyst',
+    'Remote Business Analyst', 'Data Entry Remote', 'Online Research Specialist'
+]
+
+# Keywords that must appear in the job title to be included
+TITLE_KEYWORDS = [
+    'analyst', 'analytics', 'analysis', 'research', 'data', 'intelligence',
+    'insights', 'scientist', 'bi ', 'business intelligence', 'monitoring',
+    'evaluation', 'm&e', 'survey', 'statistician', 'quantitative',
+    'virtual assistant', 'va ', 'remote', 'data entry', 'reporting',
+    'dashboard', 'power bi', 'tableau', 'sql', 'python'
 ]
 
 TODAY = datetime.date.today().isoformat()
@@ -188,7 +199,9 @@ def scrape_hotnigerianijobs():
 def scrape_remoteok():
     jobs = []
     seen = set()
-    remote_terms = ['research-analyst', 'data-analyst', 'business-analyst', 'market-research']
+    remote_terms = ['research-analyst', 'data-analyst', 'business-analyst',
+                    'market-research', 'virtual-assistant', 'data-entry',
+                    'data-scientist', 'survey-analyst']
     for term in remote_terms:
         try:
             url = f'https://remoteok.com/remote-{term}-jobs'
@@ -324,14 +337,24 @@ def scrape_linkedin():
 
 
 # ──────────────────────────────────────────────────────────────────────────────
+# TITLE FILTER — only keep roles relevant to Abiola's profile
+# ──────────────────────────────────────────────────────────────────────────────
+def is_relevant(title):
+    t = title.lower()
+    return any(kw in t for kw in TITLE_KEYWORDS)
+
+
+# ──────────────────────────────────────────────────────────────────────────────
 # DEDUPLICATION
 # ──────────────────────────────────────────────────────────────────────────────
 def deduplicate(jobs):
     seen_keys = set()
     unique = []
     for j in jobs:
+        if not j['title'] or not is_relevant(j['title']):
+            continue
         key = (j['title'].lower().strip(), j['company'].lower().strip())
-        if key not in seen_keys and j['title']:
+        if key not in seen_keys:
             seen_keys.add(key)
             unique.append(j)
     return unique
