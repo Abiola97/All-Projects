@@ -1,0 +1,941 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>CATI Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#0D1117;--surf:#161B22;--surf2:#21262D;--border:#30363D;
+  --text:#E6EDF3;--muted:#8B949E;--dim:#484F58;
+  --amber:#F0B429;--amber-d:rgba(240,180,41,.12);
+  --green:#3FB950;--green-d:rgba(63,185,80,.12);
+  --red:#F85149;--red-d:rgba(248,81,73,.12);
+  --yellow:#D29922;--yellow-d:rgba(210,153,34,.12);
+  --blue:#58A6FF;--blue-d:rgba(88,166,255,.12);
+  --purple:#A371F7;--orange:#EC8E2C;
+  --sidebar-w:230px;--radius:8px;--radius-lg:12px;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',system-ui,sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+input,select,textarea,button{font-family:inherit}
+
+/* ── Views ── */
+.view{display:none!important}.view.active{display:flex!important;flex-direction:column}
+#v-setup.active{min-height:100vh;display:flex!important;align-items:center;justify-content:center;padding:24px}
+#v-app.active{display:grid!important;grid-template-columns:var(--sidebar-w) 1fr;height:100vh;overflow:hidden}
+
+/* ── Setup Card ── */
+.setup-card{width:100%;max-width:480px;background:var(--surf);border:1px solid var(--border);border-radius:var(--radius-lg);padding:40px 36px}
+.logo-row{display:flex;align-items:center;gap:12px;margin-bottom:32px}
+.logo-icon{width:42px;height:42px;background:var(--amber);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.logo-text-name{font-size:17px;font-weight:700}
+.logo-text-sub{font-size:11px;color:var(--muted)}
+.setup-card h1{font-size:20px;font-weight:700;margin-bottom:6px}
+.setup-card>.sub{color:var(--muted);font-size:13px;margin-bottom:28px}
+.step-list{display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
+.step-item{display:flex;gap:12px;align-items:flex-start;background:var(--surf2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px}
+.step-num{width:22px;height:22px;border-radius:50%;background:var(--amber);color:#000;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step-text{font-size:13px;line-height:1.5;color:var(--muted)}
+.step-text strong{color:var(--text)}
+
+/* ── Forms ── */
+.field{margin-bottom:16px}
+.field label{display:block;font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.field input,.field select{width:100%;background:var(--surf2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;padding:10px 12px;outline:none;transition:border-color .15s}
+.field input:focus,.field select:focus{border-color:var(--amber)}
+.field .hint{font-size:11px;color:var(--muted);margin-top:5px}
+
+/* ── Buttons ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:none;border-radius:var(--radius);font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;padding:10px 18px;white-space:nowrap}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-primary{background:var(--amber);color:#000}
+.btn-primary:hover:not(:disabled){background:#f7c843}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
+.btn-ghost:hover:not(:disabled){background:var(--surf2);color:var(--text)}
+.btn-sm{padding:7px 13px;font-size:12px}
+.btn-full{width:100%}
+
+/* ── Alert ── */
+.alert{padding:11px 14px;border-radius:var(--radius);font-size:13px;margin-bottom:14px;border:1px solid}
+.alert-err{background:var(--red-d);border-color:var(--red);color:var(--red)}
+.alert-info{background:var(--blue-d);border-color:var(--blue);color:var(--blue)}
+.alert-ok{background:var(--green-d);border-color:var(--green);color:var(--green)}
+
+/* ── Sidebar ── */
+.sidebar{background:var(--surf);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto}
+.sidebar-top{padding:18px 16px 12px;border-bottom:1px solid var(--border)}
+.sidebar-logo{display:flex;align-items:center;gap:10px}
+.sidebar-logo-icon{width:32px;height:32px;background:var(--amber);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.sidebar-logo-name{font-size:14px;font-weight:700;line-height:1.2}
+.sidebar-logo-sub{font-size:10px;color:var(--muted)}
+.sidebar-sheet{padding:10px 12px;margin:10px 12px 0;background:var(--surf2);border:1px solid var(--border);border-radius:var(--radius);font-size:11px;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:8px}
+.sheet-dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.sidebar-sheet-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;color:var(--text);font-size:11px}
+nav{padding:8px 8px;flex:1}
+.nav-item{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:var(--radius);cursor:pointer;color:var(--muted);font-size:13px;font-weight:500;transition:all .12s;border:1px solid transparent;margin-bottom:2px}
+.nav-item:hover{background:var(--surf2);color:var(--text)}
+.nav-item.active{background:var(--amber-d);color:var(--amber);border-color:rgba(240,180,41,.25)}
+.nav-icon{font-size:15px;width:20px;text-align:center}
+.sidebar-bottom{padding:12px;border-top:1px solid var(--border)}
+.refresh-info{font-size:10px;color:var(--dim);padding:0 12px 8px}
+
+/* ── Main ── */
+.main{overflow-y:auto;display:flex;flex-direction:column}
+.panel{padding:28px 32px;flex:1;display:none}
+.panel.active{display:block}
+.panel-head{margin-bottom:24px}
+.panel-head h2{font-size:18px;font-weight:700}
+.panel-head p{font-size:13px;color:var(--muted);margin-top:4px}
+
+/* ── KPI row ── */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:24px}
+.kpi-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px}
+.kpi-card.amber{border-left:3px solid var(--amber)}
+.kpi-card.green{border-left:3px solid var(--green)}
+.kpi-card.blue{border-left:3px solid var(--blue)}
+.kpi-card.red{border-left:3px solid var(--red)}
+.kpi-card.purple{border-left:3px solid var(--purple)}
+.kpi-label{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px}
+.kpi-value{font-size:26px;font-weight:700;font-family:'DM Mono',monospace;line-height:1}
+.kpi-sub{font-size:11px;color:var(--dim);margin-top:5px}
+
+/* ── Chart cards ── */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.chart-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px 22px}
+.chart-card h3{font-size:13px;font-weight:700;margin-bottom:16px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.chart-card canvas{width:100%!important}
+@media(max-width:700px){.chart-grid{grid-template-columns:1fr}}
+
+/* ── Lookup ── */
+.lookup-box{background:var(--surf);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;max-width:600px;margin-bottom:20px}
+.lookup-input-row{display:flex;gap:10px}
+.lookup-input-row input{flex:1;background:var(--surf2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:16px;padding:12px 16px;outline:none;transition:border-color .15s;font-family:'DM Mono',monospace}
+.lookup-input-row input:focus{border-color:var(--amber)}
+.rec-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;max-width:600px}
+.rec-header{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.rec-badge{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:.06em}
+.rec-badge.green{background:var(--green-d);color:var(--green);border:1px solid rgba(63,185,80,.3)}
+.rec-badge.amber{background:var(--amber-d);color:var(--amber);border:1px solid rgba(240,180,41,.3)}
+.rec-badge.red{background:var(--red-d);color:var(--red);border:1px solid rgba(248,81,73,.3)}
+.rec-badge.blue{background:var(--blue-d);color:var(--blue);border:1px solid rgba(88,166,255,.3)}
+.rec-score-wrap{margin-left:auto;text-align:right}
+.rec-score{font-size:28px;font-weight:700;font-family:'DM Mono',monospace;line-height:1}
+.rec-score-label{font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.rec-advice{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:18px;padding:12px 14px;background:var(--surf2);border-radius:var(--radius);border-left:3px solid var(--amber)}
+.history-table{width:100%;border-collapse:collapse}
+.history-table th{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;padding:6px 8px;border-bottom:1px solid var(--border);text-align:left;font-weight:600}
+.history-table td{padding:8px;font-size:12px;border-bottom:1px solid var(--border);vertical-align:middle}
+.history-table tr:last-child td{border:none}
+.pill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+.pill-ok{background:var(--green-d);color:var(--green)}
+.pill-warn{background:var(--yellow-d);color:var(--yellow)}
+.pill-bad{background:var(--red-d);color:var(--red)}
+.pill-muted{background:var(--surf2);color:var(--muted)}
+.pill-blue{background:var(--blue-d);color:var(--blue)}
+
+/* ── Batch ── */
+.batch-input{width:100%;background:var(--surf2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;padding:12px;outline:none;font-family:'DM Mono',monospace;resize:vertical;min-height:140px;transition:border-color .15s}
+.batch-input:focus{border-color:var(--amber)}
+.batch-result-row{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--surf);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px}
+.batch-phone{font-family:'DM Mono',monospace;font-size:13px;min-width:140px}
+.batch-score{font-family:'DM Mono',monospace;font-size:13px;font-weight:700;min-width:36px;text-align:center}
+
+/* ── Data Table ── */
+.data-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius-lg)}
+.data-table{width:100%;border-collapse:collapse;font-size:12px}
+.data-table th{background:var(--surf2);padding:10px 12px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap}
+.data-table td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+.data-table tr:last-child td{border:none}
+.data-table tr:hover td{background:var(--surf2)}
+.table-toolbar{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.table-toolbar input{background:var(--surf2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;padding:8px 12px;outline:none;width:220px}
+.table-toolbar input:focus{border-color:var(--amber)}
+.table-toolbar select{background:var(--surf2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;padding:8px 12px;outline:none}
+.pagination{display:flex;gap:6px;align-items:center;margin-top:14px;justify-content:flex-end;font-size:12px;color:var(--muted)}
+.pagination button{background:var(--surf2);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:5px 10px;cursor:pointer;font-size:12px}
+.pagination button:disabled{opacity:.35;cursor:not-allowed}
+.pagination button.cur{background:var(--amber);color:#000;border-color:var(--amber)}
+
+/* ── Settings ── */
+.settings-section{background:var(--surf);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px}
+.settings-section h3{font-size:14px;font-weight:700;margin-bottom:14px}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px}
+.info-row:last-child{border:none}
+.info-row label{color:var(--muted)}
+.info-row value{font-family:'DM Mono',monospace;font-size:12px}
+
+/* ── Empty/Loading ── */
+.empty{text-align:center;padding:48px 24px;color:var(--muted)}
+.empty-icon{font-size:36px;margin-bottom:12px}
+.empty h3{font-size:15px;font-weight:600;color:var(--text);margin-bottom:6px}
+.loading-spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--amber);border-radius:50%;animation:spin .7s linear infinite;margin:40px auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════
+     SETUP SCREEN
+════════════════════════════════════ -->
+<div id="v-setup" class="view active" style="background:radial-gradient(ellipse at 30% 20%,rgba(240,180,41,.06),transparent 60%),var(--bg)">
+  <div class="setup-card">
+    <div class="logo-row">
+      <div class="logo-icon">📞</div>
+      <div><div class="logo-text-name">CATI Intelligence</div><div class="logo-text-sub">Contact Propensity System · NOI Polls</div></div>
+    </div>
+    <h1>Connect Your Data</h1>
+    <p class="sub">Paste your published Google Sheet CSV link below. All analysis runs in your browser — your data never leaves your device.</p>
+
+    <div class="step-list">
+      <div class="step-item"><div class="step-num">1</div><div class="step-text">In Google Sheets: <strong>File → Share → Publish to web</strong></div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-text">Select your sheet tab, choose <strong>Comma-separated values (.csv)</strong></div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-text">Click <strong>Publish</strong> and paste the link below</div></div>
+    </div>
+
+    <div id="setup-err" class="alert alert-err" style="display:none"></div>
+
+    <div class="field">
+      <label>Published Google Sheet CSV URL</label>
+      <input id="setup-url" type="url" placeholder="https://docs.google.com/spreadsheets/d/e/…/pub?output=csv"
+        value="https://docs.google.com/spreadsheets/d/e/2PACX-1vTewiWdmh4fS4S-g61B__rvpxvVfiv6Qdy38jxoZblXfzqU1Y47n75EiPhKzMesLYB0yLfEn5tvp40g/pub?gid=249906285&single=true&output=csv"
+        style="font-size:11px;font-family:'DM Mono',monospace">
+      <div class="hint">Must end with <code>output=csv</code>. Update this any time in Settings.</div>
+    </div>
+
+    <button class="btn btn-primary btn-full" id="btn-connect">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/></svg>
+      Connect &amp; Load Data
+    </button>
+    <div id="setup-loading" style="display:none;text-align:center;padding:16px 0">
+      <div class="loading-spinner"></div>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px" id="setup-loading-msg">Fetching data…</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     MAIN APP
+════════════════════════════════════ -->
+<div id="v-app" class="view">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">📞</div>
+        <div><div class="sidebar-logo-name">CATI Intel</div><div class="sidebar-logo-sub">NOI Polls</div></div>
+      </div>
+    </div>
+    <div class="sidebar-sheet" id="sidebar-sheet-status" title="Click to refresh">
+      <div class="sheet-dot"></div>
+      <div class="sidebar-sheet-name" id="sidebar-rows-label">Loading…</div>
+    </div>
+    <nav>
+      <div class="nav-item active" data-panel="dashboard"><span class="nav-icon">📊</span> Dashboard</div>
+      <div class="nav-item" data-panel="lookup"><span class="nav-icon">🔍</span> Phone Lookup</div>
+      <div class="nav-item" data-panel="batch"><span class="nav-icon">📋</span> Batch Score</div>
+      <div class="nav-item" data-panel="table"><span class="nav-icon">🗄️</span> Data Table</div>
+      <div class="nav-item" data-panel="settings"><span class="nav-icon">⚙️</span> Settings</div>
+    </nav>
+    <div class="refresh-info" id="refresh-info">Last loaded: —</div>
+    <div style="padding:0 12px 14px">
+      <button class="btn btn-ghost btn-sm btn-full" id="btn-refresh">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+        Refresh Data
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main">
+
+    <!-- ── DASHBOARD ── -->
+    <div class="panel active" id="p-dashboard">
+      <div class="panel-head">
+        <h2>Dashboard</h2>
+        <p>Live summary of your CATI calling data</p>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi-card amber"><div class="kpi-label">Total Calls</div><div class="kpi-value" id="k-total">—</div><div class="kpi-sub">all attempts</div></div>
+        <div class="kpi-card green"><div class="kpi-label">Unique Contacts</div><div class="kpi-value" id="k-contacts">—</div><div class="kpi-sub">distinct numbers</div></div>
+        <div class="kpi-card green"><div class="kpi-label">Completed</div><div class="kpi-value" id="k-completed">—</div><div class="kpi-sub">interviews done</div></div>
+        <div class="kpi-card blue"><div class="kpi-label">Contact Rate</div><div class="kpi-value" id="k-rate">—</div><div class="kpi-sub">completion %</div></div>
+        <div class="kpi-card amber"><div class="kpi-label">Callbacks</div><div class="kpi-value" id="k-callbacks">—</div><div class="kpi-sub">rescheduled</div></div>
+        <div class="kpi-card red"><div class="kpi-label">Unreachable</div><div class="kpi-value" id="k-unreachable">—</div><div class="kpi-sub">off / no answer</div></div>
+      </div>
+      <div class="chart-grid">
+        <div class="chart-card"><h3>Outcome Breakdown</h3><canvas id="chart-outcomes" height="220"></canvas></div>
+        <div class="chart-card"><h3>Calls by State</h3><canvas id="chart-states" height="220"></canvas></div>
+        <div class="chart-card"><h3>Priority Score Distribution</h3><canvas id="chart-scores" height="220"></canvas></div>
+        <div class="chart-card"><h3>Top 10 Interviewers</h3><canvas id="chart-interviewers" height="220"></canvas></div>
+      </div>
+    </div>
+
+    <!-- ── LOOKUP ── -->
+    <div class="panel" id="p-lookup">
+      <div class="panel-head"><h2>Phone Lookup</h2><p>Enter a number to get its call history and AI priority recommendation</p></div>
+      <div class="lookup-box">
+        <div class="lookup-input-row">
+          <input id="lookup-input" type="tel" placeholder="08031234567 or +2348031234567" autocomplete="off">
+          <button class="btn btn-primary" id="btn-lookup">Analyse</button>
+        </div>
+        <div style="font-size:11px;color:var(--dim);margin-top:8px">Enter any Nigerian number format — 0803…, +2348…, or 8031… (as stored in Excel)</div>
+      </div>
+      <div id="lookup-result" style="display:none"></div>
+    </div>
+
+    <!-- ── BATCH ── -->
+    <div class="panel" id="p-batch">
+      <div class="panel-head"><h2>Batch Score</h2><p>Paste a list of phone numbers (one per line) to score all at once</p></div>
+      <div style="max-width:640px">
+        <textarea class="batch-input" id="batch-input" placeholder="08031234567&#10;08061216739&#10;+2348131126225&#10;…"></textarea>
+        <div style="display:flex;gap:10px;margin-top:10px;margin-bottom:20px">
+          <button class="btn btn-primary" id="btn-batch">Score All</button>
+          <button class="btn btn-ghost btn-sm" id="btn-batch-clear">Clear</button>
+        </div>
+        <div id="batch-results"></div>
+      </div>
+    </div>
+
+    <!-- ── DATA TABLE ── -->
+    <div class="panel" id="p-table">
+      <div class="panel-head"><h2>Data Table</h2><p>Browse all call records from your Sheet</p></div>
+      <div class="table-toolbar">
+        <input id="tbl-search" placeholder="Search outcome, state, project…">
+        <select id="tbl-outcome-filter"><option value="">All Outcomes</option></select>
+        <select id="tbl-state-filter"><option value="">All States</option></select>
+        <span style="margin-left:auto;font-size:12px;color:var(--muted)" id="tbl-count"></span>
+      </div>
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead id="tbl-head"></thead>
+          <tbody id="tbl-body"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="pagination"></div>
+    </div>
+
+    <!-- ── SETTINGS ── -->
+    <div class="panel" id="p-settings">
+      <div class="panel-head"><h2>Settings</h2><p>Configure data source and view session info</p></div>
+      <div class="settings-section">
+        <h3>Data Source</h3>
+        <div class="field"><label>Google Sheet CSV URL</label>
+          <input id="settings-url" type="url" style="font-size:11px;font-family:'DM Mono',monospace">
+          <div class="hint">Change the Sheet URL, then click Reconnect to reload data</div>
+        </div>
+        <button class="btn btn-primary btn-sm" id="btn-reconnect">Reconnect with new URL</button>
+      </div>
+      <div class="settings-section">
+        <h3>Session Info</h3>
+        <div class="info-row"><label>Total rows loaded</label><span id="info-rows" style="font-family:'DM Mono',monospace;font-size:12px">—</span></div>
+        <div class="info-row"><label>Unique contacts</label><span id="info-contacts" style="font-family:'DM Mono',monospace;font-size:12px">—</span></div>
+        <div class="info-row"><label>Columns detected</label><span id="info-cols" style="font-family:'DM Mono',monospace;font-size:12px">—</span></div>
+        <div class="info-row"><label>Last refreshed</label><span id="info-last" style="font-family:'DM Mono',monospace;font-size:12px">—</span></div>
+        <div class="info-row"><label>Privacy</label><span style="font-size:12px;color:var(--green)">✓ Data stays in your browser</span></div>
+      </div>
+      <div class="settings-section">
+        <h3>Privacy &amp; Security</h3>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7">
+          Phone numbers are <strong style="color:var(--text)">hashed with SHA-256</strong> before any internal processing.
+          No phone numbers, no call data, and no respondent information is ever sent to any external server.
+          The app reads your published Google Sheet in your browser and all computation runs locally.
+          Your Google Sheet remains under your Google account's access controls at all times.
+        </p>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+//  CATI Intelligence — Google Sheets Edition
+//  All data stays in-browser. No external DB required.
+// ══════════════════════════════════════════════════════════
+
+// ── State ──
+let allRows      = [];   // raw parsed rows
+let callHistory  = new Map(); // hash → { calls:[], counts:{}, total, masked }
+// ── Embedded data source — no manual entry needed ──────────────────────────
+const EMBEDDED_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTewiWdmh4fS4S-g61B__rvpxvVfiv6Qdy38jxoZblXfzqU1Y47n75EiPhKzMesLYB0yLfEn5tvp40g/pub?gid=249906285&single=true&output=csv';
+let sheetUrl     = EMBEDDED_SHEET_URL;
+let loadedAt     = null;
+let chartInstances = {};
+
+// ── DOM helpers ──
+const $  = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+// ── Routing ──
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  $(id).classList.add('active');
+}
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const panel = $('p-'+name), nav = document.querySelector(`[data-panel="${name}"]`);
+  if (panel) panel.classList.add('active');
+  if (nav)   nav.classList.add('active');
+  if (name==='table') renderTable();
+}
+document.querySelectorAll('[data-panel]').forEach(el=>{
+  el.addEventListener('click',()=>showPanel(el.dataset.panel));
+});
+
+// ── Phone normalisation ──
+function normalizePhone(raw) {
+  if (!raw) return '';
+  const d = String(raw).trim().replace(/\D/g,'');
+  if (d.startsWith('234') && d.length >= 13) return '+234' + d.slice(3);
+  if (d.startsWith('0') && d.length === 11)  return '+234' + d.slice(1);
+  if (d.length === 10 && /^[7-9]/.test(d))   return '+234' + d;
+  if (d.length > 8) return '+' + d;
+  return String(raw).trim();
+}
+function maskPhone(n) { return n.slice(0,7) + '****' + n.slice(-2); }
+
+// ── Date formatting (handles Excel serial numbers AND string dates) ──
+function parseCallDate(val) {
+  if (!val || val === '—' || String(val).trim() === '') return null;
+  const num = parseFloat(val);
+  // Excel/Sheets serial: days since 1900-01-00 (with leap-year bug offset)
+  if (!isNaN(num) && num > 40000 && num < 60000) {
+    return new Date((num - 25569) * 86400 * 1000);
+  }
+  const d = new Date(val);
+  return isNaN(d) ? null : d;
+}
+function formatDate(val) {
+  const d = parseCallDate(val);
+  if (!d) return '—';
+  return d.toLocaleDateString('en-NG', { day:'2-digit', month:'short', year:'numeric' });
+}
+
+// ── SHA-256 hash (async, but we cache synchronously after) ──
+const hashCache = new Map();
+async function hashPhone(norm) {
+  if (hashCache.has(norm)) return hashCache.get(norm);
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(norm));
+  const h = Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  hashCache.set(norm, h);
+  return h;
+}
+
+// ── Outcome normalisation ──
+function normalizeOutcomeFull(raw) {
+  if (!raw) return { outcome:'Unknown', scheduledAt:null };
+  const r = String(raw).toLowerCase().trim();
+  if (/complet/.test(r))                                    return { outcome:'Completed',           scheduledAt:null };
+  if (/not.?reach|unreachable/.test(r))                     return { outcome:'Not Reachable',        scheduledAt:null };
+  if (/no.?respon|no.?answer|unanswer/.test(r))             return { outcome:'No Response',          scheduledAt:null };
+  if (/switch.*off|phone.*off/.test(r))                     return { outcome:'Switched Off',         scheduledAt:null };
+  if (/not.?interest|refus|declin/.test(r))                 return { outcome:'Not Interested',       scheduledAt:null };
+  if (/incomplet|partial/.test(r))                          return { outcome:'Incomplete Interview', scheduledAt:null };
+  if (/ineligib|in.?elig/.test(r))                          return { outcome:'Ineligible',           scheduledAt:null };
+  if (/location|within.?specif|outside|not.?within/.test(r))return { outcome:'Wrong Location',      scheduledAt:null };
+  if (/reschedul|callback|call.?back/.test(r)) {
+    const m = String(raw).match(/(\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(?::\d{2})?)/);
+    const scheduledAt = m ? new Date(m[1]) : null;
+    return { outcome:'Rescheduled', scheduledAt: scheduledAt&&!isNaN(scheduledAt)?scheduledAt:null };
+  }
+  return { outcome:'Unknown', scheduledAt:null };
+}
+function normalizeOutcome(raw){ return normalizeOutcomeFull(raw).outcome; }
+
+// ── Scoring engine ──
+const ORG_PRIOR_RATE = 0.138, PRIOR_WEIGHT = 5;
+function computeRec(counts, total) {
+  if (total === 0) return { label:'NEW NUMBER',       color:'blue',  score:50,
+    advice:'No previous calling history found for this number. Treat as fresh — worth calling during high-productivity hours.' };
+  const completed   = counts['Completed']    || 0;
+  const rescheduled = counts['Rescheduled']  || 0;
+  const notReach    = counts['Not Reachable']|| 0;
+  const switchedOff = counts['Switched Off'] || 0;
+  const unreachable = notReach + switchedOff;
+  if (rescheduled > 0) return { label:'SCHEDULED CALLBACK', color:'blue', score:74,
+    advice:'Respondent has previously requested a callback. Prioritise reaching them at the scheduled time.' };
+  const reachRate = 1 - unreachable / total;
+  const smoothed  = (completed + PRIOR_WEIGHT * ORG_PRIOR_RATE) / (total + PRIOR_WEIGHT);
+  const score     = Math.round(smoothed * 70 + reachRate * 30);
+  if (score >= 65) return { label:'PRIORITY CALL',      color:'green', score,
+    advice:'Strong completion history. Assign to an experienced interviewer for maximum conversion.' };
+  if (score >= 45) return { label:'RECOMMENDED',        color:'green', score,
+    advice:'Good completion likelihood based on call history. Worth including in the next calling session.' };
+  if (score >= 30) return { label:'NORMAL PRIORITY',    color:'amber', score,
+    advice:'Average performance. Schedule during mid-session when capacity allows.' };
+  if (score >= 15) return { label:'LOW PRIORITY',       color:'amber', score,
+    advice:'Multiple failed attempts. Try a different time of day or day of week before giving up.' };
+  return           { label:'SKIP / RETRY LATER',  color:'red',   score,
+    advice:'Very low contact probability. Rest this number for at least 72 hours before attempting again.' };
+}
+
+// ── Outcome pill helper ──
+const OUTCOME_PILL = {
+  'Completed':'pill-ok','Rescheduled':'pill-blue','Not Interested':'pill-warn',
+  'Incomplete Interview':'pill-warn','Ineligible':'pill-muted','Wrong Location':'pill-muted',
+  'Not Reachable':'pill-bad','Switched Off':'pill-bad','No Response':'pill-bad','Unknown':'pill-muted'
+};
+function outcomePill(o){ return `<span class="pill ${OUTCOME_PILL[o]||'pill-muted'}">${esc(o)}</span>`; }
+
+// ── Detect columns ──
+function guessCol(cols, patterns) {
+  for (const p of patterns) {
+    const re = new RegExp(p,'i');
+    const found = cols.find(c=>re.test(c));
+    if (found) return found;
+  }
+  return cols[0] || '';
+}
+
+// ══════════════════════════════════════════════════════════
+//  DATA LOADING
+// ══════════════════════════════════════════════════════════
+async function loadFromUrl(url) {
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error(`HTTP ${resp.status} — check the URL and that the sheet is published.`);
+  const text = await resp.text();
+  if (!text || text.trim().length < 10) throw new Error('Empty response — make sure the sheet is published as CSV.');
+  const wb   = XLSX.read(text, { type:'string' });
+  const ws   = wb.Sheets[wb.SheetNames[0]];
+  const rows = XLSX.utils.sheet_to_json(ws, { defval:'' });
+  if (!rows.length) throw new Error('No rows found in the sheet.');
+  return rows;
+}
+
+async function buildIndex(rows) {
+  callHistory.clear();
+  hashCache.clear();
+
+  const cols = Object.keys(rows[0]);
+  const phoneCol = guessCol(cols, ['contact','contacts','phone','mobile','number','tel','msisdn']);
+  const outcomeCol = guessCol(cols, ['outcome','result','status','disposition']);
+  const dateCol = guessCol(cols.filter(c=>/date|time|call.?date|when/i.test(c)),['.']) || '';
+  const projCol = guessCol(cols.filter(c=>/project|survey|poll|wave|study/i.test(c)),['.']) || '';
+  const intCol  = guessCol(cols.filter(c=>/interview|agent|caller|enumerator|staff/i.test(c)),['.']) || '';
+  const stateCol= guessCol(cols.filter(c=>/state|region|zone/i.test(c)),['.']) || '';
+  const lgaCol  = guessCol(cols.filter(c=>/lga|local.?gov|district|ward/i.test(c)),['.']) || '';
+  const attCol  = guessCol(cols.filter(c=>/attempt|try|dial|sequence|count/i.test(c)),['.']) || '';
+
+  // Build normalised rows and history index
+  // Detect whether the contact column already contains SHA-256 codes (64 hex chars)
+  // or raw phone numbers that need to be normalised + hashed.
+  const firstVal = String(rows.find(r=>r[phoneCol])?.[phoneCol]||'').trim();
+  const colIsPreHashed = /^[0-9a-f]{64}$/i.test(firstVal);
+
+  for (const row of rows) {
+    const raw = String(row[phoneCol]||'').trim();
+    if (!raw) continue;
+    let hash, masked;
+    if (colIsPreHashed) {
+      // Column already contains SHA-256 Contact_Code — use directly
+      hash   = raw.toLowerCase();
+      masked = raw.slice(0,8) + '…' + raw.slice(-4);
+    } else {
+      const norm = normalizePhone(raw);
+      if (!norm) continue;
+      hash   = await hashPhone(norm);
+      masked = maskPhone(norm);
+    }
+    const { outcome, scheduledAt } = normalizeOutcomeFull(row[outcomeCol]);
+    const call = {
+      outcome, scheduledAt,
+      outcome_raw: String(row[outcomeCol]||''),
+      call_date:   dateCol ? String(row[dateCol]||'') : '',
+      project:     projCol ? String(row[projCol]||'') : '',
+      interviewer: intCol  ? String(row[intCol]||'')  : '',
+      state:       stateCol? String(row[stateCol]||''): '',
+      lga:         lgaCol  ? String(row[lgaCol]||'')  : '',
+      attempt:     attCol  ? String(row[attCol]||'')  : '',
+    };
+    if (!callHistory.has(hash)) {
+      const normVal = colIsPreHashed ? raw : norm;
+      callHistory.set(hash, { calls:[], counts:{}, total:0, masked, norm:normVal });
+    }
+    const entry = callHistory.get(hash);
+    entry.calls.push(call);
+    entry.counts[outcome] = (entry.counts[outcome]||0) + 1;
+    entry.total++;
+    // Store normalised data back for table view
+    row.__norm = colIsPreHashed ? raw : norm;
+    row.__hash = hash;
+    row.__masked = masked;
+    row.__outcome = outcome;
+  }
+  return { cols, phoneCol, outcomeCol };
+}
+
+async function connectSheet(url) {
+  sheetUrl = url;
+  try { localStorage.setItem('cati_sheet_url', url); } catch(e){}
+  $('setup-err').style.display = 'none';
+  $('btn-connect').disabled = true;
+  $('setup-loading').style.display = 'block';
+  $('setup-loading-msg').textContent = 'Fetching data from Google Sheet…';
+
+  const rows = await loadFromUrl(url);
+  $('setup-loading-msg').textContent = `Building index for ${rows.length.toLocaleString()} rows…`;
+  await buildIndex(rows);
+  allRows = rows;
+  loadedAt = new Date();
+
+  // Update UI
+  $('sidebar-rows-label').textContent = `${rows.length.toLocaleString()} rows · ${callHistory.size.toLocaleString()} contacts`;
+  $('refresh-info').textContent = 'Loaded: ' + loadedAt.toLocaleTimeString();
+  $('settings-url').value = url;
+  $('info-rows').textContent = rows.length.toLocaleString();
+  $('info-contacts').textContent = callHistory.size.toLocaleString();
+  $('info-cols').textContent = Object.keys(rows[0]).filter(k=>!k.startsWith('__')).join(', ');
+  $('info-last').textContent = loadedAt.toLocaleString();
+
+  showView('v-app');
+  showPanel('dashboard');
+  buildDashboard();
+}
+
+// ══════════════════════════════════════════════════════════
+//  DASHBOARD
+// ══════════════════════════════════════════════════════════
+function destroyChart(id) {
+  if (chartInstances[id]) { chartInstances[id].destroy(); delete chartInstances[id]; }
+}
+
+function buildDashboard() {
+  // KPIs
+  const total = allRows.length;
+  const completed   = allRows.filter(r=>r.__outcome==='Completed').length;
+  const rescheduled = allRows.filter(r=>r.__outcome==='Rescheduled').length;
+  const unreachable = allRows.filter(r=>['Not Reachable','Switched Off'].includes(r.__outcome)).length;
+  $('k-total').textContent     = total.toLocaleString();
+  $('k-contacts').textContent  = callHistory.size.toLocaleString();
+  $('k-completed').textContent = completed.toLocaleString();
+  $('k-rate').textContent      = (total?((completed/total)*100).toFixed(1):0) + '%';
+  $('k-callbacks').textContent = rescheduled.toLocaleString();
+  $('k-unreachable').textContent = unreachable.toLocaleString();
+
+  // Chart colours
+  const C = {
+    amber:'#F0B429', green:'#3FB950', red:'#F85149',
+    blue:'#58A6FF', yellow:'#D29922', purple:'#A371F7', orange:'#EC8E2C',
+    muted:'#484F58', surf2:'#21262D', border:'#30363D', text:'#E6EDF3'
+  };
+  const chartDefaults = {
+    plugins:{ legend:{ display:false }, tooltip:{ backgroundColor:'#161B22', borderColor:'#30363D', borderWidth:1, titleColor:'#E6EDF3', bodyColor:'#8B949E' }},
+    scales:{ x:{ ticks:{ color:'#8B949E', font:{ size:10 }}, grid:{ color:'#21262D' }},
+             y:{ ticks:{ color:'#8B949E', font:{ size:10 }}, grid:{ color:'#21262D' }}}
+  };
+
+  // Outcome chart
+  const outcomeCounts = {};
+  allRows.forEach(r=>{ outcomeCounts[r.__outcome]=(outcomeCounts[r.__outcome]||0)+1; });
+  const oLabels = Object.keys(outcomeCounts).sort((a,b)=>outcomeCounts[b]-outcomeCounts[a]);
+  const oColors = oLabels.map(l=>({
+    'Completed':C.green,'Rescheduled':C.blue,'Not Interested':C.yellow,
+    'Incomplete Interview':C.orange,'Ineligible':C.purple,'Wrong Location':C.muted,
+    'Not Reachable':C.red,'Switched Off':'#c0392b','No Response':'#e74c3c','Unknown':C.muted
+  }[l]||C.muted));
+  destroyChart('chart-outcomes');
+  chartInstances['chart-outcomes'] = new Chart($('chart-outcomes'), {
+    type:'bar',
+    data:{ labels:oLabels, datasets:[{ data:oLabels.map(l=>outcomeCounts[l]), backgroundColor:oColors, borderRadius:4 }]},
+    options:{...chartDefaults, indexAxis:'y', plugins:{...chartDefaults.plugins},
+      scales:{ x:{...chartDefaults.scales.x}, y:{...chartDefaults.scales.y, ticks:{color:'#8B949E',font:{size:10}}}}}
+  });
+
+  // State chart
+  const stateCounts = {};
+  allRows.forEach(r=>{ if(r.__outcome==='Completed'&&r.State){stateCounts[r.State]=(stateCounts[r.State]||0)+1;}});
+  const sLabels = Object.keys(stateCounts).sort((a,b)=>stateCounts[b]-stateCounts[a]).slice(0,10);
+  destroyChart('chart-states');
+  chartInstances['chart-states'] = new Chart($('chart-states'), {
+    type:'bar',
+    data:{ labels:sLabels, datasets:[{ data:sLabels.map(l=>stateCounts[l]), backgroundColor:C.amber, borderRadius:4 }]},
+    options:{...chartDefaults, indexAxis:'y'}
+  });
+
+  // Score distribution
+  const scoreGroups = {'PRIORITY (65+)':0,'RECOMMENDED (45-64)':0,'NORMAL (30-44)':0,'LOW (15-29)':0,'SKIP (<15)':0,'NEW':0};
+  callHistory.forEach(entry=>{
+    const rec = computeRec(entry.counts, entry.total);
+    if (rec.label==='NEW NUMBER') scoreGroups['NEW']++;
+    else if (rec.score>=65) scoreGroups['PRIORITY (65+)']++;
+    else if (rec.score>=45) scoreGroups['RECOMMENDED (45-64)']++;
+    else if (rec.score>=30) scoreGroups['NORMAL (30-44)']++;
+    else if (rec.score>=15) scoreGroups['LOW (15-29)']++;
+    else scoreGroups['SKIP (<15)']++;
+  });
+  const sgColors = [C.green,C.green,C.amber,C.amber,C.red,C.blue];
+  destroyChart('chart-scores');
+  chartInstances['chart-scores'] = new Chart($('chart-scores'), {
+    type:'bar',
+    data:{ labels:Object.keys(scoreGroups), datasets:[{ data:Object.values(scoreGroups), backgroundColor:sgColors, borderRadius:4 }]},
+    options:{...chartDefaults}
+  });
+
+  // Interviewer chart
+  const intCounts = {};
+  allRows.forEach(r=>{ if(r.Interviewer){ intCounts[r.Interviewer]=(intCounts[r.Interviewer]||0)+1; }});
+  const iLabels = Object.keys(intCounts).sort((a,b)=>intCounts[b]-intCounts[a]).slice(0,10);
+  destroyChart('chart-interviewers');
+  chartInstances['chart-interviewers'] = new Chart($('chart-interviewers'), {
+    type:'bar',
+    data:{ labels:iLabels, datasets:[{ data:iLabels.map(l=>intCounts[l]), backgroundColor:C.purple, borderRadius:4 }]},
+    options:{...chartDefaults, indexAxis:'y'}
+  });
+}
+
+// ══════════════════════════════════════════════════════════
+//  PHONE LOOKUP
+// ══════════════════════════════════════════════════════════
+async function doLookup(raw) {
+  const norm = normalizePhone(raw);
+  if (!norm) { $('lookup-result').innerHTML = '<div class="alert alert-err">Could not parse that phone number. Try formats: 08031234567 or +2348031234567</div>'; $('lookup-result').style.display='block'; return; }
+  const hash = await hashPhone(norm);
+  const entry = callHistory.get(hash);
+  const masked = maskPhone(norm);
+
+  let html = '';
+  if (!entry) {
+    const rec = computeRec({}, 0);
+    html = `<div class="rec-card">
+      <div class="rec-header">
+        <div>
+          <div style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:6px">${esc(masked)}</div>
+          <span class="rec-badge ${rec.color}">${esc(rec.label)}</span>
+        </div>
+        <div class="rec-score-wrap"><div class="rec-score" style="color:var(--blue)">${rec.score}</div><div class="rec-score-label">priority score</div></div>
+      </div>
+      <div class="rec-advice">${esc(rec.advice)}</div>
+      <p style="font-size:12px;color:var(--dim)">No call records found for this number in the current dataset.</p>
+    </div>`;
+  } else {
+    const rec = computeRec(entry.counts, entry.total);
+    const scoreColor = rec.color==='green'?'var(--green)':rec.color==='red'?'var(--red)':rec.color==='amber'?'var(--amber)':'var(--blue)';
+    const histRows = entry.calls.slice().reverse().slice(0,10).map(c=>`
+      <tr>
+        <td>${esc(formatDate(c.call_date||''))}</td>
+        <td>${outcomePill(c.outcome)}</td>
+        <td>${esc(c.project||'—')}</td>
+        <td>${esc(c.interviewer||'—')}</td>
+        <td>${esc(c.state||'—')}</td>
+        <td>${esc(c.lga||'—')}</td>
+      </tr>`).join('');
+    const countBadges = Object.entries(entry.counts).map(([k,v])=>`<span class="pill ${OUTCOME_PILL[k]||'pill-muted'}" style="margin-right:4px;margin-bottom:4px">${esc(k)} ×${v}</span>`).join('');
+    // Scorecard stats
+    const completed   = entry.counts['Completed']    || 0;
+    const unreachable = (entry.counts['Not Reachable']||0) + (entry.counts['Switched Off']||0) + (entry.counts['No Response']||0);
+    const successRate = entry.total ? ((completed / entry.total)*100).toFixed(0) : 0;
+    const failRate    = entry.total ? ((unreachable / entry.total)*100).toFixed(0) : 0;
+    html = `<div class="rec-card">
+      <div class="rec-header">
+        <div>
+          <div style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:6px">${esc(masked)}</div>
+          <span class="rec-badge ${rec.color}">${esc(rec.label)}</span>
+        </div>
+        <div class="rec-score-wrap"><div class="rec-score" style="color:${scoreColor}">${rec.score}</div><div class="rec-score-label">priority score</div></div>
+      </div>
+      <div class="rec-advice">${esc(rec.advice)}</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">
+        <div style="background:var(--surf2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;text-align:center">
+          <div style="font-size:22px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text)">${entry.total}</div>
+          <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:3px">Total Attempts</div>
+        </div>
+        <div style="background:var(--surf2);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:var(--radius);padding:12px;text-align:center">
+          <div style="font-size:22px;font-weight:700;font-family:'DM Mono',monospace;color:var(--green)">${successRate}%</div>
+          <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:3px">Success Rate</div>
+        </div>
+        <div style="background:var(--surf2);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:var(--radius);padding:12px;text-align:center">
+          <div style="font-size:22px;font-weight:700;font-family:'DM Mono',monospace;color:var(--red)">${failRate}%</div>
+          <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:3px">Failed Rate</div>
+        </div>
+      </div>
+      <div style="margin-bottom:14px;display:flex;flex-wrap:wrap;gap:4px">${countBadges}</div>
+      <table class="history-table">
+        <thead><tr><th>Date</th><th>Outcome</th><th>Project</th><th>Interviewer</th><th>State</th><th>LGA</th></tr></thead>
+        <tbody>${histRows}</tbody>
+      </table>
+    </div>`;
+  }
+  $('lookup-result').innerHTML = html;
+  $('lookup-result').style.display = 'block';
+}
+
+$('btn-lookup').addEventListener('click', ()=>doLookup($('lookup-input').value.trim()));
+$('lookup-input').addEventListener('keydown', e=>{ if(e.key==='Enter') doLookup($('lookup-input').value.trim()); });
+
+// ══════════════════════════════════════════════════════════
+//  BATCH SCORING
+// ══════════════════════════════════════════════════════════
+$('btn-batch').addEventListener('click', async () => {
+  const lines = $('batch-input').value.split('\n').map(l=>l.trim()).filter(Boolean);
+  if (!lines.length) return;
+  const results = [];
+  for (const line of lines) {
+    const norm = normalizePhone(line);
+    if (!norm) continue;
+    const hash = await hashPhone(norm);
+    const entry = callHistory.get(hash) || { counts:{}, total:0 };
+    const rec   = computeRec(entry.counts, entry.total);
+    results.push({ norm, masked:maskPhone(norm), rec, total:entry.total });
+  }
+  results.sort((a,b)=>b.rec.score-a.rec.score);
+  const COLOR_MAP = {green:'var(--green)',amber:'var(--amber)',red:'var(--red)',blue:'var(--blue)'};
+  $('batch-results').innerHTML = results.map(r=>`
+    <div class="batch-result-row">
+      <div class="batch-phone">${esc(r.masked)}</div>
+      <span class="rec-badge ${r.rec.color}" style="min-width:160px;text-align:center">${esc(r.rec.label)}</span>
+      <div class="batch-score" style="color:${COLOR_MAP[r.rec.color]||'var(--text)'}">${r.rec.score}</div>
+      <div style="font-size:11px;color:var(--muted)">${r.total} call${r.total!==1?'s':''} on record</div>
+    </div>`).join('');
+});
+$('btn-batch-clear').addEventListener('click',()=>{ $('batch-input').value=''; $('batch-results').innerHTML=''; });
+
+// ══════════════════════════════════════════════════════════
+//  DATA TABLE
+// ══════════════════════════════════════════════════════════
+let tblPage = 0, tblFiltered = [];
+const PAGE_SIZE = 50;
+
+function renderTable() {
+  if (!allRows.length) return;
+  const searchQ  = $('tbl-search').value.toLowerCase();
+  const outcomeF = $('tbl-outcome-filter').value;
+  const stateF   = $('tbl-state-filter').value;
+
+  tblFiltered = allRows.filter(r=>{
+    if (outcomeF && r.__outcome !== outcomeF) return false;
+    if (stateF && (r.State||'') !== stateF) return false;
+    if (searchQ) {
+      const haystack = [r.__outcome,r.Project||'',r.State||'',r.LGA||'',r.Interviewer||''].join(' ').toLowerCase();
+      if (!haystack.includes(searchQ)) return false;
+    }
+    return true;
+  });
+
+  $('tbl-count').textContent = `${tblFiltered.length.toLocaleString()} of ${allRows.length.toLocaleString()} rows`;
+
+  // Populate filters once
+  if (!$('tbl-outcome-filter').dataset.populated) {
+    const outcomes = [...new Set(allRows.map(r=>r.__outcome))].sort();
+    $('tbl-outcome-filter').innerHTML = '<option value="">All Outcomes</option>' +
+      outcomes.map(o=>`<option value="${esc(o)}">${esc(o)}</option>`).join('');
+    const states = [...new Set(allRows.map(r=>r.State||'').filter(Boolean))].sort();
+    $('tbl-state-filter').innerHTML = '<option value="">All States</option>' +
+      states.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');
+    $('tbl-outcome-filter').dataset.populated = '1';
+    $('tbl-state-filter').dataset.populated   = '1';
+  }
+
+  const cols = ['__masked','__outcome','Call_Date','Project','Interviewer','Attempt','State','LGA'];
+  const labels= ['Contact','Outcome','Date','Project','Interviewer','Attempt','State','LGA'];
+  $('tbl-head').innerHTML = '<tr>' + labels.map(l=>`<th>${l}</th>`).join('') + '</tr>';
+
+  const start = tblPage * PAGE_SIZE;
+  const pageRows = tblFiltered.slice(start, start+PAGE_SIZE);
+  $('tbl-body').innerHTML = pageRows.map(r=>`<tr>
+    <td style="font-family:'DM Mono',monospace;font-size:11px">${esc(r.__masked||'')}</td>
+    <td>${outcomePill(r.__outcome||'')}</td>
+    <td>${esc(r.Call_Date||r.call_date||'—')}</td>
+    <td style="font-size:12px">${esc(r.Project||r.project||'—')}</td>
+    <td style="font-size:12px">${esc(r.Interviewer||r.interviewer||'—')}</td>
+    <td style="text-align:center">${esc(r.Attempt||r.attempt||'—')}</td>
+    <td>${esc(r.State||r.state||'—')}</td>
+    <td style="font-size:12px">${esc(r.LGA||r.lga||'—')}</td>
+  </tr>`).join('');
+
+  // Pagination
+  const totalPages = Math.ceil(tblFiltered.length / PAGE_SIZE);
+  let pHtml = `<button ${tblPage===0?'disabled':''} id="pg-prev">‹ Prev</button>`;
+  const start_p = Math.max(0, tblPage-2), end_p = Math.min(totalPages, tblPage+3);
+  for (let i=start_p;i<end_p;i++) pHtml += `<button class="${i===tblPage?'cur':''}" data-pg="${i}">${i+1}</button>`;
+  pHtml += `<button ${tblPage>=totalPages-1?'disabled':''} id="pg-next">Next ›</button>`;
+  pHtml += `<span>${start+1}–${Math.min(start+PAGE_SIZE,tblFiltered.length)} of ${tblFiltered.length.toLocaleString()}</span>`;
+  $('pagination').innerHTML = pHtml;
+  $('pagination').querySelectorAll('[data-pg]').forEach(btn=>{
+    btn.addEventListener('click',()=>{ tblPage=parseInt(btn.dataset.pg); renderTable(); });
+  });
+  const pp=$('pg-prev'),pn=$('pg-next');
+  if(pp) pp.addEventListener('click',()=>{ if(tblPage>0){tblPage--;renderTable();} });
+  if(pn) pn.addEventListener('click',()=>{ if(tblPage<totalPages-1){tblPage++;renderTable();} });
+}
+
+['tbl-search','tbl-outcome-filter','tbl-state-filter'].forEach(id=>{
+  $(id).addEventListener('input',()=>{ tblPage=0; renderTable(); });
+});
+
+// ══════════════════════════════════════════════════════════
+//  SETUP & CONNECT
+// ══════════════════════════════════════════════════════════
+$('btn-connect').addEventListener('click', async () => {
+  const url = $('setup-url').value.trim();
+  if (!url.includes('output=csv')) {
+    $('setup-err').textContent = 'URL must end with output=csv. Use the published CSV link from Google Sheets.';
+    $('setup-err').style.display = 'block'; return;
+  }
+  try {
+    await connectSheet(url);
+  } catch(e) {
+    $('setup-loading').style.display = 'none';
+    $('btn-connect').disabled = false;
+    $('setup-err').textContent = 'Failed to load: ' + e.message;
+    $('setup-err').style.display = 'block';
+  }
+});
+
+$('btn-refresh').addEventListener('click', async () => {
+  try {
+    $('btn-refresh').disabled = true;
+    $('btn-refresh').textContent = 'Refreshing…';
+    const rows = await loadFromUrl(sheetUrl);
+    await buildIndex(rows);
+    allRows = rows;
+    loadedAt = new Date();
+    $('sidebar-rows-label').textContent = `${rows.length.toLocaleString()} rows · ${callHistory.size.toLocaleString()} contacts`;
+    $('refresh-info').textContent = 'Loaded: ' + loadedAt.toLocaleTimeString();
+    $('info-last').textContent = loadedAt.toLocaleString();
+    buildDashboard();
+    if ($('p-table').classList.contains('active')) { tblPage=0; renderTable(); }
+  } catch(e) { alert('Refresh failed: ' + e.message); }
+  finally { $('btn-refresh').disabled = false; $('btn-refresh').innerHTML = '<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg> Refresh Data'; }
+});
+
+$('btn-reconnect').addEventListener('click', async () => {
+  const url = $('settings-url').value.trim();
+  if (!url) return;
+  showView('v-setup');
+  $('setup-url').value = url;
+  try { await connectSheet(url); }
+  catch(e) {
+    $('setup-err').textContent = 'Failed: ' + e.message;
+    $('setup-err').style.display = 'block';
+    $('btn-connect').disabled = false;
+    $('setup-loading').style.display = 'none';
+  }
+});
+
+$('sidebar-sheet-status').addEventListener('click', () => $('btn-refresh').click());
+
+// ── Auto-connect on load — uses embedded URL, falls back to any saved override ──
+window.addEventListener('load', () => {
+  let override = '';
+  try { override = localStorage.getItem('cati_sheet_url') || ''; } catch(e){}
+  const url = (override && override.includes('output=csv')) ? override : EMBEDDED_SHEET_URL;
+  $('setup-url').value = url;
+  connectSheet(url);
+});
+</script>
+</body>
+</html>
+
+</body></html>
